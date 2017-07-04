@@ -210,7 +210,7 @@ class Bliskapaczka extends CarrierModule
     }
 
     /**
-     * Save module configuration 
+     * Save module configuration
      */
     protected function postProcess()
     {
