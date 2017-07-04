@@ -9,7 +9,7 @@ class Cart extends CartCore
 
     /**
      * Operator name
-     */    
+     */
     public $pos_operator;
 
     /**

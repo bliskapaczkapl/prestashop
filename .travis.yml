@@ -1,0 +1,11 @@
+language: php
+php:
+  - '5.6'
+
+before_script: composer install
+script: 
+  - vendor/bin/phpcs --standard=PSR2 modules/
+  - vendor/bin/phpmd modules/ text codesize
+  - vendor/bin/phpcpd modules/
+  - vendor/bin/phpdoccheck --directory=modules/ 
+  - vendor/bin/phploc modules/

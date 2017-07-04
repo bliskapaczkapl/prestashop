@@ -233,8 +233,7 @@ class Bliskapaczka extends CarrierModule
     {
         $this->html = '';
 
-        if (Tools::isSubmit('btnSubmit'))
-        {
+        if (Tools::isSubmit('btnSubmit')) {
             $this->postProcess();
         } else {
             $this->html .= '<br />';

@@ -2,8 +2,7 @@ function Bliskapaczka()
 {
 }
 
-Bliskapaczka.showMap = function(prices, disabledOperators)
-{
+Bliskapaczka.showMap = function (prices, disabledOperators) {
     aboutPoint = document.getElementById('bpWidget_aboutPoint');
     aboutPoint.style.display = 'none';
 
@@ -15,7 +14,7 @@ Bliskapaczka.showMap = function(prices, disabledOperators)
     BPWidget.init(
         bpWidget,
         {
-            callback: function(posCode, posOperator) {
+            callback: function (posCode, posOperator) {
                 console.log('BPWidget callback:', posCode, posOperator)
 
                 posCodeForm = document.getElementById('bliskapaczka_posCode')
@@ -33,8 +32,7 @@ Bliskapaczka.showMap = function(prices, disabledOperators)
     );
 }
 
-Bliskapaczka.pointSelected = function(posCode, posOperator, prices)
-{
+Bliskapaczka.pointSelected = function (posCode, posOperator, prices) {
     Bliskapaczka.updatePrice(posOperator, prices);
 
     bpWidget = document.getElementById('bpWidget');
@@ -50,8 +48,7 @@ Bliskapaczka.pointSelected = function(posCode, posOperator, prices)
     posOperatorBlock.innerHTML = posOperator
 }
 
-Bliskapaczka.updatePrice = function(posOperator, prices)
-{
+Bliskapaczka.updatePrice = function (posOperator, prices) {
     item = Bliskapaczka.getTableRow();
     if (item) {
         priceDiv = item.find('.delivery_option_price').first();
@@ -60,13 +57,12 @@ Bliskapaczka.updatePrice = function(posOperator, prices)
     }
 }
 
-Bliskapaczka.updateSelectedCarrier = function ()
-{
+Bliskapaczka.updateSelectedCarrier = function () {
     item = Bliskapaczka.getTableRow();
     
     if (item) {
         input = item.find('input.delivery_option_radio').first();
-        // Magic because in themes/default-bootstrap/js/order-carrier.js is defined event onchanged input 
+        // Magic because in themes/default-bootstrap/js/order-carrier.js is defined event onchanged input
         input.click();
     
         items = jQuery('td.delivery_option_radio span')
@@ -77,8 +73,7 @@ Bliskapaczka.updateSelectedCarrier = function ()
     }
 }
 
-Bliskapaczka.getTableRow = function()
-{
+Bliskapaczka.getTableRow = function () {
     item = null;
     itemList = jQuery('.order_carrier_content').find('.delivery_option:contains("bliskapaczka")');
     

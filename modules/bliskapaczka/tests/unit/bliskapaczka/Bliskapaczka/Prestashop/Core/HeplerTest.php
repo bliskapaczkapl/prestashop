@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class HeplerTest extends TestCase
 {
-	public function testClassExists()
+    public function testClassExists()
     {
         $this->assertTrue(class_exists('\Bliskapaczka\Prestashop\Core\Hepler'));
     }
@@ -20,7 +20,7 @@ class HeplerTest extends TestCase
 
     public function testClassExtendMageCoreHelperData()
     {
-    	$hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
         $this->assertTrue($hepler instanceof \Bliskapaczka\Prestashop\Core\Hepler);
     }
 
