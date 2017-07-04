@@ -1,6 +1,6 @@
 <?php
 
-// use Bliskapaczka\Prestashop\Core\Hepler;
+// @codingStandardsIgnoreStart
 
 /*
  * With this override, you have a new Smarty variable called "currentController" available in header.tpl
@@ -34,3 +34,5 @@ class OrderController extends OrderControllerCore
         }
     }
 }
+
+// @codingStandardsIgnoreStart

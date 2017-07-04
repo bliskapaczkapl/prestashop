@@ -4,7 +4,7 @@ php:
 
 before_script: composer install
 script: 
-  - vendor/bin/phpcs --standard=PSR2 modules/
+  - vendor/bin/phpcs -s --colors --standard=rules.xml modules/
   - vendor/bin/phpmd modules/ text codesize
   - vendor/bin/phpcpd modules/
   - vendor/bin/phpdoccheck --directory=modules/ 

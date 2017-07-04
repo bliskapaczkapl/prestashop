@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="PSR2PrestashopModule">
+    <description>The PSR2 and Prestashop module coding standard.</description>
+
+    <rule ref="PSR2" />
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>*/modules/bliskapaczka/bliskapaczka_wrapped.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>*/modules/bliskapaczka/tests/bootstrap.php</exclude-pattern>
+        <exclude-pattern>*/modules/bliskapaczka/Bliskapaczka/Prestashop/Core.php</exclude-pattern>
+    </rule>
+</ruleset>

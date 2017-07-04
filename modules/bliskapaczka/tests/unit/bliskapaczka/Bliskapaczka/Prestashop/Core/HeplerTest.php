@@ -1,6 +1,6 @@
 <?php
 
-require $GLOBALS['ROOT_DIR'] . '/modules/bliskapaczka/Bliskapaczka/Prestashop/Core/Hepler.php';
+namespace Bliskapaczka\Prestashop\Core;
 
 use PHPUnit\Framework\TestCase;
 

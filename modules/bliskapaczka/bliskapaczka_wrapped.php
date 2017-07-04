@@ -1,5 +1,4 @@
 <?php
-require_once 'Bliskapaczka/Prestashop/Core.php';
 
 use Bliskapaczka\Prestashop\Core\Config;
 

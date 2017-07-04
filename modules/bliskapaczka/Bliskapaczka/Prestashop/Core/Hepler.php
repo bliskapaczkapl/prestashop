@@ -1,4 +1,5 @@
 <?php
+
 namespace Bliskapaczka\Prestashop\Core;
 
 use Bliskapaczka\ApiClient;
@@ -190,11 +191,11 @@ class Hepler
      *
      * @return string
      */
-    public function getApiMode($config_value)
+    public function getApiMode($configValue = '')
     {
         $mode = '';
 
-        switch ($config_value) {
+        switch ($configValue) {
             case '1':
                 $mode = 'test';
                 break;

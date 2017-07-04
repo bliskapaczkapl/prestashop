@@ -1,4 +1,5 @@
 <?php
+
 namespace Bliskapaczka\Prestashop\Core;
 
 /**

@@ -4,4 +4,5 @@ if (!defined('_PS_VERSION_')) {
 }
 
 /* Live hack - if in this place 'use' is used php has problem */
-require 'bliskapaczka_wrapped.php';
+require_once 'Bliskapaczka/Prestashop/Core.php';
+require_once 'bliskapaczka_wrapped.php';

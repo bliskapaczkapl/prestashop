@@ -1,4 +1,5 @@
 <?php
+
 namespace Bliskapaczka\Prestashop;
 
 /**
@@ -6,9 +7,6 @@ namespace Bliskapaczka\Prestashop;
  */
 class Core
 {
-    public static $NAMESPACE = 'Bliskapaczka';
-    public static $BASEDIR = '';
-
     public static function autoloader($class)
     {
         if (preg_match('#^(Bliskapaczka\\\\ApiClient)\b#', $class)) {
@@ -28,4 +26,6 @@ class Core
     }
 }
 
+// @codingStandardsIgnoreStart
 spl_autoload_register('Bliskapaczka\Prestashop\Core::autoloader', true, true);
+// @codingStandardsIgnoreEnd
