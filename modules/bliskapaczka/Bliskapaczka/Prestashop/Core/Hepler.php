@@ -45,7 +45,7 @@ class Hepler
      * Get lowest price from pricing list
      *
      * @param array $priceList - price list
-     * @param bool taxInc - return price with tax
+     * @param bool $taxInc - return price with tax
      * @return float
      */
     public function getLowestPrice($priceList, $taxInc = true)
@@ -78,6 +78,7 @@ class Hepler
      *
      * @param array $priceList
      * @param string $carrierName
+     * @param bool $taxInc
      * @return float
      */
     public function getPriceForCarrier($priceList, $carrierName, $taxInc = true)
@@ -189,6 +190,7 @@ class Hepler
     /**
      * Get API mode
      *
+     * @param string $configValue
      * @return string
      */
     public function getApiMode($configValue = '')

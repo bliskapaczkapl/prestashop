@@ -11,6 +11,9 @@ class Bliskapaczka extends CarrierModule
     protected $html = '';
     private $config = null;
 
+    /**
+     * Constructor, nothing more
+     */
     public function __construct()
     {
         $this->config = new Bliskapaczka\Prestashop\Core\Config();
@@ -84,6 +87,11 @@ class Bliskapaczka extends CarrierModule
         }
     }
 
+    /**
+     * Action after carrier change
+     *
+     * @param array $params
+     */
     public function hookActionCarrierUpdate($params)
     {
         $id_carrier_old = (int)($params['id_carrier']);
@@ -157,7 +165,7 @@ class Bliskapaczka extends CarrierModule
      * Get shipping cost for order. Shipping cost depends on operator. If operator isn't setted method retur lowest cost
      *
      * @param Cart $cart
-     * @param float shipping_cost
+     * @param float $shipping_cost
      * @return float
      */
     public function getOrderShippingCost($cart, $shipping_cost)
@@ -191,11 +199,19 @@ class Bliskapaczka extends CarrierModule
         return $shippingPrice;
     }
 
+    /**
+     * Shippin external cost
+     *
+     * @param array $params
+     */
     public function getOrderShippingCostExternal($params)
     {
         // return 7.0;
     }
 
+    /**
+     * Save module configuration 
+     */
     protected function postProcess()
     {
         if (Tools::isSubmit('btnSubmit')) {
@@ -228,6 +244,9 @@ class Bliskapaczka extends CarrierModule
         $this->html .= $this->displayConfirmation($this->l('Settings updated'));
     }
 
+    /**
+     * Prepare module configuration page
+     */
     public function getContent()
     {
         $this->html = '';
@@ -243,6 +262,9 @@ class Bliskapaczka extends CarrierModule
         return $this->html;
     }
 
+    /**
+     * Prepare module confoguration form
+     */
     public function renderForm()
     {
         $defaultLang = (int)Configuration::get('PS_LANG_DEFAULT');
@@ -331,6 +353,9 @@ class Bliskapaczka extends CarrierModule
         return $helper->generateForm(array($fieldsForm));
     }
 
+    /**
+     * Get module configuration
+     */
     public function getConfigFieldsValues()
     {
         return array(

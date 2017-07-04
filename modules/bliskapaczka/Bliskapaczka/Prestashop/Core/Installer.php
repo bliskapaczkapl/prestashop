@@ -9,6 +9,11 @@ class Installer
 {
     private $config = null;
 
+    /**
+     * Constructor
+     *
+     * @param array $config
+     */
     public function __construct($config)
     {
         $this->config = $config;

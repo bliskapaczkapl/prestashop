@@ -1,7 +1,8 @@
 <?php
-
+/**
+ * Override Cart
+ */
 // @codingStandardsIgnoreStart
-
 class Cart extends CartCore
 {
     /**
@@ -44,5 +45,4 @@ class Cart extends CartCore
         ),
     );
 }
-
 // @codingStandardsIgnoreEnd

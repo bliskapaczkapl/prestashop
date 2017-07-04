@@ -7,6 +7,11 @@ namespace Bliskapaczka\Prestashop;
  */
 class Core
 {
+    /**
+     * Autoloader for Bliskapaczka namespace
+     *
+     * @param string $class
+     */
     public static function autoloader($class)
     {
         if (preg_match('#^(Bliskapaczka\\\\ApiClient)\b#', $class)) {
@@ -19,13 +24,9 @@ class Core
         }
 
         if (isset($filePath) && is_file($filePath)) {
-            // @codingStandardsIgnoreStart
             require_once($filePath);
-            // @codingStandardsIgnoreEnd
         }
     }
 }
 
-// @codingStandardsIgnoreStart
 spl_autoload_register('Bliskapaczka\Prestashop\Core::autoloader', true, true);
-// @codingStandardsIgnoreEnd

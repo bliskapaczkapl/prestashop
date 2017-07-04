@@ -9,7 +9,7 @@ class Order
     /**
      * Prepare mapped data
      *
-     * @param Mage_Sales_Model_Order $order
+     * @param Order $order
      */
     public function getData(\Order $order)
     {

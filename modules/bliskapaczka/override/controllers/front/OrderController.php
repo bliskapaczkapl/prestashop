@@ -1,21 +1,13 @@
 <?php
 
 // @codingStandardsIgnoreStart
-
-/*
- * With this override, you have a new Smarty variable called "currentController" available in header.tpl
- * This allows you to use a different header if you are on a product page, category page or home.
+/**
+ * Override OrderController
  */
 class OrderController extends OrderControllerCore
 {
     /**
-     * Assign template vars related to page content
-     * @see FrontController::initContent()
-     */
-    /*
-    * module: bliskapaczka
-    * date: 2017-06-22 15:22:26
-    * version: 1.0.0
+    * Assign new variables to temlate. Overrive tempalte for carrier page on checkout
     */
     public function initContent()
     {

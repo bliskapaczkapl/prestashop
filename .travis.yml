@@ -7,5 +7,5 @@ script:
   - vendor/bin/phpcs -s --colors --standard=rules.xml modules/
   - vendor/bin/phpmd modules/ text codesize
   - vendor/bin/phpcpd modules/
-  - vendor/bin/phpdoccheck --directory=modules/ 
+  - vendor/bin/phpdoccheck --directory=modules --exclude=bliskapaczka/tests
   - vendor/bin/phploc modules/
