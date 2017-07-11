@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "67725c44e9fdd5fe2aa2d9f0b1ff2731",
-    "content-hash": "b6327f469d33d502ca42b6d6066c0c6e",
+    "hash": "26305f4ba885e149de841069027b4685",
+    "content-hash": "4d41dffc488ced43746f7239482cd39f",
     "packages": [
         {
-            "name": "bliskapaczka/bliskapaczka-api-client",
-            "version": "1.0.5",
+            "name": "bliskapaczkapl/bliskapaczka-api-client",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bliskapaczkapl/bliskapaczka-api-client.git",
-                "reference": "a50937fc9f57d8441a3f3d5fb2275365d554cee9"
+                "reference": "8391d625a196cdce77625b419162d5ba5e155470"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bliskapaczkapl/bliskapaczka-api-client/zipball/a50937fc9f57d8441a3f3d5fb2275365d554cee9",
-                "reference": "a50937fc9f57d8441a3f3d5fb2275365d554cee9",
+                "url": "https://api.github.com/repos/bliskapaczkapl/bliskapaczka-api-client/zipball/8391d625a196cdce77625b419162d5ba5e155470",
+                "reference": "8391d625a196cdce77625b419162d5ba5e155470",
                 "shasum": ""
             },
             "require": {
@@ -43,10 +43,10 @@
             },
             "description": "BliczkaPaczka API Client",
             "support": {
-                "source": "https://github.com/bliskapaczkapl/bliskapaczka-api-client/tree/1.0.5",
+                "source": "https://github.com/bliskapaczkapl/bliskapaczka-api-client/tree/1.0.6",
                 "issues": "https://github.com/bliskapaczkapl/bliskapaczka-api-client/issues"
             },
-            "time": "2017-07-04 08:46:41"
+            "time": "2017-07-11 10:58:25"
         },
         {
             "name": "psr/log",
@@ -1833,7 +1833,7 @@
         },
         {
             "name": "symfony/config",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
@@ -1895,7 +1895,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -1964,16 +1964,16 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "bcfd02728d9b776e5c2195a4750c813fe440402f"
+                "reference": "63b85a968486d95ff9542228dc2e4247f16f9743"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/bcfd02728d9b776e5c2195a4750c813fe440402f",
-                "reference": "bcfd02728d9b776e5c2195a4750c813fe440402f",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/63b85a968486d95ff9542228dc2e4247f16f9743",
+                "reference": "63b85a968486d95ff9542228dc2e4247f16f9743",
                 "shasum": ""
             },
             "require": {
@@ -2016,11 +2016,11 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-06 14:51:55"
+            "time": "2017-07-05 13:02:37"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
@@ -2090,7 +2090,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -2139,7 +2139,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -2247,7 +2247,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
