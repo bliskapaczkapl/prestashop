@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bliskapaczkapl/prestashop.svg?branch=master)](https://travis-ci.org/bliskapaczkapl/prestashop)
+
 # Moduł Bliskapaczka dla Prestashop 1.6.1.x 
 
 ## Instalacja modułu
