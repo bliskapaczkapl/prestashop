@@ -81,8 +81,8 @@ class Bliskapaczka extends CarrierModule
     public function hookHeader($params)
     {
         if (get_class($this->context->controller) == 'OrderController') {
-            $this->context->controller->addJs('http://widget.bliskapaczka.pl/v1.1/main.js');
-            $this->context->controller->addCSS('http://widget.bliskapaczka.pl/v1.1/main.css');
+            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v2.1/main.js');
+            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v2.1/main.css');
             $this->context->controller->addJs($this->_path . 'views/js/' . $this->name . '.js');
         }
     }
@@ -150,9 +150,12 @@ class Bliskapaczka extends CarrierModule
             $order->save();
         }
 
+        $shippingAddress = new \Address((int)$order->id_address_delivery);
+        $customer = new \Customer((int)$order->id_customer);
+
         /* @var Sendit_Bliskapaczka_Helper_Data $mapper */
         $mapper = new Bliskapaczka\Prestashop\Core\Mapper\Order();
-        $data = $mapper->getData($order);
+        $data = $mapper->getData($order, $shippingAddress, $customer);
 
         /* @var $senditHelper Sendit_Bliskapaczka_Helper_Data */
         $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Hepler();
@@ -239,6 +242,42 @@ class Bliskapaczka extends CarrierModule
                 Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT,
                 Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT)
             );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY)
+            );
         }
 
         $this->html .= $this->displayConfirmation($this->l('Settings updated'));
@@ -320,6 +359,51 @@ class Bliskapaczka extends CarrierModule
                         'label' => $this->l('Fixed parce type weight (kg)'),
                         'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender email'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender first name'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender last name'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender phone number'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender street'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender building numbe'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender flat numbe'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender post code'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Sender city'),
+                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY
+                    )
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -382,6 +466,42 @@ class Bliskapaczka extends CarrierModule
             Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT => Tools::getValue(
                 Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT,
                 Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE)
+            ),
+            Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY)
             ),
         );
     }

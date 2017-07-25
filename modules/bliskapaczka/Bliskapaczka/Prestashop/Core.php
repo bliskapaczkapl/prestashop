@@ -15,7 +15,7 @@ class Core
     public static function autoloader($class)
     {
         if (preg_match('#^(Bliskapaczka\\\\ApiClient)\b#', $class)) {
-            $libDir = _PS_CORE_DIR_ . '/vendor/bliskapaczka/bliskapaczka-api-client/src/';
+            $libDir = _PS_CORE_DIR_ . '/vendor/bliskapaczkapl/bliskapaczka-api-client/src/';
             $filePath = $libDir . str_replace('\\', '/', $class) . '.php';
         }
 

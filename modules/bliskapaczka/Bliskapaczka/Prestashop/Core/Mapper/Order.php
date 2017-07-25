@@ -1,6 +1,8 @@
 <?php
 namespace Bliskapaczka\Prestashop\Core\Mapper;
 
+use \Bliskapaczka\Prestashop\Core\Hepler;
+
 /**
  * Class to map order data to data acceptable by Sendit Bliskapaczka API
  */
@@ -11,12 +13,9 @@ class Order
      *
      * @param Order $order
      */
-    public function getData(\Order $order)
+    public function getData($order, $shippingAddress, $customer)
     {
         $data = [];
-
-        $shippingAddress = new \Address((int)$order->id_address_delivery);
-        $customer = new \Customer((int)$order->id_customer);
 
         $data['receiverFirstName'] = $shippingAddress->firstname;
         $data['receiverLastName'] = $shippingAddress->lastname;
@@ -30,6 +29,8 @@ class Order
             'dimensions' => $this->getParcelDimensions()
         ];
 
+        $data = $this->_prepareSenderData($data);
+
         return $data;
     }
 
@@ -40,7 +41,56 @@ class Order
      */
     private function getParcelDimensions()
     {
-        $helper = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $helper = new Hepler();
         return $helper->getParcelDimensions();
+    }
+
+    /**
+     * Prepare sender data in fomrat accptable by Bliskapaczka API
+     *
+     * @param array $data
+     * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    protected function _prepareSenderData($data)
+    {
+        if (\Configuration::get(Hepler::SENDER_EMAIL)) {
+            $data['senderEmail'] = \Configuration::get(Hepler::SENDER_EMAIL);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_FIRST_NAME)) {
+            $data['senderFirstName'] = \Configuration::get(Hepler::SENDER_FIRST_NAME);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_LAST_NAME)) {
+            $data['senderLastName'] = \Configuration::get(Hepler::SENDER_LAST_NAME);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_PHONE_NUMBER)) {
+            $data['senderPhoneNumber'] = \Configuration::get(Hepler::SENDER_PHONE_NUMBER);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_STREET)) {
+            $data['senderStreet'] = \Configuration::get(Hepler::SENDER_STREET);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_BUILDING_NUMBER)) {
+            $data['senderBuildingNumber'] = \Configuration::get(Hepler::SENDER_BUILDING_NUMBER);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_FLAT_NUMBER)) {
+            $data['senderFlatNumber'] = \Configuration::get(Hepler::SENDER_FLAT_NUMBER);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_POST_CODE)) {
+            $data['senderPostCode'] = \Configuration::get(Hepler::SENDER_POST_CODE);
+        }
+
+        if (\Configuration::get(Hepler::SENDER_CITY)) {
+            $data['senderCity'] = \Configuration::get(Hepler::SENDER_CITY);
+        }
+
+        return $data;
     }
 }

@@ -14,16 +14,16 @@ Bliskapaczka.showMap = function (prices, disabledOperators) {
     BPWidget.init(
         bpWidget,
         {
-            callback: function (posCode, posOperator) {
-                console.log('BPWidget callback:', posCode, posOperator)
+            callback: function (data) {
+                console.log('BPWidget callback:', data.code, data.operator)
 
                 posCodeForm = document.getElementById('bliskapaczka_posCode')
                 posOperatorForm = document.getElementById('bliskapaczka_posOperator')
 
-                posCodeForm.value = posCode;
-                posOperatorForm.value = posOperator;
+                posCodeForm.value = data.code;
+                posOperatorForm.value = data.operator;
 
-                Bliskapaczka.pointSelected(posCode, posOperator, prices);
+                Bliskapaczka.pointSelected(data.code, data.operator, prices);
             },
             prices: prices,
             disabledOperators: disabledOperators,

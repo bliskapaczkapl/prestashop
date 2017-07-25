@@ -24,6 +24,74 @@ class HeplerTest extends TestCase
         $this->assertTrue($hepler instanceof \Bliskapaczka\Prestashop\Core\Hepler);
     }
 
+    public function testConstants()
+    {
+        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+
+        $this->assertEquals(
+            'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_X',
+            $hepler::SIZE_TYPE_FIXED_SIZE_X
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_Y',
+            $hepler::SIZE_TYPE_FIXED_SIZE_Y
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_Z',
+            $hepler::SIZE_TYPE_FIXED_SIZE_Z
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_WEIGHT',
+            $hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT
+        );
+
+        $this->assertEquals(
+            'BLISKAPACZKA_API_KEY',
+            $hepler::API_KEY
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_TEST_MODE',
+            $hepler::TEST_MODE
+        );
+
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_EMAIL',
+            $hepler::SENDER_EMAIL
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_FIRST_NAME',
+            $hepler::SENDER_FIRST_NAME
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_LAST_NAME',
+            $hepler::SENDER_LAST_NAME
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_PHONE_NUMBER',
+            $hepler::SENDER_PHONE_NUMBER
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_STREET',
+            $hepler::SENDER_STREET
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_BUILDING_NUMBER',
+            $hepler::SENDER_BUILDING_NUMBER
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_FLAT_NUMBER',
+            $hepler::SENDER_FLAT_NUMBER
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_POST_CODE',
+            $hepler::SENDER_POST_CODE
+        );
+        $this->assertEquals(
+            'BLISKAPACZKA_SENDER_CITY',
+            $hepler::SENDER_CITY
+        );
+    }
+
     public function testGetLowestPrice()
     {
         $priceListEachOther = '[

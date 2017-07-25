@@ -5,12 +5,26 @@
         "phpmd/phpmd": "^2.4",
         "sebastian/phpcpd":"^2.0",
         "block8/php-docblock-checker":"^1.1",
-        "phploc/phploc":"^3.0"
+        "phploc/phploc":"^3.0",
+        "prestashop/prestashop": "1.6.1.15"
     },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/bliskapaczkapl/bliskapaczka-api-client.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "prestashop/prestashop",
+                "version": "1.6.1.15",
+                "type": "package",
+                "source": {
+                    "url": "https://github.com/PrestaShop/PrestaShop.git",
+                    "type": "git",
+                    "reference": "1.6.1.x"
+                }
+            }
         }
     ],
     "require": {

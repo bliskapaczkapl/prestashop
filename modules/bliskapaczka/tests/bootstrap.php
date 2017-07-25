@@ -18,3 +18,13 @@ function autoloader($class)
 }
 
 spl_autoload_register('autoloader');
+
+class Order {}
+
+class Address {}
+
+class Customer {}
+
+class Configuration {
+	static public function get(){}
+}
