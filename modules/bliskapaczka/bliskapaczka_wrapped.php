@@ -314,97 +314,7 @@ class Bliskapaczka extends CarrierModule
                     'title' => $this->l('Configure'),
                     'icon' => 'icon-user'
                 ),
-                'input' => array(
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('API Key'),
-                        'name' => 'BLISKAPACZKA_API_KEY',
-                        'required' => true
-                    ),
-                    array(
-                        'type' => 'switch',
-                        'label' => $this->l('Test mode enabled'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::TEST_MODE,
-                        'is_bool' => true,
-                        'values' => array(
-                            array(
-                                'id' => 'active_on',
-                                'value' => 1,
-                                'label' => $this->l('Enabled')
-                            ),
-                            array(
-                                'id' => 'active_off',
-                                'value' => 0,
-                                'label' => $this->l('Disabled')
-                            )
-                        ),
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Fixed parce type size X (cm)'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_X
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Fixed parce type size Y (cm)'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_Y
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Fixed parce type size Z (cm)'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_Z
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Fixed parce type weight (kg)'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender email'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender first name'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender last name'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender phone number'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender street'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender building numbe'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender flat numbe'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender post code'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Sender city'),
-                        'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY
-                    )
-                ),
+                'input' => $this->getFormInput(),
                 'submit' => array(
                     'title' => $this->l('Save'),
                 )
@@ -435,6 +345,106 @@ class Bliskapaczka extends CarrierModule
         );
 
         return $helper->generateForm(array($fieldsForm));
+    }
+
+    /**
+     * Return configuration module form input
+     *
+     * @return array
+     */
+    protected function getFormInput()
+    {
+        return array(
+            array(
+                'type' => 'text',
+                'label' => $this->l('API Key'),
+                'name' => Configuration::get(Bliskapaczka\Prestashop\Core\Hepler::API_KEY),
+                'required' => true
+            ),
+            array(
+                'type' => 'switch',
+                'label' => $this->l('Test mode enabled'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::TEST_MODE,
+                'is_bool' => true,
+                'values' => array(
+                    array(
+                        'id' => 'active_on',
+                        'value' => 1,
+                        'label' => $this->l('Enabled')
+                    ),
+                    array(
+                        'id' => 'active_off',
+                        'value' => 0,
+                        'label' => $this->l('Disabled')
+                    )
+                ),
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Fixed parce type size X (cm)'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_X
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Fixed parce type size Y (cm)'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_Y
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Fixed parce type size Z (cm)'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_Z
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Fixed parce type weight (kg)'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SIZE_TYPE_FIXED_SIZE_WEIGHT
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender email'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_EMAIL
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender first name'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_FIRST_NAME
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender last name'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_LAST_NAME
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender phone number'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_PHONE_NUMBER
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender street'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_STREET
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender building numbe'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_BUILDING_NUMBER
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender flat numbe'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_FLAT_NUMBER
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender post code'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_POST_CODE
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender city'),
+                'name' => Bliskapaczka\Prestashop\Core\Hepler::SENDER_CITY
+            )
+        );
     }
 
     /**
