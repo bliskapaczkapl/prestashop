@@ -6,6 +6,11 @@
 
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
         <exclude-pattern>*/modules/bliskapaczka/bliskapaczka_wrapped.php</exclude-pattern>
+        <exclude-pattern>*/modules/bliskapaczka/tests/unit/modules/BliskapaczkaWrappedTest.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>*/modules/bliskapaczka/tests/pseudo_mock</exclude-pattern>
     </rule>
 
     <rule ref="PSR1.Files.SideEffects">

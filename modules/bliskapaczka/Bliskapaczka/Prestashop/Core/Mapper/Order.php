@@ -29,7 +29,7 @@ class Order
             'dimensions' => $this->getParcelDimensions()
         ];
 
-        $data = $this->_prepareSenderData($data);
+        $data = $this->prepareSenderData($data);
 
         return $data;
     }
@@ -53,7 +53,7 @@ class Order
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function _prepareSenderData($data)
+    protected function prepareSenderData($data)
     {
         if (\Configuration::get(Hepler::SENDER_EMAIL)) {
             $data['senderEmail'] = \Configuration::get(Hepler::SENDER_EMAIL);

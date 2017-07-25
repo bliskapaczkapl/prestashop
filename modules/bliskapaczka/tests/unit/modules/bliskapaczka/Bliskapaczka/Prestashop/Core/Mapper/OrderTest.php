@@ -118,5 +118,4 @@ class OrderTest extends TestCase
 
     //     $this->assertTrue(is_array($data['parcel']));
     // }
-
 }
