@@ -3,6 +3,7 @@
 namespace Bliskapaczka\Prestashop\Core\Mapper;
 
 use PHPUnit\Framework\TestCase;
+use Bliskapaczka\Prestashop\Core\Helper;
 
 class OrderTest extends TestCase
 {
@@ -48,6 +49,31 @@ class OrderTest extends TestCase
                                      ->getMock();
 
         $this->customerMock->email = $this->receiverEmail;
+
+        $this->helperMock = $this->getMockBuilder(\Bliskapaczka\Prestashop\Core\Helper::class)
+                                     ->disableOriginalConstructor()
+                                     ->disableOriginalClone()
+                                     ->disableArgumentCloning()
+                                     ->disallowMockingUnknownTypes()
+                                     ->setMethods(
+                                         array(
+                                             'getParcelDimensions',
+                                             'telephoneNumberCeaning'
+                                         )
+                                     )
+                                     ->getMock();
+
+        $dimensions = array(
+            "height" => 12,
+            "length" => 12,
+            "width" => 12,
+            "weight" => 1
+        );
+
+        $this->helperMock->method('getParcelDimensions')->will($this->returnValue($dimensions));
+        $this->helperMock->method('telephoneNumberCeaning')
+            ->with($this->equalTo('504 445 665'))
+            ->will($this->returnValue('504445665'));
     }
 
     public function testClassExists()
@@ -58,64 +84,64 @@ class OrderTest extends TestCase
     public function testTypeOfReturnedData()
     {
         $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
-        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock);
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
         $this->assertTrue(is_array($data));
     }
 
-    // public function testMapperForReceiverFirstName()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForReceiverFirstName()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertEquals($this->receiverFirstName, $data['receiverFirstName']);
-    // }
+        $this->assertEquals($this->receiverFirstName, $data['receiverFirstName']);
+    }
 
-    // public function testMapperForReceiverLastName()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForReceiverLastName()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertEquals($this->receiverLastName, $data['receiverLastName']);
-    // }
+        $this->assertEquals($this->receiverLastName, $data['receiverLastName']);
+    }
 
-    // public function testMapperForReceiverPhoneNumber()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForReceiverPhoneNumber()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertEquals($this->receiverPhoneNumber, $data['receiverPhoneNumber']);
-    // }
+        $this->assertEquals('504445665', $data['receiverPhoneNumber']);
+    }
 
-    // public function testMapperForReceiverEmail()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForReceiverEmail()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertEquals($this->receiverEmail, $data['receiverEmail']);
-    // }
+        $this->assertEquals($this->receiverEmail, $data['receiverEmail']);
+    }
 
-    // public function testMapperForOperatorName()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForOperatorName()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertEquals($this->operatorName, $data['operatorName']);
-    // }
+        $this->assertEquals($this->operatorName, $data['operatorName']);
+    }
 
-    // public function testMapperForDestinationCode()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForDestinationCode()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertEquals($this->destinationCode, $data['destinationCode']);
-    // }
+        $this->assertEquals($this->destinationCode, $data['destinationCode']);
+    }
 
-    // public function testMapperForParcel()
-    // {
-    //     $mapper = new Sendit_Bliskapaczka_Model_Mapper_Order();
-    //     $data = $mapper->getData($this->orderMock);
+    public function testMapperForParcel()
+    {
+        $mapper = new \Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $data = $mapper->getData($this->orderMock, $this->addressMock, $this->customerMock, $this->helperMock);
 
-    //     $this->assertTrue(is_array($data['parcel']));
-    // }
+        $this->assertTrue(is_array($data['parcel']));
+    }
 }

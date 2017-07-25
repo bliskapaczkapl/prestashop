@@ -9,7 +9,7 @@ use Bliskapaczka\ApiClient;
  *
  * @author Mateusz Koszutowski (mkoszutowski@divante.pl)
  */
-class Hepler
+class Helper
 {
     const SIZE_TYPE_FIXED_SIZE_X = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_X';
     const SIZE_TYPE_FIXED_SIZE_Y = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_Y';
@@ -195,6 +195,23 @@ class Hepler
         );
 
         return $apiClient;
+    }
+
+    /**
+     * Remove all non numeric chars from phone number
+     *
+     * @param string $phoneNumber
+     * @return string
+     */
+    public function telephoneNumberCeaning($phoneNumber)
+    {
+        $phoneNumber = preg_replace("/[^0-9]/", "", $phoneNumber);
+
+        if (strlen($phoneNumber) > 9) {
+            $phoneNumber = preg_replace("/^48/", "", $phoneNumber);
+        }
+        
+        return $phoneNumber;
     }
 
     /**

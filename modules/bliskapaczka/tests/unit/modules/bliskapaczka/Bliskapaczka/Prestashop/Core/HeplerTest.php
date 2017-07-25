@@ -4,29 +4,24 @@ namespace Bliskapaczka\Prestashop\Core;
 
 use PHPUnit\Framework\TestCase;
 
-class HeplerTest extends TestCase
+class HelperTest extends TestCase
 {
-    public function testClassExists()
-    {
-        $this->assertTrue(class_exists('\Bliskapaczka\Prestashop\Core\Hepler'));
-    }
-
     public function testClassHasMethods()
     {
-        $this->assertTrue(method_exists('\Bliskapaczka\Prestashop\Core\Hepler', 'getParcelDimensions'));
-        $this->assertTrue(method_exists('\Bliskapaczka\Prestashop\Core\Hepler', 'getLowestPrice'));
-        $this->assertTrue(method_exists('\Bliskapaczka\Prestashop\Core\Hepler', 'getPriceForCarrier'));
+        $this->assertTrue(method_exists('\Bliskapaczka\Prestashop\Core\Helper', 'getParcelDimensions'));
+        $this->assertTrue(method_exists('\Bliskapaczka\Prestashop\Core\Helper', 'getLowestPrice'));
+        $this->assertTrue(method_exists('\Bliskapaczka\Prestashop\Core\Helper', 'getPriceForCarrier'));
     }
 
     public function testClassExtendMageCoreHelperData()
     {
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
-        $this->assertTrue($hepler instanceof \Bliskapaczka\Prestashop\Core\Hepler);
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
+        $this->assertTrue($hepler instanceof \Bliskapaczka\Prestashop\Core\Helper);
     }
 
     public function testConstants()
     {
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
         $this->assertEquals(
             'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_X',
@@ -159,7 +154,7 @@ class HeplerTest extends TestCase
                 }
             }]';
 
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
         $lowestPrice = $hepler->getLowestPrice(json_decode($priceListEachOther));
         $this->assertEquals(5.99, $lowestPrice);
@@ -201,7 +196,7 @@ class HeplerTest extends TestCase
                 "price":{"net":7.31,"vat":1.68,"gross":8.99},
                 "unavailabilityReason":null
             }]';
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
         $price = $hepler->getPriceForCarrier(json_decode($priceList), 'INPOST');
         $this->assertEquals(10.27, $price);
@@ -250,7 +245,7 @@ class HeplerTest extends TestCase
                     }
                 }
             }]';
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
         $prices = $hepler->getPrices(json_decode($priceList));
 
@@ -287,16 +282,38 @@ class HeplerTest extends TestCase
                     }
                 }
             }]';
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
         $disabledArray = $hepler->getDisabledOperators(json_decode($priceList));
 
         $this->assertTrue(in_array("POCZTA", $disabledArray));
     }
 
+    /**
+     * @dataProvider phpneNumbers
+     */
+    public function testCleaningPhoneNumber($phoneNumber)
+    {
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
+     
+        $this->assertEquals('606606606', $hepler->telephoneNumberCeaning($phoneNumber));
+    }
+
+    public function phpneNumbers()
+    {
+        return [
+            ['606-606-606'],
+            ['606 606 606'],
+            ['+48 606 606 606'],
+            ['+48606606606'],
+            ['+48 606-606-606'],
+            ['+48-606-606-606']
+        ];
+    }
+
     public function testGetApiMode()
     {
-        $hepler = new \Bliskapaczka\Prestashop\Core\Hepler();
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
         $mode = $hepler->getApiMode(1);
         $this->assertEquals('test', $mode);

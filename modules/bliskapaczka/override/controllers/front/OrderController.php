@@ -14,7 +14,7 @@ class OrderController extends OrderControllerCore
         parent::initContent();
         switch ((int)$this->step) {
             case OrderController::STEP_DELIVERY:
-                $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Hepler();
+                $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
                 $widgetPrices = $bliskapaczkaHelper->getPricesForWidget();
                 $widgetDisabledOperators = $bliskapaczkaHelper->getDisabledOperatorsForWidget();
 
