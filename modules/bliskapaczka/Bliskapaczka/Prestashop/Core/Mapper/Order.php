@@ -71,7 +71,9 @@ class Order
         }
 
         if (\Configuration::get($helper::SENDER_PHONE_NUMBER)) {
-            $data['senderPhoneNumber'] = \Configuration::get($helper::SENDER_PHONE_NUMBER);
+            $data['senderPhoneNumber'] = $helper->telephoneNumberCeaning(
+                \Configuration::get($helper::SENDER_PHONE_NUMBER)
+            );
         }
 
         if (\Configuration::get($helper::SENDER_STREET)) {
