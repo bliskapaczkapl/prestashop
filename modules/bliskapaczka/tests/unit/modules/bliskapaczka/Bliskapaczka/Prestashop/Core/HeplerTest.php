@@ -85,6 +85,10 @@ class HelperTest extends TestCase
             'BLISKAPACZKA_SENDER_CITY',
             $hepler::SENDER_CITY
         );
+        $this->assertEquals(
+            'BLISKAPACZKA_GOOGLE_MAP_API_KEY',
+            $hepler::GOOGLE_MAP_API_KEY
+        );
     }
 
     public function testGetLowestPrice()
@@ -217,7 +221,7 @@ class HelperTest extends TestCase
         $this->assertEquals(7.31, $price);
     }
 
-    public function testGetPrices()
+    public function testGetOperatorsForWidget()
     {
         $priceList = '[
             {
@@ -245,48 +249,12 @@ class HelperTest extends TestCase
                     }
                 }
             }]';
-        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
 
-        $prices = $hepler->getPrices(json_decode($priceList));
-
-        $this->assertEquals(10.27, $prices['INPOST']);
-        $this->assertEquals(5.99, $prices['RUCH']);
-        $this->assertTrue(!isset($prices['POCZTA']));
-    }
-
-    public function testGetDisabledOperators()
-    {
-        $priceList = '[
-            {
-                "operatorName":"INPOST",
-                "availabilityStatus":true,
-                "price":{"net":8.35,"vat":1.92,"gross":10.27},
-                "unavailabilityReason":null
-            },
-            {
-                "operatorName":"RUCH",
-                "availabilityStatus":true,
-                "price":{"net":4.87,"vat":1.12,"gross":5.99},
-                "unavailabilityReason":null
-            },
-            {
-                "operatorName":"POCZTA",
-                "availabilityStatus":false,
-                "price":null,
-                "unavailabilityReason": {
-                    "errors": {
-                        "messageCode": "ppo.api.error.pricing.algorithm.constraints.dimensionsTooSmall",
-                        "message": "Allowed parcel dimensions too small. Min dimensions: 16x10x1 cm",
-                        "field": null,
-                        "value": null
-                    }
-                }
-            }]';
-        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
-
-        $disabledArray = $hepler->getDisabledOperators(json_decode($priceList));
-
-        $this->assertTrue(in_array("POCZTA", $disabledArray));
+        $helper = new \Bliskapaczka\Prestashop\Core\Helper();
+        $this->assertEquals(
+            '[{"operator":"INPOST","price":10.27},{"operator":"RUCH","price":5.99}]',
+            $helper->getOperatorsForWidget(json_decode($priceList))
+        );
     }
 
     /**

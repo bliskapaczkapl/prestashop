@@ -11,6 +11,8 @@ use Bliskapaczka\ApiClient;
  */
 class Helper
 {
+    const DEFAULT_GOOGLE_API_KEY =  'AIzaSyCUyydNCGhxGi5GIt5z5I-X6hofzptsRjE';
+
     const SIZE_TYPE_FIXED_SIZE_X = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_X';
     const SIZE_TYPE_FIXED_SIZE_Y = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_Y';
     const SIZE_TYPE_FIXED_SIZE_Z = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_Z';
@@ -28,6 +30,8 @@ class Helper
 
     const API_KEY = 'BLISKAPACZKA_API_KEY';
     const TEST_MODE = 'BLISKAPACZKA_TEST_MODE';
+
+    const GOOGLE_MAP_API_KEY = 'BLISKAPACZKA_GOOGLE_MAP_API_KEY';
 
     /**
      * Get parcel dimensions in format accptable by Bliskapaczka API
@@ -49,6 +53,23 @@ class Helper
         );
 
         return $dimensions;
+    }
+
+    /**
+     * Get Google API key. If key is not defined return default.
+     *
+     * @return string
+     */
+    public function getGoogleMapApiKey()
+    {
+        $googleApiKey = self::DEFAULT_GOOGLE_API_KEY;
+
+        if (\Configuration::get(self::GOOGLE_MAP_API_KEY)) {
+            var_dump('expression');
+            $googleApiKey = \Configuration::get(self::GOOGLE_MAP_API_KEY);
+        }
+
+        return $googleApiKey;
     }
 
     /**
@@ -109,77 +130,43 @@ class Helper
     }
 
     /**
-     * Get prices from pricing list
-     *
-     * @param array $priceList
-     * @return array
-     */
-    public function getPrices($priceList)
-    {
-        $prices = array();
-
-        foreach ($priceList as $carrier) {
-            if ($carrier->price == null) {
-                continue;
-            }
-
-            $prices[$carrier->operatorName] = $carrier->price->gross;
-        }
-
-        return $prices;
-    }
-
-    /**
-     * Get disabled operators from pricing list
-     *
-     * @param array $priceList
-     * @return array
-     */
-    public function getDisabledOperators($priceList)
-    {
-        $disabled = array();
-
-        foreach ($priceList as $carrier) {
-            if ($carrier->availabilityStatus == false) {
-                $disabled[] = $carrier->operatorName;
-            }
-        }
-
-        return $disabled;
-    }
-
-    /**
-     * Get prices in format accptable by Bliskapaczka Widget
+     * Get operators and prices from Bliskapaczka API
      *
      * @return string
      */
-    public function getPricesForWidget()
+    public function getPriceList()
     {
         $apiClient = $this->getApiClient();
         $priceList = $apiClient->getPricing(
             array("parcel" => array('dimensions' => $this->getParcelDimensions()))
         );
 
-        $pricesJson = json_encode($this->getPrices(json_decode($priceList)));
-
-        return $pricesJson;
+        return json_decode($priceList);
     }
 
     /**
-     * Get disabled operators in format accptable by Bliskapaczka Widget
+     * Get widget configuration
      *
+     * @param array $priceList
      * @return array
      */
-    public function getDisabledOperatorsForWidget()
+    public function getOperatorsForWidget($priceList = null)
     {
-        $apiClient = $this->getApiClient();
-        $priceList = $apiClient->getPricing(
-            array("parcel" => array('dimensions' => $this->getParcelDimensions()))
-        );
+        if (!$priceList) {
+            $priceList = $this->getPriceList();
+        }
+        $operators = array();
 
-        $disabledArray = $this->getDisabledOperators(json_decode($priceList));
+        foreach ($priceList as $operator) {
+            if ($operator->availabilityStatus != false) {
+                $operators[] = array(
+                    "operator" => $operator->operatorName,
+                    "price" => $operator->price->gross
+                );
+            }
+        }
 
-        return $disabledArray;
+        return json_encode($operators);
     }
 
     /**

@@ -81,8 +81,8 @@ class Bliskapaczka extends CarrierModule
     public function hookHeader($params)
     {
         if (get_class($this->context->controller) == 'OrderController') {
-            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v2.1/main.js');
-            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v2.1/main.css');
+            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v3.2/main.js');
+            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v3.2/main.css');
             $this->context->controller->addJs($this->_path . 'views/js/' . $this->name . '.js');
         }
     }
@@ -279,6 +279,10 @@ class Bliskapaczka extends CarrierModule
                 Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY,
                 Tools::getValue(Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY)
             );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY)
+            );
         }
 
         $this->html .= $this->displayConfirmation($this->l('Settings updated'));
@@ -359,7 +363,7 @@ class Bliskapaczka extends CarrierModule
             array(
                 'type' => 'text',
                 'label' => $this->l('API Key'),
-                'name' => Configuration::get(Bliskapaczka\Prestashop\Core\Helper::API_KEY),
+                'name' => Bliskapaczka\Prestashop\Core\Helper::API_KEY,
                 'required' => true
             ),
             array(
@@ -379,6 +383,11 @@ class Bliskapaczka extends CarrierModule
                         'label' => $this->l('Disabled')
                     )
                 ),
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Google Map API Key'),
+                'name' => Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY
             ),
             array(
                 'type' => 'text',
@@ -514,6 +523,10 @@ class Bliskapaczka extends CarrierModule
                 Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY,
                 Configuration::get(Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY)
             ),
+            Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY)
+            )
         );
     }
 }

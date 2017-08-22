@@ -15,11 +15,11 @@ class OrderController extends OrderControllerCore
         switch ((int)$this->step) {
             case OrderController::STEP_DELIVERY:
                 $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
-                $widgetPrices = $bliskapaczkaHelper->getPricesForWidget();
-                $widgetDisabledOperators = $bliskapaczkaHelper->getDisabledOperatorsForWidget();
+                $widgetGoogleMapApiKey = $bliskapaczkaHelper->getGoogleMapApiKey();
+                $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget();
 
-                $this->context->smarty->assign('widget_prices', $widgetPrices);
-                $this->context->smarty->assign('widget_disabled_operators', $widgetDisabledOperators);
+                $this->context->smarty->assign('widget_operators', $widgetOperators);
+                $this->context->smarty->assign('widget_google_map_api_key', $widgetGoogleMapApiKey);
 
                 $this->setTemplate(_PS_MODULE_DIR_ . 'bliskapaczka/override/views/front/order-carrier.tpl');
                 break;

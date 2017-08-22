@@ -2,7 +2,7 @@ function Bliskapaczka()
 {
 }
 
-Bliskapaczka.showMap = function (prices, disabledOperators) {
+Bliskapaczka.showMap = function (operators, googleMapApiKey) {
     aboutPoint = document.getElementById('bpWidget_aboutPoint');
     aboutPoint.style.display = 'none';
 
@@ -14,6 +14,7 @@ Bliskapaczka.showMap = function (prices, disabledOperators) {
     BPWidget.init(
         bpWidget,
         {
+            googleMapApiKey: googleMapApiKey,
             callback: function (data) {
                 console.log('BPWidget callback:', data.code, data.operator)
 
@@ -23,17 +24,16 @@ Bliskapaczka.showMap = function (prices, disabledOperators) {
                 posCodeForm.value = data.code;
                 posOperatorForm.value = data.operator;
 
-                Bliskapaczka.pointSelected(data.code, data.operator, prices);
+                Bliskapaczka.pointSelected(data, operators);
             },
-            prices: prices,
-            disabledOperators: disabledOperators,
+            operators: operators,
             posType: 'DELIVERY'
         }
     );
 }
 
-Bliskapaczka.pointSelected = function (posCode, posOperator, prices) {
-    Bliskapaczka.updatePrice(posOperator, prices);
+Bliskapaczka.pointSelected = function (data, operators) {
+    Bliskapaczka.updatePrice(data.operator, operators);
 
     bpWidget = document.getElementById('bpWidget');
     bpWidget.style.display = 'none';
@@ -41,18 +41,25 @@ Bliskapaczka.pointSelected = function (posCode, posOperator, prices) {
     aboutPoint = document.getElementById('bpWidget_aboutPoint');
     aboutPoint.style.display = 'block';
 
-    posCodeBlock = document.getElementById('bpWidget_aboutPoint_posCode');
-    posOperatorBlock = document.getElementById('bpWidget_aboutPoint_posOperator');
+    posDataBlock = document.getElementById('bpWidget_aboutPoint_posData');
 
-    posCodeBlock.innerHTML = posCode
-    posOperatorBlock.innerHTML = posOperator
+    posDataBlock.innerHTML =  data.operator + '</br>'
+        + ((data.description) ? data.description + '</br>': '')
+        + data.street + '</br>'
+        + ((data.postalCode) ? data.postalCode + ' ': '') + data.city
 }
 
-Bliskapaczka.updatePrice = function (posOperator, prices) {
+Bliskapaczka.updatePrice = function (posOperator, operators) {
     item = Bliskapaczka.getTableRow();
     if (item) {
         priceDiv = item.find('.delivery_option_price').first();
-        price = prices[posOperator];
+
+        for (var i = 0; i < operators.length; i++) {
+            if (operators[i].operator == posOperator) {
+                price = operators[i].price;
+            }
+        }
+
         priceDiv.html(priceDiv.text().replace(/([\d\.,]{2,})/, price));
     }
 }
@@ -83,3 +90,54 @@ Bliskapaczka.getTableRow = function () {
 
     return item;
 }
+
+Bliskapaczka.selectPoint = function () {
+    item = Bliskapaczka.getTableRow();
+
+    if (item) {
+        input = item.find('input.delivery_option_radio').first();
+        if (!input.is(':checked')) {
+            return true;
+        }
+    } else {
+        return true;
+    }
+
+    posCode = jQuery('#bliskapaczka_posCode').val()
+    posOperator = jQuery('#bliskapaczka_posOperator').val()
+    if (typeof msg_bliskapaczka_select_point != 'undefined' && (!posCode || !posOperator)) {
+        if (!!$.prototype.fancybox) {
+            $.fancybox.open(
+                [
+                {
+                    type: 'inline',
+                    autoScale: true,
+                    minHeight: 30,
+                    content: '<p class="fancybox-error">' + msg_bliskapaczka_select_point + '</p>'
+                }],
+                {
+                    padding: 0
+                }
+            );
+        } else {
+            alert(msg_bliskapaczka_select_point);
+        }
+    } else {
+        return true;
+    }
+    return false;
+}
+
+$(document).ready(function () {
+    if (!!$.prototype.fancybox) {
+        $("a.iframe").fancybox({
+            'type': 'iframe',
+            'width': 600,
+            'height': 600
+        });
+    }
+
+    $(document).on('submit', 'form[name=carrier_area]', function () {
+        return Bliskapaczka.selectPoint();
+    });
+});

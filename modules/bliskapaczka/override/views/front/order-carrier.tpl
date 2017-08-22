@@ -103,16 +103,17 @@
                                                         {if $carrier.instance->name == 'bliskapaczka'}
                                                             <br /><strong><a 
                                                                 onclick='Bliskapaczka.showMap(
-                                                                    {$widget_prices},
-                                                                    ["{', '|implode:$widget_disabled_operators}"]
+                                                                    {$widget_operators},
+                                                                    "{$widget_google_map_api_key}"
                                                                 )'
+                                                                href="#bpWidget_wrapper"
                                                             >
                                                             Select Point
                                                             </a></strong>
                                                             <input name="bliskapaczka_posCode" type="hidden" id="bliskapaczka_posCode" />
                                                             <input name="bliskapaczka_posOperator" type="hidden" id="bliskapaczka_posOperator" />
                                                             <div id="bpWidget_aboutPoint" style="width: 100%; display: none;">
-                                                                <p>Selected Point: <span id="bpWidget_aboutPoint_posOperator"></span> <span id="bpWidget_aboutPoint_posCode"></span></p>
+                                                                <p>Selected Point: <span id="bpWidget_aboutPoint_posData"></span></p>
                                                             </div>
                                                         {/if}
                                                     {/foreach}
@@ -421,6 +422,7 @@
     {/if}
     <div style="">
         <div id="bpWidget_wrapper">
+            <a name="bpWidget_wrapper"></a>
             <div id="bpWidget" style="height: 600px; width: 100%; display: none;"></div>
         </div>
     </div>
@@ -439,5 +441,6 @@
 {/if}
 {if $conditions}
     {addJsDefL name=msg_order_carrier}{l s='You must agree to the terms of service before continuing.' js=1}{/addJsDefL}
+    {addJsDefL name=msg_bliskapaczka_select_point}{l s='Please select delivery point.' js=1}{/addJsDefL}
 {/if}
 {/strip}
