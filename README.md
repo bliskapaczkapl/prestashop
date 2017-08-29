@@ -25,7 +25,7 @@ W celu poprawnej instalacji modułu wymagane są:
             "bliskapaczka/bliskapaczka-api-client": "^1.0"
         }
         ```
-1. Zainstaluj zależności composerem. Uruchom poniższą komendę w katalogu domowym Magento
+1. Zainstaluj zależności composerem. Uruchom poniższą komendę w katalogu domowym Prestashop
     ```
     composer install --no-dev
     ```
