@@ -81,8 +81,8 @@ class Bliskapaczka extends CarrierModule
     public function hookHeader($params)
     {
         if (get_class($this->context->controller) == 'OrderController') {
-            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v3/main.js');
-            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v3/main.css');
+            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v4/main.js');
+            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v4/main.css');
             $this->context->controller->addJs($this->_path . 'views/js/' . $this->name . '.js');
         }
     }
