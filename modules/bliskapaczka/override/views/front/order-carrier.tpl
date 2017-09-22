@@ -108,12 +108,12 @@
                                                                 )'
                                                                 href="#bpWidget_wrapper"
                                                             >
-                                                            Select Point
+                                                            {l s='Select delivery point' mod='bliskapaczka'}
                                                             </a></strong>
                                                             <input name="bliskapaczka_posCode" type="hidden" id="bliskapaczka_posCode" />
                                                             <input name="bliskapaczka_posOperator" type="hidden" id="bliskapaczka_posOperator" />
                                                             <div id="bpWidget_aboutPoint" style="width: 100%; display: none;">
-                                                                <p>Selected Point: <span id="bpWidget_aboutPoint_posData"></span></p>
+                                                                <p>{l s='Selected delivery point' mod='bliskapaczka'}: <span id="bpWidget_aboutPoint_posData"></span></p>
                                                             </div>
                                                         {/if}
                                                     {/foreach}

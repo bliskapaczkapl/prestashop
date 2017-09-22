@@ -81,8 +81,8 @@ class Bliskapaczka extends CarrierModule
     public function hookHeader($params)
     {
         if (get_class($this->context->controller) == 'OrderController') {
-            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v3.2/main.js');
-            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v3.2/main.css');
+            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v3/main.js');
+            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v3/main.css');
             $this->context->controller->addJs($this->_path . 'views/js/' . $this->name . '.js');
         }
     }
@@ -391,22 +391,22 @@ class Bliskapaczka extends CarrierModule
             ),
             array(
                 'type' => 'text',
-                'label' => $this->l('Fixed parce type size X (cm)'),
+                'label' => $this->l('Fixed parcel type size X (cm)'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_X
             ),
             array(
                 'type' => 'text',
-                'label' => $this->l('Fixed parce type size Y (cm)'),
+                'label' => $this->l('Fixed parcel type size Y (cm)'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_Y
             ),
             array(
                 'type' => 'text',
-                'label' => $this->l('Fixed parce type size Z (cm)'),
+                'label' => $this->l('Fixed parcel type size Z (cm)'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_Z
             ),
             array(
                 'type' => 'text',
-                'label' => $this->l('Fixed parce type weight (kg)'),
+                'label' => $this->l('Fixed parcel type weight (kg)'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_WEIGHT
             ),
             array(
@@ -436,12 +436,12 @@ class Bliskapaczka extends CarrierModule
             ),
             array(
                 'type' => 'text',
-                'label' => $this->l('Sender building numbe'),
+                'label' => $this->l('Sender building number'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SENDER_BUILDING_NUMBER
             ),
             array(
                 'type' => 'text',
-                'label' => $this->l('Sender flat numbe'),
+                'label' => $this->l('Sender flat number'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SENDER_FLAT_NUMBER
             ),
             array(
