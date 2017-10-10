@@ -41,6 +41,15 @@ Tryb testowy, czli komunikacja z testową wersją znajdującą się pod adresem 
 
 ## Rozwój modułu
 
+## Docker demo
+
+`docker pull bliskapaczkapl/prestashop && docker run -d -p 8080:80 bliskapaczkapl/prestashop`
+
+Front PrestaShop jest dostępny po wpisaniu w przeglądarcę adresu `http://127.0.0.1:8080`.
+
+Panel admina jest dostępny pod adresem  `http://127.0.0.1:8080/admin6666ukv7e`, dane dostępowe to `pub@prestashop.com/0123456789`. Moduł należy zainstalować i skonfigurować według instrukcji powyżej.
+
+
 ### Instalacja zależności
 ```
 composer install --dev
