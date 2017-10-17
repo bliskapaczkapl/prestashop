@@ -21,7 +21,6 @@ COPY settings.inc.php ${prestashop_path}/config/settings.inc.php
 
 # Copy latest version of Bliskapaczka module
 COPY modules ${prestashop_path}/modules
-COPY vendor ${prestashop_path}/vendor
 
 # Change dir permisions
 RUN chmod 777 ${prestashop_path}/log

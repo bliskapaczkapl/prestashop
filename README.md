@@ -11,24 +11,6 @@ W celu poprawnej instalacji modułu wymagane są:
 
 ### Instalacja modułu
 1. Pobierz repozytorium i skopiuj jego zawartość do katalogu domowego swojego Prestashop
-    - Jeśli masz już plik composer.json musisz zmergować zawartość pliku modułu do własnego. Plik musi zawierać:
-        ```
-        "repositories": [
-            ...
-            {
-                "type": "vcs",
-                "url": "https://github.com/bliskapaczkapl/bliskapaczka-api-client.git"
-            }
-        ],
-        "require": {
-            ...
-            "bliskapaczka/bliskapaczka-api-client": "^1.0"
-        }
-        ```
-1. Zainstaluj zależności composerem. Uruchom poniższą komendę w katalogu domowym Prestashop
-    ```
-    composer install --no-dev
-    ```
 1. Sprawdz czy moduł znajduje się na liście dostępnych modułów w Panelu Admina
 1. Zainstaluj moduł z poziomu Panelu Admina
 1. Skonfiguruj mododuł, dodaj swój klucz API w poli `API Key`. Znajdziesz go w zakładce Integracja panelu [bliskapaczka.pl](http://bliskapaczka.pl/panel/integracja)
@@ -51,6 +33,21 @@ Panel admina jest dostępny pod adresem  `http://127.0.0.1:8080/admin6666ukv7e`,
 
 
 ### Instalacja zależności
+Jeśli masz już plik composer.json musisz zmergować zawartość pliku modułu do własnego. Plik musi zawierać:
+```
+"repositories": [
+    ...
+    {
+        "type": "vcs",
+        "url": "https://github.com/bliskapaczkapl/bliskapaczka-api-client.git"
+    }
+],
+"require": {
+    ...
+    "bliskapaczka/bliskapaczka-api-client": "^1.0"
+}
+```
+Następnie zainstaluj zależności composerem. Uruchom poniższą komendę w katalogu domowym Prestashop
 ```
 composer install --dev
 ```
@@ -58,5 +55,5 @@ composer install --dev
 ### Jak uruchomić testy jednostkowe
 ```
 cd modules/bliskapaczka
-php ../../vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/unit/
+php ./vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/unit/
 ```

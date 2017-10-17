@@ -1,4 +1,7 @@
 {
+    "config": {
+        "vendor-dir": "modules/bliskapaczka/vendor"
+    },
     "require-dev": {
         "phpunit/phpunit": "^5.7",
         "squizlabs/php_codesniffer": "2.*",

@@ -2,6 +2,9 @@ language: php
 php:
   - '5.6'
 
+env:
+  - VENDOR_DIR=modules/bliskapaczka/vendor
+
 services:
   - docker
 
@@ -9,12 +12,12 @@ before_script:
   - composer install
 
 script: 
-  - vendor/bin/phpcs -s --colors --standard=rules.xml modules/
-  - vendor/bin/phpmd modules/ text codesize
-  - vendor/bin/phpcpd modules/
-  - vendor/bin/phpdoccheck --directory=modules --exclude=bliskapaczka/tests
-  - vendor/bin/phploc modules/
-  - vendor/bin/phpunit --bootstrap modules/bliskapaczka/tests/bootstrap.php modules/bliskapaczka/tests/unit/
+  - $VENDOR_DIR/bin/phpcs -s --colors --standard=rules.xml --ignore=modules/bliskapaczka/vendor/* modules/
+  - $VENDOR_DIR/bin/phpmd modules/ text codesize --exclude modules/bliskapaczka/vendor
+  - $VENDOR_DIR/bin/phpcpd --exclude vendor modules/
+  - $VENDOR_DIR/bin/phpdoccheck --directory=modules --exclude=bliskapaczka/tests,bliskapaczka/vendor
+  - $VENDOR_DIR/bin/phploc modules/
+  - $VENDOR_DIR/bin/phpunit --bootstrap modules/bliskapaczka/tests/bootstrap.php modules/bliskapaczka/tests/unit/
   - docker build -t bliskapaczkapl/prestashop .
 
 after_success:
