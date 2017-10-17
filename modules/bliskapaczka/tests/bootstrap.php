@@ -14,7 +14,7 @@ require_once 'Configuration.php';
 require_once 'Customer.php';
 require_once 'Order.php';
 
-require_once $GLOBALS['ROOT_DIR'] . '/vendor/autoload.php';
+require_once $GLOBALS['ROOT_DIR'] . '/modules/bliskapaczka/vendor/autoload.php';
 
 function autoloader($class)
 {
