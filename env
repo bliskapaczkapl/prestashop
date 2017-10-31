@@ -1,0 +1,4 @@
+MYSQL_DATABASE=prestashop
+MYSQL_USER=prestashop
+MYSQL_PASSWORD=prestashop
+MYSQL_ROOT_PASSWORD=prestashop

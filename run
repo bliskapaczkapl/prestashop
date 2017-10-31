@@ -4,7 +4,19 @@ service php5-fpm start
 
 service apache2 start
 
-service mysql start
+PRESTASHOP_PATH=/var/www/html
+
+sleep 10
+
+php $PRESTASHOP_PATH/install/index_cli.php --domain=$DOMAIN --db_server=$DB_HOST --db_name=$MYSQL_DATABASE \
+	--db_user=$MYSQL_USER --db_password=$MYSQL_PASSWORD 
+
+mysql -h $DB_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e \
+	"UPDATE ps_configuration SET value = \"$DOMAIN\" WHERE name LIKE \"PS_SHOP_DOMAIN%\";"
+mysql -h $DB_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e \
+	"UPDATE ps_shop_url SET domain = \"$DOMAIN\", domain_ssl = \"$DOMAIN\";"
+
+rm -rf $PRESTASHOP_PATH/install
 
 while true; do
 echo "Everything fine"
