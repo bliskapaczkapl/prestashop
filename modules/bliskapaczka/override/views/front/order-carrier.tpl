@@ -100,7 +100,7 @@
                                                         {/if}
                                                     {/if}
                                                     {foreach $option.carrier_list as $carrier}
-                                                        {if $carrier.instance->name == 'bliskapaczka'}
+                                                        {if $carrier.instance->external_module_name == 'bliskapaczka'}
                                                             <br /><strong><a 
                                                                 onclick='Bliskapaczka.showMap(
                                                                     {$widget_operators},
