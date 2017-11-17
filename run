@@ -2,6 +2,7 @@
 
 service php5-fpm restart
 
+rm -f /var/run/apache2/apache2.pid
 service apache2 restart
 
 PRESTASHOP_PATH=/var/www/html
