@@ -1,8 +1,8 @@
 #!/bin/bash
 
-service php5-fpm start
+service php5-fpm restart
 
-service apache2 start
+service apache2 restart
 
 PRESTASHOP_PATH=/var/www/html
 

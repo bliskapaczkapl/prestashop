@@ -9,7 +9,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     git \
     apt-utils \
     sudo \
-    mysql-server
+    mysql-client
 
 # Copy latest version of Bliskapaczka module
 COPY modules ${prestashop_path}/modules
