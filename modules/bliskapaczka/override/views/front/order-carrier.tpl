@@ -104,9 +104,10 @@
                                                             <br /><strong><a 
                                                                 onclick='Bliskapaczka.showMap(
                                                                     {$widget_operators},
-                                                                    "{$widget_google_map_api_key}"
+                                                                    "{$widget_google_map_api_key}",
+                                                                    {$test_mode}
                                                                 )'
-                                                                href="#bpWidget_wrapper"
+                                                                href="#bpWidget_wrapper",
                                                             >
                                                             {l s='Select delivery point' mod='bliskapaczka'}
                                                             </a></strong>

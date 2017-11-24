@@ -44,10 +44,14 @@ class Bliskapaczka extends CarrierModule
      */
     public function install()
     {
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+
+        /* @var Bliskapaczka\Prestashop\Core\Installer */
         $installer = new Bliskapaczka\Prestashop\Core\Installer($this->config);
 
         if (parent::install() == false ||
-            $installer->install() == false ||
+            $installer->install($bliskapaczkaHelper) == false ||
             $this->registerHook('actionCarrierUpdate') == false ||
             $this->registerHook('header') == false ||
             $this->registerHook('actionCarrierProcess') == false ||
@@ -64,10 +68,16 @@ class Bliskapaczka extends CarrierModule
      */
     public function uninstall()
     {
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+
+        /* @var Bliskapaczka\Prestashop\Core\Installer */
         $installer = new Bliskapaczka\Prestashop\Core\Installer($this->config);
 
+        $id_carrier = \Configuration::get($bliskapaczkaHelper::BLISKAPACZKA_CARRIER_ID);
+
         if (parent::uninstall() == false ||
-            $installer->uninstall($this->id_carrier) == false
+            $installer->uninstall($id_carrier) == false
         ) {
             return false;
         }

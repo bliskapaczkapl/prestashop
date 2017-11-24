@@ -17,9 +17,11 @@ class OrderController extends OrderControllerCore
                 $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
                 $widgetGoogleMapApiKey = $bliskapaczkaHelper->getGoogleMapApiKey();
                 $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget();
+                $testMode = $this->getApiMode(\Configuration::get($bliskapaczkaHelper::TEST_MODE)) ? 'true' : 'false';
 
                 $this->context->smarty->assign('widget_operators', $widgetOperators);
                 $this->context->smarty->assign('widget_google_map_api_key', $widgetGoogleMapApiKey);
+                $this->context->smarty->assign('test_mode', $testMode);
 
                 $this->setTemplate(_PS_MODULE_DIR_ . 'bliskapaczka/override/views/front/order-carrier.tpl');
                 break;

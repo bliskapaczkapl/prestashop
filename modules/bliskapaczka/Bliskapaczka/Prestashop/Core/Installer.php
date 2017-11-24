@@ -22,11 +22,12 @@ class Installer
     /**
      * Insert data to db
      *
+     * @param Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
-    public function install()
+    public function install($helper)
     {
-        if ($this->installCarrier() == false ||
+        if ($this->installCarrier($helper) == false ||
             $this->updateCartAndOrder() == false
         ) {
             return false;
@@ -55,9 +56,10 @@ class Installer
     /**
      * Add new carrier
      *
+     * @param Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
-    private function installCarrier()
+    private function installCarrier($helper)
     {
         $carrier = new \Carrier();
         $carrier->name = $this->config->name;
@@ -76,14 +78,77 @@ class Installer
         $carrier->is_module = true;
         $carrier->external_module_name = $this->config->name;
         $carrier->need_range = true;
-        $carrier->range_behavior = true;
+        $carrier->range_behavior = false;
         $carrier->grade = 0;
 
         if (!$carrier->add()) {
             return false;
         }
 
+        \Configuration::updateValue($helper::BLISKAPACZKA_CARRIER_ID, (int)$carrier->id);
+
+        $this->rangesAndFeeForZone($carrier->id);
+
         return true;
+    }
+
+    /**
+     * Configure shipping
+     *
+     * @param int $id_carrier
+     */
+    private function rangesAndFeeForZone($id_carrier)
+    {
+        $range_price = new \RangePrice();
+        $range_price->id_carrier = $id_carrier;
+        $range_price->delimiter1 = '0';
+        $range_price->delimiter2 = '500';
+        $range_price->add();
+
+        $range_weight = new \RangeWeight();
+        $range_weight->id_carrier = $id_carrier;
+        $range_weight->delimiter1 = '0';
+        $range_weight->delimiter2 = '100';
+        $range_weight->add();
+
+        $groups = \Group::getGroups(true);
+        foreach ($groups as $group) {
+            \Db::getInstance()->autoExecute(
+                _DB_PREFIX_ . 'carrier_group',
+                array('id_carrier' => (int)$id_carrier, 'id_group' => (int)$group['id_group']),
+                'INSERT'
+            );
+        }
+
+        \Db::getInstance()->autoExecute(
+            _DB_PREFIX_ . 'carrier_zone',
+            array('id_carrier' => (int)$id_carrier, 'id_zone' => 1),
+            'INSERT'
+        );
+
+        \Db::getInstance()->autoExecuteWithNullValues(
+            _DB_PREFIX_ . 'delivery',
+            array(
+                'id_carrier' => (int)$id_carrier,
+                'id_range_price' => (int)$range_price->id,
+                'id_range_weight' => null,
+                'id_zone' => 1,
+                'price' => '10'
+            ),
+            'INSERT'
+        );
+
+        \Db::getInstance()->autoExecuteWithNullValues(
+            _DB_PREFIX_ . 'delivery',
+            array(
+                'id_carrier' => (int)$id_carrier,
+                'id_range_price' => null,
+                'id_range_weight' => (int)$range_weight->id,
+                'id_zone' => 1,
+                'price' => '10'
+            ),
+            'INSERT'
+        );
     }
 
     /**

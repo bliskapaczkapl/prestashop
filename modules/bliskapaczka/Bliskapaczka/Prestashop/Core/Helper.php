@@ -33,6 +33,8 @@ class Helper
 
     const GOOGLE_MAP_API_KEY = 'BLISKAPACZKA_GOOGLE_MAP_API_KEY';
 
+    const BLISKAPACZKA_CARRIER_ID = 'BLISKAPACZKA_CARRIER_ID';
+
     /**
      * Get parcel dimensions in format accptable by Bliskapaczka API
      *
@@ -178,7 +180,7 @@ class Helper
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka(
             \Configuration::get(self::API_KEY),
-            $this->getApiMode('1')
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
         );
 
         return $apiClient;
