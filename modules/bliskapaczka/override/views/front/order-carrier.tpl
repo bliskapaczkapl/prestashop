@@ -101,13 +101,15 @@
                                                     {/if}
                                                     {foreach $option.carrier_list as $carrier}
                                                         {if $carrier.instance->external_module_name == 'bliskapaczka'}
-                                                            <br /><strong><a 
+                                                            <br /><strong><a
+                                                                style="padding: 5px;"
                                                                 onclick='Bliskapaczka.showMap(
                                                                     {$widget_operators},
                                                                     "{$widget_google_map_api_key}",
                                                                     {$test_mode}
                                                                 )'
-                                                                href="#bpWidget_wrapper",
+                                                                href="#bpWidget_wrapper"
+                                                                class="btn btn-default button button-small"
                                                             >
                                                             {l s='Select delivery point' mod='bliskapaczka'}
                                                             </a></strong>

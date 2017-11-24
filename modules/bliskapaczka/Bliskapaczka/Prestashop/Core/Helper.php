@@ -67,7 +67,6 @@ class Helper
         $googleApiKey = self::DEFAULT_GOOGLE_API_KEY;
 
         if (\Configuration::get(self::GOOGLE_MAP_API_KEY)) {
-            var_dump('expression');
             $googleApiKey = \Configuration::get(self::GOOGLE_MAP_API_KEY);
         }
 
