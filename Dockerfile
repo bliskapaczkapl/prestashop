@@ -31,6 +31,8 @@ RUN chmod 777 ${prestashop_path}/download/
 
 RUN mv ${prestashop_path}/admin ${prestashop_path}/admin6666ukv7e
 
+RUN sed '/#LogLevel info ssl:warn/a        LogLevel debug' /etc/apache2/sites-available/000-default.conf
+
 COPY run /opt/run
 
 EXPOSE 80
