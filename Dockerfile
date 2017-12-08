@@ -11,6 +11,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     sudo \
     mysql-client
 
+# Upadate PHP config (for translations)
+COPY dev/docker/php.ini /usr/local/etc/php/php.ini
+
 # Copy latest version of Bliskapaczka module
 COPY modules ${prestashop_path}/modules
 
@@ -33,7 +36,7 @@ RUN mv ${prestashop_path}/admin ${prestashop_path}/admin6666ukv7e
 
 RUN sed '/#LogLevel info ssl:warn/a        LogLevel debug' /etc/apache2/sites-available/000-default.conf
 
-COPY run /opt/run
+COPY dev/docker/run /opt/run
 
 EXPOSE 80
 

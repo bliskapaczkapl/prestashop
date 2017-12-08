@@ -19,6 +19,8 @@ mysql -h $DB_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e \
 
 rm -rf $PRESTASHOP_PATH/install
 
+chmod -R 777 $PRESTASHOP_PATH
+
 while true; do
 echo "Everything fine"
 sleep 3600

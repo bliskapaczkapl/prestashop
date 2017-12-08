@@ -23,23 +23,23 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 {if !$opc}
-    {capture name=path}{l s='Shipping:'}{/capture}
+    {capture name=path}{l s='Shipping:' mod='bliskapaczka'}{/capture}
     {assign var='current_step' value='shipping'}
     <div id="carrier_area">
-        <h1 class="page-heading">{l s='Shipping:'}</h1>
+        <h1 class="page-heading">{l s='Shipping:' mod='bliskapaczka'}</h1>
         {include file="$tpl_dir./order-steps.tpl"}
         {include file="$tpl_dir./errors.tpl"}
         <form id="form" action="{$link->getPageLink('order', true, NULL, "{if $multi_shipping}multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" method="post" name="carrier_area">
 {else}
     <div id="carrier_area" class="opc-main-block">
-        <h1 class="page-heading step-num"><span>2</span> {l s='Delivery methods'}</h1>
+        <h1 class="page-heading step-num"><span>2</span> {l s='Delivery methods' mod='bliskapaczka'}</h1>
             <div id="opc_delivery_methods" class="opc-main-block">
                 <div id="opc_delivery_methods-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
 <div class="order_carrier_content box">
     {if isset($virtual_cart) && $virtual_cart}
         <input id="input_virtual_carrier" class="hidden" type="hidden" name="id_carrier" value="0" />
-        <p class="alert alert-warning">{l s='No carrier is needed for this order.'}</p>
+        <p class="alert alert-warning">{l s='No carrier is needed for this order.' mod='bliskapaczka'}</p>
     {else}
         <div id="HOOK_BEFORECARRIER">
             {if isset($carriers) && isset($HOOK_BEFORECARRIER)}
@@ -47,16 +47,16 @@
             {/if}
         </div>
         {if isset($isVirtualCart) && $isVirtualCart}
-            <p class="alert alert-warning">{l s='No carrier is needed for this order.'}</p>
+            <p class="alert alert-warning">{l s='No carrier is needed for this order.' mod='bliskapaczka'}</p>
         {else}
             <div class="delivery_options_address">
                 {if isset($delivery_option_list)}
                     {foreach $delivery_option_list as $id_address => $option_list}
                         <p class="carrier_title">
                             {if isset($address_collection[$id_address])}
-                                {l s='Choose a shipping option for this address:'} {$address_collection[$id_address]->alias}
+                                {l s='Choose a shipping option for this address:' mod='bliskapaczka'} {$address_collection[$id_address]->alias}
                             {else}
-                                {l s='Choose a shipping option'}
+                                {l s='Choose a shipping option' mod='bliskapaczka'}
                             {/if}
                         </p>
                         <div class="delivery_options">
@@ -84,19 +84,19 @@
                                                             <strong>{$carrier.instance->name|escape:'htmlall':'UTF-8'}</strong>
                                                         {/foreach}
                                                         {if isset($carrier.instance->delay[$cookie->id_lang])}
-                                                            <br />{l s='Delivery time:'}&nbsp;{$carrier.instance->delay[$cookie->id_lang]|escape:'htmlall':'UTF-8'}
+                                                            <br />{l s='Delivery time:' mod='bliskapaczka'}&nbsp;{$carrier.instance->delay[$cookie->id_lang]|escape:'htmlall':'UTF-8'}
                                                         {/if}
                                                     {/if}
                                                     {if count($option_list) > 1}
                                                     <br />
                                                         {if $option.is_best_grade}
                                                             {if $option.is_best_price}
-                                                                <span class="best_grade best_grade_price best_grade_speed">{l s='The best price and speed'}</span>
+                                                                <span class="best_grade best_grade_price best_grade_speed">{l s='The best price and speed' mod='bliskapaczka'}</span>
                                                             {else}
-                                                                <span class="best_grade best_grade_speed">{l s='The fastest'}</span>
+                                                                <span class="best_grade best_grade_speed">{l s='The fastest' mod='bliskapaczka'}</span>
                                                             {/if}
                                                         {elseif $option.is_best_price}
-                                                            <span class="best_grade best_grade_price">{l s='The best price'}</span>
+                                                            <span class="best_grade best_grade_price">{l s='The best price' mod='bliskapaczka'}</span>
                                                         {/if}
                                                     {/if}
                                                     {foreach $option.carrier_list as $carrier}
@@ -126,15 +126,15 @@
                                                         {if $option.total_price_with_tax && !$option.is_free && (!isset($free_shipping) || (isset($free_shipping) && !$free_shipping))}
                                                             {if $use_taxes == 1}
                                                                 {if $priceDisplay == 1}
-                                                                    {convertPrice price=$option.total_price_without_tax}{if $display_tax_label} {l s='(tax excl.)'}{/if}
+                                                                    {convertPrice price=$option.total_price_without_tax}{if $display_tax_label} {l s='(tax excl.)' mod='bliskapaczka'}{/if}
                                                                 {else}
-                                                                    {convertPrice price=$option.total_price_with_tax}{if $display_tax_label} {l s='(tax incl.)'}{/if}
+                                                                    {convertPrice price=$option.total_price_with_tax}{if $display_tax_label} {l s='(tax incl.)' mod='bliskapaczka'}{/if}
                                                                 {/if}
                                                             {else}
                                                                 {convertPrice price=$option.total_price_without_tax}
                                                             {/if}
                                                         {else}
-                                                            {l s='Free'}
+                                                            {l s='Free' mod='bliskapaczka'}
                                                         {/if}
                                                     </div>
                                                 </td>
@@ -164,9 +164,9 @@
                                                                 {$first.instance->delay[$cookie->id_lang]|escape:'htmlall':'UTF-8'}
                                                                 &nbsp;
                                                                 {if count($first.product_list) <= 1}
-                                                                    ({l s='For this product:'}
+                                                                    ({l s='For this product:' mod='bliskapaczka'}
                                                                 {else}
-                                                                    ({l s='For these products:'}
+                                                                    ({l s='For these products:' mod='bliskapaczka'}
                                                                 {/if}
                                                             {/strip}
                                                             {foreach $first.product_list as $product}
@@ -204,15 +204,15 @@
                                                             {if $option.total_price_with_tax && !$option.is_free && (!isset($free_shipping) || (isset($free_shipping) && !$free_shipping))}
                                                                 {if $use_taxes == 1}
                                                                     {if $priceDisplay == 1}
-                                                                        {convertPrice price=$option.total_price_without_tax}{if $display_tax_label} {l s='(tax excl.)'}{/if}
+                                                                        {convertPrice price=$option.total_price_without_tax}{if $display_tax_label} {l s='(tax excl.)' mod='bliskapaczka'}{/if}
                                                                     {else}
-                                                                        {convertPrice price=$option.total_price_with_tax}{if $display_tax_label} {l s='(tax incl.)'}{/if}
+                                                                        {convertPrice price=$option.total_price_with_tax}{if $display_tax_label} {l s='(tax incl.)' mod='bliskapaczka'}{/if}
                                                                     {/if}
                                                                 {else}
                                                                     {convertPrice price=$option.total_price_without_tax}
                                                                 {/if}
                                                             {else}
-                                                                {l s='Free'}
+                                                                {l s='Free' mod='bliskapaczka'}
                                                             {/if}
                                                         </div>
                                                     </td>
@@ -235,9 +235,9 @@
                                                                     {$carrier.instance->delay[$cookie->id_lang]|escape:'htmlall':'UTF-8'}
                                                                     &nbsp;
                                                                     {if count($first.product_list) <= 1}
-                                                                        ({l s='For this product:'}
+                                                                        ({l s='For this product:' mod='bliskapaczka'}
                                                                     {else}
-                                                                        ({l s='For these products:'}
+                                                                        ({l s='For these products:' mod='bliskapaczka'}
                                                                     {/if}
                                                                 {/strip}
                                                                 {foreach $carrier.product_list as $product}
@@ -287,30 +287,30 @@
                             <p class="alert alert-warning" id="noCarrierWarning">
                                 {foreach $cart->getDeliveryAddressesWithoutCarriers(true, $errors) as $address}
                                     {if empty($address->alias)}
-                                        {l s='No carriers available.'}
+                                        {l s='No carriers available.' mod='bliskapaczka'}
                                     {else}
                                         {assign var='flag_error_message' value=false}
                                         {foreach $errors as $error}
                                             {if $error == Carrier::SHIPPING_WEIGHT_EXCEPTION}
                                                 {$flag_error_message = true}
-                                                {l s='The product selection cannot be delivered by the available carrier(s): it is too heavy. Please amend your cart to lower its weight.'}
+                                                {l s='The product selection cannot be delivered by the available carrier(s): it is too heavy. Please amend your cart to lower its weight.' mod='bliskapaczka'}
                                             {elseif $error == Carrier::SHIPPING_PRICE_EXCEPTION}
                                                 {$flag_error_message = true}
-                                                {l s='The product selection cannot be delivered by the available carrier(s). Please amend your cart.'}
+                                                {l s='The product selection cannot be delivered by the available carrier(s). Please amend your cart.' mod='bliskapaczka'}
                                             {elseif $error == Carrier::SHIPPING_SIZE_EXCEPTION}
                                                 {$flag_error_message = true}
-                                                {l s='The product selection cannot be delivered by the available carrier(s): its size does not fit. Please amend your cart to reduce its size.'}
+                                                {l s='The product selection cannot be delivered by the available carrier(s): its size does not fit. Please amend your cart to reduce its size.' mod='bliskapaczka'}
                                             {/if}
                                         {/foreach}
                                         {if !$flag_error_message}
-                                            {l s='No carriers available for the address "%s".' sprintf=$address->alias}
+                                            {l s='No carriers available for the address "%s".' sprintf=$address->alias mod='bliskapaczka'}
                                         {/if}
                                     {/if}
                                     {if !$address@last}
                                         <br />
                                     {/if}
                                 {foreachelse}
-                                    {l s='No carriers available.'}
+                                    {l s='No carriers available.' mod='bliskapaczka'}
                                 {/foreach}
                             </p>
                         {/foreach}
@@ -318,20 +318,20 @@
                 </div> <!-- end delivery_options_address -->
                 <div id="extra_carrier" style="display: none;"></div>
                 {if $opc}
-                    <p class="carrier_title">{l s='Leave a message'}</p>
+                    <p class="carrier_title">{l s='Leave a message' mod='bliskapaczka'}</p>
                     <div>
-                        <p>{l s='If you would like to add a comment about your order, please write it in the field below.'}</p>
+                        <p>{l s='If you would like to add a comment about your order, please write it in the field below.' mod='bliskapaczka'}</p>
                         <textarea class="form-control" cols="120" rows="2" name="message" id="message">{strip}
                             {if isset($oldMessage)}{$oldMessage|escape:'html':'UTF-8'}{/if}
                         {/strip}</textarea>
                     </div>
                 {/if}
                 {if $recyclablePackAllowed}
-                    <p class="carrier_title">{l s='Recyclable Packaging'}</p>
+                    <p class="carrier_title">{l s='Recyclable Packaging' mod='bliskapaczka'}</p>
                     <div class="checkbox recyclable">
                         <label for="recyclable">
                             <input type="checkbox" name="recyclable" id="recyclable" value="1"{if $recyclable == 1} checked="checked"{/if} />
-                            {l s='I would like to receive my order in recycled packaging.'}
+                            {l s='I would like to receive my order in recycled packaging.' mod='bliskapaczka'}
                         </label>
                     </div>
                 {/if}
@@ -339,13 +339,13 @@
                     {if $opc}
                         <hr style="" />
                     {/if}
-                    <p class="carrier_title">{l s='Gift'}</p>
+                    <p class="carrier_title">{l s='Gift' mod='bliskapaczka'}</p>
                     <div class="checkbox gift">
                         <input type="checkbox" name="gift" id="gift" value="1"{if $cart->gift == 1} checked="checked"{/if} />
                         <label for="gift">
-                            {l s='I would like my order to be gift wrapped.'}
+                            {l s='I would like my order to be gift wrapped.' mod='bliskapaczka'}
                             {if $gift_wrapping_price > 0}
-                                &nbsp;<i>({l s='Additional cost of'}
+                                &nbsp;<i>({l s='Additional cost of' mod='bliskapaczka'}
                                 <span class="price" id="gift-price">
                                     {if $priceDisplay == 1}
                                         {convertPrice price=$total_wrapping_tax_exc_cost}
@@ -355,9 +355,9 @@
                                 </span>
                                 {if $use_taxes && $display_tax_label}
                                     {if $priceDisplay == 1}
-                                        {l s='(tax excl.)'}
+                                        {l s='(tax excl.)' mod='bliskapaczka'}
                                     {else}
-                                        {l s='(tax incl.)'}
+                                        {l s='(tax incl.)' mod='bliskapaczka'}
                                     {/if}
                                 {/if})
                                 </i>
@@ -365,7 +365,7 @@
                         </label>
                     </div>
                     <p id="gift_div">
-                        <label for="gift_message">{l s='If you\'d like, you can add a note to the gift:'}</label>
+                        <label for="gift_message">{l s='If you\'d like, you can add a note to the gift:' mod='bliskapaczka'}</label>
                         <textarea rows="2" cols="120" id="gift_message" class="form-control" name="gift_message">{$cart->gift_message|escape:'html':'UTF-8'}</textarea>
                     </p>
                 {/if}
@@ -381,8 +381,8 @@
                     <div class="box">
                         <p class="checkbox">
                             <input type="checkbox" name="cgv" id="cgv" value="1" {if $checkedTOS}checked="checked"{/if} />
-                            <label for="cgv">{l s='I agree to the terms of service and will adhere to them unconditionally.'}</label>
-                            <a href="{$link_conditions|escape:'html':'UTF-8'}" class="iframe" rel="nofollow">{l s='(Read the Terms of Service)'}</a>
+                            <label for="cgv">{l s='I agree to the terms of service and will adhere to them unconditionally.' mod='bliskapaczka'}</label>
+                            <a href="{$link_conditions|escape:'html':'UTF-8'}" class="iframe" rel="nofollow">{l s='(Read the Terms of Service)' mod='bliskapaczka'}</a>
                         </p>
                     </div>
                 {/if}
@@ -394,26 +394,26 @@
                     <input type="hidden" name="back" value="{$back}" />
                     {if !$is_guest}
                         {if $back}
-                            <a href="{$link->getPageLink('order', true, NULL, "step=1&back={$back}{if $multi_shipping}&multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" title="{l s='Previous'}" class="button-exclusive btn btn-default">
+                            <a href="{$link->getPageLink('order', true, NULL, "step=1&back={$back}{if $multi_shipping}&multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='bliskapaczka'}" class="button-exclusive btn btn-default">
                                 <i class="icon-chevron-left"></i>
-                                {l s='Continue shopping'}
+                                {l s='Continue shopping' mod='bliskapaczka'}
                             </a>
                         {else}
-                            <a href="{$link->getPageLink('order', true, NULL, "step=1{if $multi_shipping}&multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" title="{l s='Previous'}" class="button-exclusive btn btn-default">
+                            <a href="{$link->getPageLink('order', true, NULL, "step=1{if $multi_shipping}&multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='bliskapaczka'}" class="button-exclusive btn btn-default">
                                 <i class="icon-chevron-left"></i>
-                                {l s='Continue shopping'}
+                                {l s='Continue shopping' mod='bliskapaczka'}
                             </a>
                         {/if}
                     {else}
-                        <a href="{$link->getPageLink('order', true, NULL, "{if $multi_shipping}multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" title="{l s='Previous'}" class="button-exclusive btn btn-default">
+                        <a href="{$link->getPageLink('order', true, NULL, "{if $multi_shipping}multi-shipping={$multi_shipping}{/if}")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='bliskapaczka'}" class="button-exclusive btn btn-default">
                             <i class="icon-chevron-left"></i>
-                            {l s='Continue shopping'}
+                            {l s='Continue shopping' mod='bliskapaczka'}
                         </a>
                     {/if}
                     {if isset($virtual_cart) && $virtual_cart || (isset($delivery_option_list) && !empty($delivery_option_list))}
                         <button type="submit" name="processCarrier" class="button btn btn-default standard-checkout button-medium">
                             <span>
-                                {l s='Proceed to checkout'}
+                                {l s='Proceed to checkout' mod='bliskapaczka'}
                                 <i class="icon-chevron-right right"></i>
                             </span>
                         </button>
@@ -439,11 +439,11 @@
         {addJsDef cart_gift=false}
     {/if}
     {addJsDef orderUrl=$link->getPageLink("order", true)|escape:'quotes':'UTF-8'}
-    {addJsDefL name=txtProduct}{l s='Product' js=1}{/addJsDefL}
-    {addJsDefL name=txtProducts}{l s='Products' js=1}{/addJsDefL}
+    {addJsDefL name=txtProduct}{l s='Product' mod='bliskapaczka' js=1}{/addJsDefL}
+    {addJsDefL name=txtProducts}{l s='Products' mod='bliskapaczka' js=1}{/addJsDefL}
 {/if}
 {if $conditions}
-    {addJsDefL name=msg_order_carrier}{l s='You must agree to the terms of service before continuing.' js=1}{/addJsDefL}
-    {addJsDefL name=msg_bliskapaczka_select_point}{l s='Please select delivery point.' js=1}{/addJsDefL}
+    {addJsDefL name=msg_order_carrier}{l s='You must agree to the terms of service before continuing.' mod='bliskapaczka' js=1}{/addJsDefL}
+    {addJsDefL name=msg_bliskapaczka_select_point}{l s='Please select delivery point.' mod='bliskapaczka' js=1}{/addJsDefL}
 {/if}
 {/strip}
