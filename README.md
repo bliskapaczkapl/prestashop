@@ -66,3 +66,17 @@ composer install --dev
 cd modules/bliskapaczka
 php ./vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/unit/
 ```
+
+### Możliwe konflikty
+
+Moduł bliskapaczka.pl dziedziczy po niektórych elementach PrestaShop przez co może powodować konflikty jeśli w aplikacji są zainstalowane inne moduły dziedziczące po tych samych klasach. Poniżej znajduje się informacja po jakich klasach, kontrolerach i widokach dziedziczy moduł bliskapazka.pl
+
+Klasu:
+- `OrderCore`
+- `CartCore`
+
+Kontrolery:
+- `OrderControllerCore`
+
+Widoki:
+- `order-carrier.tpl`
