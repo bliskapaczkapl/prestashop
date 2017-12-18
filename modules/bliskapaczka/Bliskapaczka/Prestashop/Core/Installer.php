@@ -87,6 +87,9 @@ class Installer
 
         \Configuration::updateValue($helper::BLISKAPACZKA_CARRIER_ID, (int)$carrier->id);
 
+        // Fix testes
+        $carrier->setTaxRulesGroup((int)$carrier->id_tax_rules_group);
+
         $this->rangesAndFeeForZone($carrier->id);
 
         return true;

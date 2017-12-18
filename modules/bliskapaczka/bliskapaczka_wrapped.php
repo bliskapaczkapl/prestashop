@@ -197,17 +197,23 @@ class Bliskapaczka extends CarrierModule
             $cart->pos_operator = $posOperator;
         }
 
+        $taxInc = false;
+
+        if ((int)\Carrier::getIdTaxRulesGroupByIdCarrier((int)$this->id_carrier) === 0) {
+            $taxInc = true;
+        }
+
         if ($cart->pos_operator) {
             $shippingPrice = round(
                 $bliskapaczkaHelper->getPriceForCarrier(
                     json_decode($priceList),
                     $cart->pos_operator,
-                    false
+                    $taxInc
                 ),
                 2
             );
         } else {
-            $shippingPrice = round($bliskapaczkaHelper->getLowestPrice(json_decode($priceList), false), 2);
+            $shippingPrice = round($bliskapaczkaHelper->getLowestPrice(json_decode($priceList), $taxInc), 2);
         }
 
         return $shippingPrice;
