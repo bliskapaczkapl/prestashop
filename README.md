@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/bliskapaczkapl/prestashop.svg?branch=master)](https://travis-ci.org/bliskapaczkapl/prestashop)
 
-# Moduł Bliskapaczka dla Prestashop 1.6.1.x 
+# Moduł bliskapaczka.pl dla Prestashop 1.6.1.x 
 
 ## Instalacja modułu
 
@@ -17,9 +17,19 @@ W celu poprawnej instalacji modułu wymagane są:
 1. Następnie ustal wymiary i wagę standardowej paczki w polach `Fixed parce type size X`, `Fixed parce type size Y`, `Fixed parce type size Z`, `Fixed parce type weight`
 1. Sprawdź czy na liście dostępnych metod dostawy pojawiła się nowa metoda wysyłki "Bliskapaczka", skonfiguruj ją
 
-### Tryb testowy
+### Konfiguracja modułu
+
+#### Tryb testowy
 
 Tryb testowy, czli komunikacja z testową wersją znajdującą się pod adresem [sandbox-bliskapaczka.pl](https://sandbox-bliskapaczka.pl/) można uruchomić przełączają w ustwieniach modułu opcję `Test mode enabled` na `Yes`.
+
+#### Przewoźnicy i koszty przesyłki
+
+Dostępni przewoźnicy oraz koszty przesyłki dla poszczególnych punktów dostawy są ustawiani po stronie konfiguracji serwisu blikskapaczka.pl. Konfiguracja znajduje się w zakładce "Narzędzia" -> "Integracja".
+
+#### VAT
+
+Moduł bliskapaczka.pl korzysta ze standardowych ustawień VAT dla metod dostawy w PrestaShop. Standardowo moduł nie ustawia stawki VAT dla dostawy bliskapaczka.pl, cena wyświetlana klientowi sklepu jest ceną zawierającą VAT, która została ustawiona w konfiguracji serwisu blikskapaczka.pl. Ustawienie stawki VAT  dla dostawy bliskapaczka.pl  powoduje przeniesienie wyliczania kosztu dostawy na PrestaShop, w takim przypadku moduł bliskapaczka.pl bierze cenę netto z ustawień w konfiguracji serwisu blikskapaczka.pl i dodaje do tej ceny VAT ustawiony w konfiguracji modułu.
 
 ## Docker demo
 
