@@ -15,14 +15,25 @@ class OrderController extends OrderControllerCore
         switch ((int)$this->step) {
             case OrderController::STEP_DELIVERY:
                 $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
-                $widgetGoogleMapApiKey = $bliskapaczkaHelper->getGoogleMapApiKey();
-                $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget();
-                $testMode = Configuration::get($bliskapaczkaHelper::TEST_MODE) ? 'true' : 'false';
 
+                // Manage Free Shipping
+                // Ligic coppied from class ParentOrderControllerCore method _assignWrappingAndTOS
+                $free_shipping = false;
+                foreach ($this->context->cart->getCartRules() as $rule) {
+                    if ($rule['free_shipping'] && !$rule['carrier_restriction']) {
+                        $free_shipping = true;
+                        break;
+                    }
+                }
+
+                $bliskapaczkaFreeShipping = $bliskapaczkaHelper->freeShipping($free_shipping, $this->context->cart);
+
+                $widgetGoogleMapApiKey = $bliskapaczkaHelper->getGoogleMapApiKey();
+                $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget(array(), $bliskapaczkaFreeShipping);
+                $testMode = Configuration::get($bliskapaczkaHelper::TEST_MODE) ? 'true' : 'false';
                 $this->context->smarty->assign('widget_operators', $widgetOperators);
                 $this->context->smarty->assign('widget_google_map_api_key', $widgetGoogleMapApiKey);
                 $this->context->smarty->assign('test_mode', $testMode);
-
                 $this->setTemplate(_PS_MODULE_DIR_ . 'bliskapaczka/override/views/front/order-carrier.tpl');
                 break;
         }

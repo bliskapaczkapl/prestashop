@@ -149,9 +149,10 @@ class Helper
      * Get widget configuration
      *
      * @param array $priceList
+     * @param bool $freeShipping
      * @return array
      */
-    public function getOperatorsForWidget($priceList = null)
+    public function getOperatorsForWidget($priceList = array(), $freeShipping = false)
     {
         if (!$priceList) {
             $priceList = $this->getPriceList();
@@ -160,14 +161,64 @@ class Helper
 
         foreach ($priceList as $operator) {
             if ($operator->availabilityStatus != false) {
+                $price = $operator->price->gross;
+                if ($freeShipping == true) {
+                    $price = 0;
+                }
+
                 $operators[] = array(
                     "operator" => $operator->operatorName,
-                    "price" => $operator->price->gross
+                    "price" => $price
                 );
             }
         }
 
         return json_encode($operators);
+    }
+
+    /**
+     * Method for managing free shipping.
+     * Required for calculating package price for operators. Used in method self->getOperatorsForWidget
+     *
+     * @param bool $freeShipping
+     * @param Cart $cart
+     */
+    public function freeShipping($freeShipping, $cart)
+    {
+        // Ligic coppied from override/views/front/order-carrier.tpl
+        if ($option['total_price_with_tax']
+            && !$option['is_free']
+            && (!isset($freeShipping) || (isset($freeShipping) && !$freeShipping))
+        ) {
+            $bliskapaczkaFreeShipping = false;
+        } else {
+            $bliskapaczkaFreeShipping = true;
+        }
+
+        return $bliskapaczkaFreeShipping;
+    }
+
+    /**
+     * Return bliskapaczka.pl module settings like in cart
+     *
+     * @param Cart $cart
+     * @return array
+     */
+    public function carrierSettings($cart)
+    {
+        // Ligic coppied from override/views/front/order-carrier.tpl
+        $delivery_option_list = $cart->getDeliveryOptionList();
+        foreach ($delivery_option_list as $id_address => $option_list) {
+            foreach ($option_list as $key => $option) {
+                foreach ($option['carrier_list'] as $carrier) {
+                    if ($carrier['instance']->external_module_name == 'bliskapaczka') {
+                        return $option['total_price_with_tax'];
+                    }
+                }
+            }
+        };
+
+        return array();
     }
 
     /**
