@@ -186,9 +186,6 @@ class Bliskapaczka extends CarrierModule
     {
         $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
-        var_dump(get_class($cart));
-        // var_dump($cart->getPackageShippingCost());
-
         /* @var $apiClient \Bliskapaczka\ApiClient\Bliskapaczka */
         $apiClient = $bliskapaczkaHelper->getApiClient();
         $priceList = $apiClient->getPricing(
