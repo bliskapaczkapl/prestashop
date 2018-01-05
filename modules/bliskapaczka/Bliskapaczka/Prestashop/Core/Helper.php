@@ -185,6 +185,8 @@ class Helper
      */
     public function freeShipping($freeShipping, $cart)
     {
+        $option = $this->carrierSettings($cart);
+
         // Ligic coppied from override/views/front/order-carrier.tpl
         if ($option['total_price_with_tax']
             && !$option['is_free']
@@ -204,7 +206,7 @@ class Helper
      * @param Cart $cart
      * @return array
      */
-    public function carrierSettings($cart)
+    private function carrierSettings($cart)
     {
         // Ligic coppied from override/views/front/order-carrier.tpl
         $delivery_option_list = $cart->getDeliveryOptionList();
@@ -212,7 +214,7 @@ class Helper
             foreach ($option_list as $key => $option) {
                 foreach ($option['carrier_list'] as $carrier) {
                     if ($carrier['instance']->external_module_name == 'bliskapaczka') {
-                        return $option['total_price_with_tax'];
+                        return $option;
                     }
                 }
             }
