@@ -89,6 +89,10 @@ class HelperTest extends TestCase
             'BLISKAPACZKA_GOOGLE_MAP_API_KEY',
             $hepler::GOOGLE_MAP_API_KEY
         );
+
+        $this->assertTrue(is_string($hepler::GOOGLE_MAP_API_KEY));
+
+        $this->assertEquals('v5', $hepler::WIDGET_VERSION);
     }
 
     public function testGetLowestPrice()

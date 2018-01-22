@@ -90,9 +90,16 @@ class Bliskapaczka extends CarrierModule
      */
     public function hookHeader($params)
     {
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+
         if (get_class($this->context->controller) == 'OrderController') {
-            $this->context->controller->addJs('https://widget.bliskapaczka.pl/v4/main.js');
-            $this->context->controller->addCSS('https://widget.bliskapaczka.pl/v4/main.css');
+            $this->context->controller->addJs(
+                'https://widget.bliskapaczka.pl/' . $bliskapaczkaHelper::WIDGET_VERSION . '/main.js'
+            );
+            $this->context->controller->addCSS(
+                'https://widget.bliskapaczka.pl/' . $bliskapaczkaHelper::WIDGET_VERSION . '/main.css'
+            );
             $this->context->controller->addJs($this->_path . 'views/js/' . $this->name . '.js');
         }
     }

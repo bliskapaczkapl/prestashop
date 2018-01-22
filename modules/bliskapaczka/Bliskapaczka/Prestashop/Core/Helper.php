@@ -35,6 +35,8 @@ class Helper
 
     const BLISKAPACZKA_CARRIER_ID = 'BLISKAPACZKA_CARRIER_ID';
 
+    const WIDGET_VERSION = 'v5';
+
     /**
      * Get parcel dimensions in format accptable by Bliskapaczka API
      *
