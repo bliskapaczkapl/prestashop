@@ -1,6 +1,6 @@
 <?php
 
-namespace Bliskapaczka;
+namespace  Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill;
 
 use Bliskapaczka\ApiClient\Mappers\Pricing;
 use PHPUnit\Framework\TestCase;
@@ -15,32 +15,21 @@ class GetTest extends TestCase
             $this->host = 'localhost:1234';
         }
 
-        $this->pricingData = [
-            "dimensions" => [
-                "height" => 20,
-                "length" => 20,
-                "width" => 20,
-                "weight" => 2
-            ]
-        ];
+        $this->orderId = '000000001P-000000002';
 
         $this->deleteInteractions();
         $this->setInteraction();
     }
 
-    public function testCreateOrder()
+    public function testGetWaybill()
     {
-        $apiClient = new ApiClient\Bliskapaczka('test-test-test-test');
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill('test-test-test-test');
         $apiClient->setApiUrl($this->host);
+        $apiClient->setOrderId($this->orderId);
 
-        $response = json_decode($apiClient->getPricing($this->pricingData));
+        $response = json_decode($apiClient->get());
 
-        $this->assertEquals('INPOST', $response[0]->operatorName);
-        $this->assertTrue($response[0]->availabilityStatus);
-        $this->assertEquals('RUCH', $response[1]->operatorName);
-        $this->assertTrue($response[1]->availabilityStatus);
-        $this->assertEquals('POCZTA', $response[2]->operatorName);
-        $this->assertTrue($response[2]->availabilityStatus);
+        $this->assertEquals('https://storage.googleapis.com/000000001P-000000002.pdf', $response->url);
     }
 
     /**
@@ -81,49 +70,20 @@ class GetTest extends TestCase
 
         $options[CURLOPT_POST] = true;
         $options[CURLOPT_POSTFIELDS] = '{
-  "description": "Get pricing list",
-  "provider_state": "Pricing list for all",
+  "description": "Get waybill URL for order",
+  "provider_state": "API should return URL",
   "request": {
-    "method": "post",
-    "path": "/v1/pricing"
+    "method": "get",
+    "path": "/v1/order/' . $this->orderId . '/waybill"
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
     },
-    "body": [
-      {
-        "operatorName" : "INPOST",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 8.35,
-          "vat" : 1.92,
-          "gross" : 10.27
-        },
-        "unavailabilityReason" : null
-      },
-      {
-        "operatorName" : "RUCH",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 4.87,
-          "vat" : 1.12,
-          "gross" : 5.99
-        },
-        "unavailabilityReason" : null
-      },
-      {
-        "operatorName" : "POCZTA",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 7.31,
-          "vat" : 1.68,
-          "gross" : 8.99
-        },
-        "unavailabilityReason" : null
-      }
-    ]
+    "body": {
+      "url" : "https://storage.googleapis.com/000000001P-000000002.pdf"
+    }
   }
 }';
 

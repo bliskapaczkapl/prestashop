@@ -1,0 +1,6 @@
+version: "3"
+services:
+  prestashop:
+    build: ./
+    volumes:
+      - "./modules/bliskapaczka:/var/www/html/modules/bliskapaczka"

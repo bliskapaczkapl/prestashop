@@ -1,8 +1,9 @@
 <?php
 
-namespace Bliskapaczka\ApiClient;
+namespace Bliskapaczka\ApiClient\Validator;
 
-use Bliskapaczka\ApiClient\Mappers\Order;
+use Bliskapaczka\ApiClient\ValidatorInterface;
+use Bliskapaczka\ApiClient\Validator\Order;
 use PHPUnit\Framework\TestCase;
 
 class OrderTest extends TestCase
@@ -42,15 +43,13 @@ class OrderTest extends TestCase
 
     public function testClassExists()
     {
-        $this->assertTrue(class_exists('Bliskapaczka\ApiClient\Mappers\Order'));
+        $this->assertTrue(class_exists('Bliskapaczka\ApiClient\Validator\Order'));
     }
 
-    public function testCreateFromArray()
+    public function testClassImplementInterface()
     {
-        $order = Order::createFromArray($this->orderData);
-        $order->validate();
-
-        $this->assertEquals('Bliskapaczka\ApiClient\Mappers\Order', get_class($order));
+        $order = new Order();
+        $this->assertTrue(is_a($order, 'Bliskapaczka\ApiClient\ValidatorInterface'));
     }
 
     /**
@@ -61,7 +60,8 @@ class OrderTest extends TestCase
     {
         $this->orderData['receiverPhoneNumber'] = 'string';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -73,7 +73,8 @@ class OrderTest extends TestCase
     {
         $this->orderData['senderPostCode'] = 'string';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -85,7 +86,8 @@ class OrderTest extends TestCase
     {
         $this->orderData['parcel'] = 'string';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -97,7 +99,21 @@ class OrderTest extends TestCase
     {
         $this->orderData['receiverFirstName'] = '';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessageRegExp /Invalid \w+/
+     */
+    public function testReceiverFirstNameValidationForNameLongerThanThirtyCharacters()
+    {
+        $this->orderData['receiverFirstName'] = 'NameLongerThanThirtyCharacterss';
+
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -109,7 +125,8 @@ class OrderTest extends TestCase
     {
         $this->orderData['receiverLastName'] = '';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -121,7 +138,8 @@ class OrderTest extends TestCase
     {
         $this->orderData['operatorName'] = '';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -133,7 +151,8 @@ class OrderTest extends TestCase
     {
         $this->orderData['destinationCode'] = '';
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 
@@ -145,12 +164,14 @@ class OrderTest extends TestCase
     {
         $this->orderData['parcel']['dimensions']['height'] = 0;
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
 
         $this->orderData['parcel']['dimensions']['height'] = -1;
 
-        $order = Order::createFromArray($this->orderData);
+        $order = new Order();
+        $order->setData($this->orderData);
         $order->validate();
     }
 }

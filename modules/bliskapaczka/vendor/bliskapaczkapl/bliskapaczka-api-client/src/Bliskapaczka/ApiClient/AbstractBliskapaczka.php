@@ -5,6 +5,7 @@ namespace Bliskapaczka\ApiClient;
 use Psr\Log\LoggerInterface;
 use Bliskapaczka\ApiClient\ApiCaller\ApiCaller;
 use Bliskapaczka\ApiClient\Mappers\Order;
+use Bliskapaczka\ApiClient\Exception;
 
 /**
  * Bliskapaczka class
@@ -12,7 +13,7 @@ use Bliskapaczka\ApiClient\Mappers\Order;
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
  * @version 0.1.0
  */
-class Bliskapaczka
+abstract class AbstractBliskapaczka
 {
     /**
      * @const Bliska paczka api version
@@ -30,8 +31,13 @@ class Bliskapaczka
     const SANDBOX_API_URL = 'https://api.sandbox-bliskapaczka.pl';
 
     /**
- * @var ApiCaller
-*/
+     * Ending of url for specific request
+     */
+    const REQUEST_URL = '';
+
+    /**
+     * @var ApiCaller
+    */
     private $apiCaller;
 
     /**
@@ -105,6 +111,32 @@ class Bliskapaczka
     }
 
     /**
+     * Return end of url for request
+     */
+    public function getUrl()
+    {
+        return static::REQUEST_URL;
+    }
+
+    /**
+     * Get validator object for this instance
+     *
+     * @return ValidatorInterface
+     */
+    public function getValidator()
+    {
+        // Bliskapaczka\ApiClient\Bliskapaczka\Order
+        $className = get_class($this);
+        $validatorName = str_replace('\Bliskapaczka', '\Validator', $className);
+    
+        if (!class_exists($validatorName)) {
+            throw new Exception('Validator not exists', 1);
+        }
+
+        return new $validatorName;
+    }
+
+    /**
      * Create cURL configuration and call
      *
      * @param string $url
@@ -113,7 +145,7 @@ class Bliskapaczka
      * @param string $method
      * @param bool $expectXML
      */
-    private function doCall($url, $body = '', $headers = array(), $method = 'GET', $expectXML = true)
+    protected function doCall($url, $body = '', $headers = array(), $method = 'GET', $expectXML = true)
     {
         // build Authorization header
         $headers[] = 'Authorization: Bearer ' . $this->bearer;
@@ -131,37 +163,6 @@ class Bliskapaczka
         }
 
         $response = $this->getApiCaller()->doCall($options);
-
-        return $response;
-    }
-
-    /**
-     * Call API method create order
-     *
-     * @param array $data
-     */
-    public function createOrder(array $data)
-    {
-        $url = 'order';
-
-        $order = Order::createFromArray($data);
-        $order->validate();
-
-        $response = $this->doCall($url, json_encode($data), array(), 'POST');
-
-        return $response;
-    }
-
-    /**
-     * Call API method create order
-     *
-     * @param array $data
-     */
-    public function getPricing(array $data)
-    {
-        $url = 'pricing';
-
-        $response = $this->doCall($url, json_encode($data), array(), 'POST');
 
         return $response;
     }

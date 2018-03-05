@@ -19,5 +19,6 @@ script:
   - vendor/bin/phpcpd src/
   - vendor/bin/phpdoccheck --directory=src/ 
   - vendor/bin/phploc src/
-  - vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/unit
+  - vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/unit/
+  - vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/intergation/
   - vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/pact/

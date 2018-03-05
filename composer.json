@@ -31,6 +31,6 @@
         }
     ],
     "require": {
-        "bliskapaczkapl/bliskapaczka-api-client": "^1.0"
+        "bliskapaczkapl/bliskapaczka-api-client": "^2.0"
     }
 }

@@ -2,8 +2,8 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-$apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
-$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka($apiKey);
+$apiKey = 'e5814ba2-2dc6-4f31-bfa9-2afd4bc171a9';
+$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Order($apiKey, 'test');
 
 $orderData = [
     "senderFirstName" => "string",
@@ -21,9 +21,9 @@ $orderData = [
     "receiverEmail" => "eva@example.com",
     "operatorName" => "INPOST",
     "destinationCode" => "KRA010",
-    "postingCode" => "KRA011",
-    "codValue" => 0,
-    "insuranceValue" => 0,
+    "postingCode" => "KOS01L",
+    "codValue" => null,
+    "insuranceValue" => null,
     "additionalInformation" => "string",
     "parcel" => [
         "dimensions" => [
@@ -34,7 +34,9 @@ $orderData = [
         ]
     ]
 ];
-var_dump($apiClient->createOrder($orderData));
+var_dump($apiClient->create($orderData));
+
+$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Pricing($apiKey, 'test');
 
 $pricingData = [
     "parcel" => [
@@ -46,4 +48,14 @@ $pricingData = [
         ]
     ]
 ];
-var_dump($apiClient->getPricing($pricingData));
+var_dump($apiClient->get($pricingData));
+
+$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill($apiKey, 'test');
+$apiClient->setOrderId('000000636P-000000108');
+
+var_dump($apiClient->get());
+
+$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Report($apiKey, 'test');
+$apiClient->setOperator('ruch');
+
+file_put_contents('zupa.pdf', $apiClient->get());

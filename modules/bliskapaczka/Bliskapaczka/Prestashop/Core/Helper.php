@@ -139,8 +139,8 @@ class Helper
      */
     public function getPriceList()
     {
-        $apiClient = $this->getApiClient();
-        $priceList = $apiClient->getPricing(
+        $apiClient = $this->getApiClientPricing();
+        $priceList = $apiClient->get(
             array("parcel" => array('dimensions' => $this->getParcelDimensions()))
         );
 
@@ -233,6 +233,66 @@ class Helper
     public function getApiClient()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientOrder()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientOrderAdvice()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Advice(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientPricing()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Pricing(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientTodoor()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Todoor(
             \Configuration::get(self::API_KEY),
             $this->getApiMode(\Configuration::get(self::TEST_MODE))
         );

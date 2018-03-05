@@ -1,11 +1,11 @@
 <?php
 
-namespace Bliskapaczka;
+namespace  Bliskapaczka\ApiClient\Bliskapaczka\Order\Cancel;
 
-use Bliskapaczka\ApiClient\Mappers\Order;
+use Bliskapaczka\ApiClient\Mappers\Pricing;
 use PHPUnit\Framework\TestCase;
 
-class CreateTest extends TestCase
+class CancelTest extends TestCase
 {
     protected function setUp()
     {
@@ -14,6 +14,8 @@ class CreateTest extends TestCase
         } else {
             $this->host = 'localhost:1234';
         }
+
+        $this->orderId = '000000001P-000000002';
 
         $this->orderData = [
             "senderFirstName" => "string",
@@ -32,7 +34,7 @@ class CreateTest extends TestCase
             "operatorName" => "INPOST",
             "destinationCode" => "KRA010",
             "postingCode" => "KRA011",
-            "codValue" => 0,
+            "codValue" => 111.1,
             "insuranceValue" => 0,
             "additionalInformation" => "string",
             "parcel" => [
@@ -40,7 +42,7 @@ class CreateTest extends TestCase
                     "height" => 20,
                     "length" => 20,
                     "width" => 20,
-                    "weight" => 2
+                    "weight" => 20
                 ]
             ]
         ];
@@ -49,20 +51,15 @@ class CreateTest extends TestCase
         $this->setInteraction();
     }
 
-    public function testCreateOrder()
+    public function testCancel()
     {
-        $apiClient = new ApiClient\Bliskapaczka('test-test-test-test');
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Cancel('test-test-test-test');
         $apiClient->setApiUrl($this->host);
+        $apiClient->setOrderId($this->orderId);
 
-        $response = json_decode($apiClient->createOrder($this->orderData));
+        $response = json_decode($apiClient->cancel());
 
-        $this->assertEquals($this->orderData['senderPhoneNumber'], $response->senderPhoneNumber);
-        $this->assertEquals($this->orderData['senderEmail'], $response->senderEmail);
-        $this->assertEquals($this->orderData['senderPostCode'], $response->senderPostCode);
-        $this->assertEquals($this->orderData['receiverPhoneNumber'], $response->receiverPhoneNumber);
-        $this->assertEquals($this->orderData['receiverEmail'], $response->receiverEmail);
-
-        $this->expectOutputString('Deleted interactionsSet interactionsInteractions matched', $this->verification());
+        $this->assertEquals("MARKED_FOR_CANCELLATION", $response->status);
     }
 
     /**
@@ -103,11 +100,11 @@ class CreateTest extends TestCase
 
         $options[CURLOPT_POST] = true;
         $options[CURLOPT_POSTFIELDS] = '{
-  "description": "Create new order",
-  "provider_state": "Order created correctly",
+  "description": "Cancel order",
+  "provider_state": "API should return order data",
   "request": {
     "method": "post",
-    "path": "/v1/order"
+    "path": "/v1/order/' . $this->orderId . '/cancel"
   },
   "response": {
     "status": 200,
@@ -132,9 +129,10 @@ class CreateTest extends TestCase
       "operatorName": "INPOST",
       "destinationCode": "KRA010",
       "postingCode": "KRA011",
-      "codValue": 0,
+      "codValue": "' . $this->orderData['codValue'] . '",
       "insuranceValue": 0,
       "additionalInformation": "string",
+      "status": "MARKED_FOR_CANCELLATION",
       "parcel":{
         "dimensions": {
           "height": 20,
