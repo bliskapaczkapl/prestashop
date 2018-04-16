@@ -1,8 +1,7 @@
 language: php
 php:
-  - '5.4'
-  - '5.5'
   - '5.6'
+  - '7.0'
 
 env:
   global:
@@ -27,7 +26,7 @@ jobs:
   include:
     - stage: build
       script: 
-        - docker build -t bliskapaczkapl/prestashop:$COMMIT -t bliskapaczkapl/prestashop:latest .
+        - docker build -t bliskapaczkapl/prestashop:$COMMIT -t bliskapaczkapl/prestashop:latest -f dev/docker/Dockerfile .
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
         - docker push bliskapaczkapl/prestashop:$COMMIT;
       php: 5.6
