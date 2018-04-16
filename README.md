@@ -61,6 +61,14 @@ Następnie zainstaluj zależności composerem. Uruchom poniższą komendę w kat
 composer install --dev
 ```
 
+### Docker
+
+W celu developmentu można uruchomić docker-compose prze komendę:
+
+```
+docker-compose -f docker-compose.yml -f dev/docker/docker-compose.dev.yml up
+```
+
 ### Jak uruchomić testy jednostkowe
 ```
 cd modules/bliskapaczka

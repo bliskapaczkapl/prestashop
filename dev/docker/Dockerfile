@@ -12,7 +12,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     mysql-client
 
 # Upadate PHP config (for translations)
-COPY dev/docker/php.ini /usr/local/etc/php/php.ini
+COPY dev/docker/php/php.ini /usr/local/etc/php/php.ini
 
 # Copy latest version of Bliskapaczka module
 COPY modules ${prestashop_path}/modules
