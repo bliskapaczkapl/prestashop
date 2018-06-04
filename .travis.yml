@@ -4,15 +4,15 @@ php:
   - '7.0'
 
 env:
-- PRESTASHOP_VERSION=1.6.0.x
-- PRESTASHOP_VERSION=1.6.1.x
+  - PRESTASHOP_VERSION=1.6.0.x
+  - PRESTASHOP_VERSION=1.6.1.x
   global:
     - VENDOR_DIR=modules/bliskapaczka/vendor
     - COMMIT=${TRAVIS_COMMIT::8}
 
 matrix:
   exclude:
-    - php: 7.0
+    - php: '7.0'
       env: PRESTASHOP_VERSION=1.6.0.x
 
 services:
