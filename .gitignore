@@ -1,5 +1,5 @@
 /vendor
-
+.idea/*
 modules/bliskapaczka/vendor/bin/
 modules/bliskapaczka/vendor/block8/
 modules/bliskapaczka/vendor/doctrine/
