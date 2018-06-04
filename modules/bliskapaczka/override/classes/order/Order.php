@@ -16,6 +16,36 @@ class Order extends OrderCore
     public $pos_operator;
 
     /**
+     * number
+     */
+    public $number;
+
+    /**
+     * status
+     */
+    public $status;
+
+    /**
+     * delivery_type
+     */
+    public $delivery_type;
+
+    /**
+     * creation_date
+     */
+    public $creation_date;
+
+    /**
+     * advice_date
+     */
+    public $advice_date;
+
+    /**
+     * tracking_number
+     */
+    public $tracking_number;
+
+    /**
      * @see ObjectModel::$definition
      */
     public static $definition = array(
@@ -68,7 +98,14 @@ class Order extends OrderCore
             'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
             'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
             'pos_code' => array('type' => self::TYPE_STRING),
-            'pos_operator' => array('type' => self::TYPE_STRING),
+            'pos_operator' => array('type' => self::TYPE_STRING,
+            'number' => array('type' => self::TYPE_STRING),
+            'status' => array('type' => self::TYPE_STRING),
+            'delivery_type' => array('type' => self::TYPE_STRING),
+            'creation_date' => array('type' => self::TYPE_STRING),
+            'advice_date' => array('type' => self::TYPE_STRING),
+            'tracking_number' => array('type' => self::TYPE_STRING),
+            ),
         ),
     );
 }

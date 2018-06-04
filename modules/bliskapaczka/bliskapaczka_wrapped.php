@@ -143,7 +143,7 @@ class Bliskapaczka extends CarrierModule
     }
 
     /**
-     * Update cart if setted carrier is bliskapaczka
+     * Update cart if carrier bliskapaczka is set
      *
      * @param array $params
      */
@@ -180,11 +180,43 @@ class Bliskapaczka extends CarrierModule
 
         /* @var \Bliskapaczka\ApiClient\Bliskapaczka $apiClient */
         $apiClient = $bliskapaczkaHelper->getApiClientOrderAdvice();
-        $apiClient->create($data);
+        $response = $apiClient->create($data);
+
+        if ($response) {
+            $this->_saveResponse($order, $response);
+        }
     }
 
     /**
-     * Get shipping cost for order. Shipping cost depends on operator. If operator isn't setted method retur lowest cost
+     * @param $order
+     * @param json $response
+     * @return bool
+     */
+    protected function _saveResponse($order, $response)
+    {
+        $decodedResponse = json_decode($response);
+
+        //checking reposponce
+        if ($response && $decodedResponse instanceof stdClass && empty($decodedResponse->errors)) {
+
+            $order->number = strip_tags($decodedResponse->number);
+            $order->status = strip_tags($decodedResponse->status);
+            $order->delivery_type = strip_tags($decodedResponse->deliveryType);
+            $order->creation_date = strip_tags($decodedResponse->creationDate);
+            $order->advice_date = strip_tags($decodedResponse->adviceDate);
+            $order->tracking_number = strip_tags($decodedResponse->trackingNumber);
+
+            $order->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Get shipping cost for order. Shipping cost depends on operator. If operator isn't set method returns lowest cost
      *
      * @param Cart $cart
      * @param float $shipping_cost
