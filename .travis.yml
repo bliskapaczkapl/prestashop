@@ -38,8 +38,6 @@ jobs:
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
         - docker push bliskapaczkapl/prestashop:$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT;
     - stage: deploy_to_hub_docker
-      php: 5.6
-      env: PRESTASHOP_VERSION=1.6.1.x
       script:
         - docker build -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-1.6.1.x/Dockerfile .
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
