@@ -29,6 +29,9 @@ script:
   - $VENDOR_DIR/bin/phpdoccheck --directory=modules --exclude=bliskapaczka/tests,bliskapaczka/vendor
   - $VENDOR_DIR/bin/phploc modules/
   - $VENDOR_DIR/bin/phpunit --bootstrap modules/bliskapaczka/tests/bootstrap.php modules/bliskapaczka/tests/unit/
+  - docker build -t bliskapaczkapl/prestashop::$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-$PRESTASHOP_VERSION/Dockerfile .
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - docker push bliskapaczkapl/prestashop:$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT;
 
 jobs:
   include:
@@ -36,9 +39,8 @@ jobs:
       php: 5.6
       env: PRESTASHOP_VERSION=1.6.1.x
       script: 
-        - docker build -t bliskapaczkapl/prestashop::$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-$PRESTASHOP_VERSION/Dockerfile .
+        - docker build -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-$PRESTASHOP_VERSION/Dockerfile .
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-        - docker push bliskapaczkapl/prestashop:$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT;
         - if [ "$TRAVIS_BRANCH" == "master" ]; then
           docker push bliskapaczkapl/prestashop:latest;
           fi
