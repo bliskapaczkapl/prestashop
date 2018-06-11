@@ -33,14 +33,12 @@ script:
 jobs:
   include:
     - stage: build
+      php: 5.6
+      env: PRESTASHOP_VERSION=1.6.1.x
       script: 
-        - docker build -t bliskapaczkapl/prestashop::$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-1.6.1.x/Dockerfile .
+        - docker build -t bliskapaczkapl/prestashop::$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-$PRESTASHOP_VERSION/Dockerfile .
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
         - docker push bliskapaczkapl/prestashop:$TRAVIS_PHP_VERSION-$PRESTASHOP_VERSION-$COMMIT;
-    - stage: deploy_to_hub_docker
-      script:
-        - docker build -t bliskapaczkapl/prestashop:latest -f dev/docker/php-5.6/prestashop-1.6.1.x/Dockerfile .
-        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
         - if [ "$TRAVIS_BRANCH" == "master" ]; then
           docker push bliskapaczkapl/prestashop:latest;
           fi
