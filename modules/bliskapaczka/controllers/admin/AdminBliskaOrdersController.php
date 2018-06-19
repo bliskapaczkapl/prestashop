@@ -1411,6 +1411,8 @@ class AdminBliskaOrdersController extends AdminController
             }
         } elseif (Tools::isSubmit('bliskaCancel') && isset($order)) {
 
+            Module::getInstanceByName('bliskapaczka');
+
             /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
             $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
@@ -1436,6 +1438,8 @@ class AdminBliskaOrdersController extends AdminController
             }
 
         } elseif (Tools::isSubmit('bliskaAdvice') && isset($order)) {
+
+            Module::getInstanceByName('bliskapaczka');
 
             $carrier = new Carrier($order->id_carrier, $order->id_lang);
 
@@ -1484,6 +1488,8 @@ class AdminBliskaOrdersController extends AdminController
 
         } elseif (Tools::isSubmit('bliskaUpdate') && isset($order)) {
 
+            Module::getInstanceByName('bliskapaczka');
+
             /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
             $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
@@ -1515,6 +1521,8 @@ class AdminBliskaOrdersController extends AdminController
                 $this->errors[] = Tools::displayError('Bliskapaczka: Error or empty API response' . ' ' . $message);
             }
         } elseif (Tools::isSubmit('bliskaWaybill') && isset($order)) {
+
+            Module::getInstanceByName('bliskapaczka');
 
             /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
             $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
