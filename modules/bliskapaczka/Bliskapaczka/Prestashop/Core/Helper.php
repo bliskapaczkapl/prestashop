@@ -34,6 +34,7 @@ class Helper
     const GOOGLE_MAP_API_KEY = 'BLISKAPACZKA_GOOGLE_MAP_API_KEY';
 
     const BLISKAPACZKA_CARRIER_ID = 'BLISKAPACZKA_CARRIER_ID';
+    const BLISKAPACZKA_COURIER_CARRIER_ID = 'BLISKAPACZKA_COURIER_CARRIER_ID';
 
     const WIDGET_VERSION = 'v5';
 
@@ -87,14 +88,16 @@ class Helper
         $lowestPriceTaxExc = null;
         $lowestPriceTaxInc = null;
 
-        foreach ($priceList as $carrier) {
-            if ($carrier->availabilityStatus == false) {
-                continue;
-            }
+        if (!empty($priceList)) {
+            foreach ($priceList as $carrier) {
+                if ($carrier->availabilityStatus == false) {
+                    continue;
+                }
 
-            if ($lowestPriceTaxInc == null || $lowestPriceTaxInc > $carrier->price->gross) {
-                $lowestPriceTaxExc = $carrier->price->net;
-                $lowestPriceTaxInc = $carrier->price->gross;
+                if ($lowestPriceTaxInc == null || $lowestPriceTaxInc > $carrier->price->gross) {
+                    $lowestPriceTaxExc = $carrier->price->net;
+                    $lowestPriceTaxInc = $carrier->price->gross;
+                }
             }
         }
 
@@ -275,6 +278,36 @@ class Helper
      *
      * @return \Bliskapaczka\ApiClient\Bliskapaczka
      */
+    public function getApiClientTodoorAdvice()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Todoor\Advice(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientCancel()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Cancel(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
     public function getApiClientPricing()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Pricing(
@@ -293,6 +326,21 @@ class Helper
     public function getApiClientTodoor()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Todoor(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientWaybill()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill(
             \Configuration::get(self::API_KEY),
             $this->getApiMode(\Configuration::get(self::TEST_MODE))
         );
@@ -338,5 +386,43 @@ class Helper
         }
 
         return $mode;
+    }
+
+    /**
+     * Get method name to bliskapaczka api client create order action
+     *
+     * @param string $method
+     * @param string $autoAdvice
+     * @return string
+     */
+    public function getApiClientForAdvice($method)
+    {
+        $methodName = $this->getApiClientForAdviceMethodName($method);
+
+        return $this->{$methodName}();
+    }
+
+    /**
+     * Get method name to bliskapaczka api client create order action
+     *
+     * @param string $method
+     * @param string $autoAdvice
+     * @return string
+     */
+    public function getApiClientForAdviceMethodName($method)
+    {
+        switch ($method) {
+            case 'bliskapaczka':
+                $type = 'Order';
+                break;
+
+            case 'bliskapaczka_courier':
+                $type = 'Todoor';
+                break;
+        }
+
+        $methodName = 'getApiClient' . $type . 'Advice';
+
+        return $methodName;
     }
 }

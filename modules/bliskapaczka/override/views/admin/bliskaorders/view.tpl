@@ -117,6 +117,31 @@
                     <span class="badge">{l s="#"}{$order->number}</span>
                 </div>
                 <div class="form-horizontal">
+                    <div class="well hidden-print">
+                        <form action="{$currentIndex|escape:'html':'UTF-8'}&amp;vieworder&amp;token={$smarty.get.token}" method="post" class="form-horizontal well hidden-print">
+                            <input type="hidden" name="id_order" value="{$order->id}" />
+                        {if $order->canCancel()}
+                            <button type="submit" name="bliskaCancel" class="btn btn-primary">
+                                {l s='Cancel'}
+                            </button>
+                        {/if}
+                        {if $order->canAdvice()}
+                            <button type="submit" name="bliskaAdvice" class="btn btn-primary">
+                                {l s='Advice'}
+                            </button>
+                        {/if}
+                        {if $order->canUpdate()}
+                            <button type="submit" name="bliskaUpdate" class="btn btn-primary">
+                                {l s='Update'}
+                            </button>
+                        {/if}
+                        {if $order->canWaybill()}
+                            <button type="submit" name="bliskaWaybill" class="btn btn-primary">
+                                {l s='Waybill'}
+                            </button>
+                        {/if}
+                        </form>
+                    </div>
                     <div class="row">
                         <label class="control-label col-lg-3">Number</label>
                         <div class="col-lg-9">

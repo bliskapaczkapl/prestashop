@@ -8,8 +8,9 @@ namespace Bliskapaczka\Prestashop\Core;
 class Config
 {
     private $name = 'bliskapaczka';
+    private $courier_name = 'bliskapaczka_courier';
     private $tab = 'shipping_logistics';
-    private $version = '1.0.2';
+    private $version = '1.0.3';
     private $displayName = 'Bliskapaczka';
     private $description = 'Bliskapaczka shipping module';
     private $confirmUninstall = 'Are you sure you want to uninstall?';

@@ -2,7 +2,7 @@
 <module>
 	<name>bliskapaczka</name>
 	<displayName><![CDATA[Bliskapaczka]]></displayName>
-	<version><![CDATA[1.0.2]]></version>
+	<version><![CDATA[1.0.3]]></version>
 	<description><![CDATA[Bliskapaczka shipping module]]></description>
 	<author><![CDATA[Mateusz Koszutowski]]></author>
 	<tab><![CDATA[shipping_logistics]]></tab>

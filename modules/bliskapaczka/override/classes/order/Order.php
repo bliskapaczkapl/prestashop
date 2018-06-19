@@ -108,5 +108,118 @@ class Order extends OrderCore
             ),
         ),
     );
+
+    const NEW_STATUS                     = 'NEW';
+    const SAVED                          = 'SAVED';
+    const WAITING_FOR_PAYMENT            = 'WAITING_FOR_PAYMENT';
+    const PAYMENT_CONFIRMED              = 'PAYMENT_CONFIRMED';
+    const PAYMENT_REJECTED               = 'PAYMENT_REJECTED';
+    const PAYMENT_CANCELLATION_ERROR     = 'PAYMENT_CANCELLATION_ERROR';
+    const PROCESSING                     = 'PROCESSING';
+    const ADVISING                       = 'ADVISING';
+    const ERROR                          = 'ERROR';
+    const READY_TO_SEND                  = 'READY_TO_SEND';
+    const POSTED                         = 'POSTED';
+    const ON_THE_WAY                     = 'ON_THE_WAY';
+    const READY_TO_PICKUP                = 'READY_TO_PICKUP';
+    const OUT_FOR_DELIVERY               = 'OUT_FOR_DELIVERY';
+    const DELIVERED                      = 'DELIVERED';
+    const REMINDER_SENT                  = 'REMINDER_SENT';
+    const PICKUP_EXPIRED                 = 'PICKUP_EXPIRED';
+    const AVIZO                          = 'AVIZO';
+    const CLAIMED                        = 'CLAIMED';
+    const RETURNED                       = 'RETURNED';
+    const ARCHIVED                       = 'ARCHIVED';
+    const OTHER                          = 'OTHER';
+    const MARKED_FOR_CANCELLATION_STATUS = 'MARKED_FOR_CANCELLATION';
+    const CANCELED                       = 'CANCELED';
+
+    /**
+     * Waybill NOT possible statuses
+     *
+     * @var array
+     */
+    protected $_waybillUnavailableStatuses = array(
+        self::NEW_STATUS,
+        self::SAVED,
+        self::WAITING_FOR_PAYMENT,
+        self::PAYMENT_CONFIRMED,
+        self::PAYMENT_REJECTED,
+        self::PAYMENT_CANCELLATION_ERROR,
+        self::PROCESSING,
+        self::ADVISING,
+        self::ERROR,
+        self::CANCELED,
+    );
+
+    /**
+     * Cancel possible statuses
+     *
+     * @var array
+     */
+
+    protected $_cancelStatuses = array(self::MARKED_FOR_CANCELLATION_STATUS);
+
+    /**
+     * Cancel possible statuses
+     *
+     * @var array
+     */
+    protected $_sentStatuses = array(
+        self::POSTED,
+        self::ON_THE_WAY,
+        self::READY_TO_PICKUP,
+        self::OUT_FOR_DELIVERY,
+        self::DELIVERED,
+        self::CANCELED
+    );
+
+    /**
+     * Advice possible statuses
+     *
+     * @var array
+     */
+    protected $_adviceStatuses = array(self::SAVED);
+
+    /**
+     * @return bool
+     */
+    public function canCancel() {
+        if (in_array($this->status, $this->_cancelStatuses)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canAdvice() {
+        if (!empty($this->number) && in_array($this->status, $this->_adviceStatuses)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canUpdate() {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canWaybill()
+    {
+        if (empty($this->number) || in_array($this->status, $this->_waybillUnavailableStatuses)) {
+            return false;
+        }
+
+        return true;
+    }
 }
 // @codingStandardsIgnoreEnd
