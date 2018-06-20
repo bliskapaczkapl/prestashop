@@ -409,6 +409,20 @@ class Helper
      * @param string $autoAdvice
      * @return string
      */
+    public function getApiClientForOrder($method)
+    {
+        $methodName = $this->getApiClientForOrderMethodName($method);
+
+        return $this->{$methodName}();
+    }
+
+    /**
+     * Get method name to bliskapaczka api client create order action
+     *
+     * @param string $method
+     * @param string $autoAdvice
+     * @return string
+     */
     public function getApiClientForAdviceMethodName($method)
     {
         switch ($method) {
@@ -422,6 +436,30 @@ class Helper
         }
 
         $methodName = 'getApiClient' . $type . 'Advice';
+
+        return $methodName;
+    }
+
+    /**
+     * Get method name to bliskapaczka api client create order action
+     *
+     * @param string $method
+     * @param string $autoAdvice
+     * @return string
+     */
+    public function getApiClientForOrderMethodName($method)
+    {
+        switch ($method) {
+            case 'bliskapaczka':
+                $type = 'Order';
+                break;
+
+            case 'bliskapaczka_courier':
+                $type = 'Todoor';
+                break;
+        }
+
+        $methodName = 'getApiClient' . $type;
 
         return $methodName;
     }

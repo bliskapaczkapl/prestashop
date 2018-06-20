@@ -174,12 +174,22 @@ class Bliskapaczka extends CarrierModule
         /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
         $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
-        /* @var Bliskapaczka\Prestashop\Core\Mapper\Order $mapper */
-        $mapper = new Bliskapaczka\Prestashop\Core\Mapper\Order();
+        $carrier = new Carrier($order->id_carrier, $order->id_lang);
+        $method = $carrier->name;
+
+        if ($method == 'bliskapaczka') {
+            /* @var Bliskapaczka\Prestashop\Core\Mapper\Order $mapper */
+            $mapper = new Bliskapaczka\Prestashop\Core\Mapper\Order();
+        }
+        if ($method == 'bliskapaczka_courier') {
+            /* @var Bliskapaczka\Prestashop\Core\Mapper\Todoor $mapper */
+            $mapper = new Bliskapaczka\Prestashop\Core\Mapper\Todoor();
+        }
+
         $data = $mapper->getData($order, $shippingAddress, $customer, $bliskapaczkaHelper, $configuration);
 
         /* @var \Bliskapaczka\ApiClient\Bliskapaczka $apiClient */
-        $apiClient = $bliskapaczkaHelper->getApiClientOrderAdvice();
+        $apiClient = $bliskapaczkaHelper->getApiClientForOrder($method);
         $response = $apiClient->create($data);
 
         if ($response) {
