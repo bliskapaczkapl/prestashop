@@ -17,7 +17,7 @@ class Sender extends Order implements ValidatorInterface
 {
     protected $properties = [
         'senderEmail' => ['maxlength' => 60, 'notblank' => true],
-        'senderPhoneNumber'  => ['notblank' => true],
+        'senderPhoneNumber' => ['notblank' => true],
         'senderPostCode' => ['notblank' => true],
         'senderFirstName' => ['maxlength' => 30, 'notblank' => true],
         'senderLastName' => ['maxlength' => 30, 'notblank' => true],

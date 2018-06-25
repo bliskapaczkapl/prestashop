@@ -45,7 +45,7 @@ class OrderTest extends TestCase
         $this->assertTrue(class_exists('Bliskapaczka\ApiClient\Bliskapaczka\Order'));
     }
 
-    public function testGetUrl()
+    public function testGetUrlForCreateMethod()
     {
         $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
         $apiUrl = 'http://localhost:1234';
@@ -54,6 +54,19 @@ class OrderTest extends TestCase
         $apiClientOrder->setApiUrl($apiUrl);
 
         $this->assertEquals('order', $apiClientOrder->getUrl());
+    }
+
+    public function testGetUrlForGetMethod()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiUrl = 'http://localhost:1234';
+        $id = '000000001P-000000002';
+        
+        $apiClientOrder = new Order($apiKey);
+        $apiClientOrder->setApiUrl($apiUrl);
+        $apiClientOrder->setOrderId($id);
+
+        $this->assertEquals('order/' . $id, $apiClientOrder->getUrl());
     }
 
     public function testCreate()
@@ -76,5 +89,35 @@ class OrderTest extends TestCase
         $apiClientOrder->setApiUrl($apiUrl);
 
         $this->assertTrue(is_a($apiClientOrder->getValidator(), 'Bliskapaczka\ApiClient\Validator\Order'));
+    }
+
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessage Please set valid order ID
+     */
+    public function testGetForEmptyId()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiUrl = 'http://localhost:1234';
+        $id = '';
+        
+        $apiClientOrder = new Order($apiKey);
+        $apiClientOrder->setApiUrl($apiUrl);
+        $apiClientOrder->setOrderId($id);
+
+        $apiClientOrder->get($this->orderData);
+    }
+
+    public function testGet()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiUrl = 'http://localhost:1234';
+        $id = '000000001P-000000002';
+        
+        $apiClientOrder = new Order($apiKey);
+        $apiClientOrder->setApiUrl($apiUrl);
+        $apiClientOrder->setOrderId($id);
+
+        $apiClientOrder->get();
     }
 }

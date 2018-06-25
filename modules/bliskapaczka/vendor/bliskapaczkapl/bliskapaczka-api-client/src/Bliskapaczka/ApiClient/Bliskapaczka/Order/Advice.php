@@ -15,4 +15,12 @@ use Bliskapaczka\ApiClient\AbstractBliskapaczka;
 class Advice extends Order implements BliskapaczkaInterface
 {
     const REQUEST_URL = 'order/advice';
+
+    /**
+     * Return end of url for request
+     */
+    public function getUrl()
+    {
+        return static::REQUEST_URL;
+    }
 }

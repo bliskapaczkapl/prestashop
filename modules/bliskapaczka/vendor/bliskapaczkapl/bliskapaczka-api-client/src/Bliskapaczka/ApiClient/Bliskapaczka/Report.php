@@ -40,6 +40,19 @@ class Report extends AbstractBliskapaczka implements BliskapaczkaInterface
     }
 
     /**
+     * Set end period date
+     *
+     * @param string $date
+     */
+    public function setEndPeriod($date)
+    {
+        $date = strtotime($date);
+        $dateFormated = date('Y-m-d\TH:i:s', $date);
+
+        $this->endPeriod = $dateFormated;
+    }
+
+    /**
      * Return valid URL for API call get waybill for order
      *
      * @return string
@@ -54,6 +67,10 @@ class Report extends AbstractBliskapaczka implements BliskapaczkaInterface
 
         if (isset($this->startPeriod)) {
             $url .= '?startPeriod=' . $this->startPeriod;
+
+            if (isset($this->endPeriod)) {
+                $url .= '&endPeriod=' . $this->endPeriod;
+            }
         }
 
         return $url;

@@ -2,7 +2,6 @@
 
 namespace Bliskapaczka\ApiClient\Bliskapaczka\Order\Pricing;
 
-use Bliskapaczka\ApiClient\Mappers\Pricing;
 use PHPUnit\Framework\TestCase;
 
 class GetTest extends TestCase

@@ -25,7 +25,7 @@ class Todoor
         $data['receiverPhoneNumber'] = $helper->telephoneNumberCleaning($shippingAddress->phone_mobile);
         $data['receiverEmail'] = $customer->email;
 
-        $street = preg_split("/\s+(?=\S*+$)/" , $shippingAddress->address1);
+        $street = preg_split("/\s+(?=\S*+$)/", $shippingAddress->address1);
 
         $data['receiverStreet'] = $street[0];
         $data['receiverBuildingNumber'] = isset($street[1]) ? $street[1] : '';

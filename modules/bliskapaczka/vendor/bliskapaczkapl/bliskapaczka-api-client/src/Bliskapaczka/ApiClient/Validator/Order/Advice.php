@@ -15,5 +15,19 @@ use Bliskapaczka\ApiClient\Exception;
  */
 class Advice extends Order implements ValidatorInterface
 {
+    /**
+     * Basic validation for data
+     */
+    protected function validationByProperty()
+    {
+        foreach ($this->properties as $property => $settings) {
+            if (!isset($this->data[$property]) && isset($settings['notblank']) && $settings['notblank'] === true) {
+                throw new Exception($property . " is required", 1);
+            }
 
+            $this->notBlank($property, $settings);
+            $this->maxLength($property, $settings);
+            $this->specificValidation($property);
+        }
+    }
 }

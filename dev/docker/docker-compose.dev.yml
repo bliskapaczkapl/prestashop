@@ -2,7 +2,7 @@ version: "3"
 services:
   prestashop:
     build:
-      context: ../../
-      dockerfile: dev/docker/Dockerfile-1.6.0.x
+      context: ./
+      dockerfile: dev/docker/Dockerfile
     volumes:
       - "./modules/bliskapaczka:/var/www/html/modules/bliskapaczka"

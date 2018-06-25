@@ -28,7 +28,10 @@ class Installer
     public function install($helper)
     {
         if ($this->installCarrier($helper) == false ||
-            $this->updateCartAndOrder() == false
+            $this->updateCartAndOrder() == false ||
+            $this->addToOrderInfoAboutBliskapaczkaOrder() == false ||
+            $this->addAdminPanel($helper) == false ||
+            $this->addCourier($helper) == false
         ) {
             return false;
         }
@@ -183,6 +186,156 @@ class Installer
                     );
                 }
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Add new columns to order and cart tables
+     *
+     * @return bool
+     */
+    public function addToOrderInfoAboutBliskapaczkaOrder()
+    {
+        \Db::getInstance()->execute(
+            'ALTER TABLE `' . _DB_PREFIX_ . 'orders`
+            ADD COLUMN `number` TEXT NULL DEFAULT NULL AFTER `pos_operator`,
+            ADD COLUMN `status` TEXT NULL DEFAULT NULL AFTER `number`,
+            ADD COLUMN `delivery_type` TEXT NULL DEFAULT NULL AFTER `status`,
+            ADD COLUMN `creation_date` DATETIME NULL DEFAULT NULL AFTER `delivery_type`,
+            ADD COLUMN `advice_date` DATETIME NULL DEFAULT NULL AFTER `creation_date`,
+            ADD COLUMN `tracking_number` TEXT NULL DEFAULT NULL AFTER `advice_date`;'
+        );
+
+        return true;
+    }
+
+    /**
+     * Add new columns to order and cart tables
+     *
+     * @return bool
+     */
+    public function addAdminPanel($helper)
+    {
+        $tab = new \Tab();
+
+        foreach (\Language::getLanguages() as $language) {
+            $tab->name[$language['id_lang']] = 'Bliskapaczka Orders';
+        }
+
+        $tab->class_name = 'AdminBliskaOrders';
+        $tab->module = $this->config->name;
+        ;
+
+        $idParent = (int)\Tab::getIdFromClassName('AdminParentOrders');
+        $tab->id_parent = $idParent;
+        $tab->position = \Tab::getNbTabs($idParent);
+
+        if (!$tab->save()) {
+            return false;
+        }
+
+        \Configuration::updateValue($helper::BLISKAPACZKA_TAB_ID, $tab->id);
+
+        return true;
+    }
+
+    /**
+     * Add new columns to order and cart tables
+     *
+     * @return bool
+     */
+    public function addCourier($helper)
+    {
+        $carrier = new \Carrier();
+        $carrier->name = $this->config->courier_name;
+        $carrier->id_tax_rules_group = 0;
+        $carrier->active = true;
+        $carrier->deleted = false;
+
+        foreach (\Language::getLanguages(true) as $language) {
+            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
+        }
+
+        $carrier->is_free = false;
+        $carrier->shipping_method = 1;
+        $carrier->shipping_handling = true;
+        $carrier->shipping_external = true;
+        $carrier->is_module = true;
+        $carrier->external_module_name = $this->config->name;
+        $carrier->need_range = true;
+        $carrier->range_behavior = false;
+        $carrier->grade = 0;
+
+        $idCarrier = \Db::getInstance()->getValue(
+            'SELECT id_carrier FROM `ps_carrier` WHERE name = \'' . $this->config->courier_name . '\';'
+        );
+
+        if (!$idCarrier) {
+            if (!$carrier->add()) {
+                return false;
+            }
+
+            \Configuration::updateValue($helper::BLISKAPACZKA_COURIER_CARRIER_ID, (int)$carrier->id);
+
+            // Fix testes
+            $carrier->setTaxRulesGroup((int)$carrier->id_tax_rules_group);
+
+            $this->rangesAndFeeForZone($carrier->id);
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete columns from order
+     *
+     * @return bool
+     */
+    public function deleteToOrderInfoAboutBliskapaczkaOrder()
+    {
+        \Db::getInstance()->execute(
+            'ALTER TABLE `' . _DB_PREFIX_ . 'orders`
+            DROP COLUMN `number`,
+            DROP COLUMN `status`,
+            DROP COLUMN `delivery_type`,
+            DROP COLUMN `creation_date`,
+            DROP COLUMN `advice_date`,
+            DROP COLUMN `tracking_number`;'
+        );
+
+        return true;
+    }
+
+    /**
+     * Delete records from tab and tab_lang
+     *
+     * @return bool
+     */
+    public function deleteAdminPanel()
+    {
+        $teb = new \Carrier($id_carrier);
+
+        if (!$carrier->delete()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete courier carrier from db
+     *
+     * @param int $id_carrier
+     * @return bool
+     */
+    public function deleteCourier($id_tab)
+    {
+        $tab = new \Tab($id_tab);
+
+        if (!$tab->delete()) {
+            return false;
         }
 
         return true;

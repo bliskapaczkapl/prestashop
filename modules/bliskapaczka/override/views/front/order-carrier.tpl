@@ -100,7 +100,7 @@
                                                         {/if}
                                                     {/if}
                                                     {foreach $option.carrier_list as $carrier}
-                                                        {if $carrier.instance->external_module_name == 'bliskapaczka'}
+                                                        {if $carrier.instance->id_reference == $id_carrier_bliskapaczka}
                                                             <br /><strong><a
                                                                 style="padding: 5px;"
                                                                 onclick='Bliskapaczka.showMap(

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pact\Bliskapaczka;
+namespace Bliskapaczka\ApiClient\Bliskapaczka\Todoor;
 
 use PHPUnit\Framework\TestCase;
 

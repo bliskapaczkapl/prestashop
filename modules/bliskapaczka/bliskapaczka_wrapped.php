@@ -75,9 +75,14 @@ class Bliskapaczka extends CarrierModule
         $installer = new Bliskapaczka\Prestashop\Core\Installer($this->config);
 
         $id_carrier = \Configuration::get($bliskapaczkaHelper::BLISKAPACZKA_CARRIER_ID);
+        $id_courier_carrier = \Configuration::get($bliskapaczkaHelper::BLISKAPACZKA_COURIER_CARRIER_ID);
+        $id_tab = \Configuration::get($bliskapaczkaHelper::BLISKAPACZKA_TAB_ID);
 
         if (parent::uninstall() == false ||
-            $installer->uninstall($id_carrier) == false
+            $installer->uninstall($id_carrier) == false ||
+            $installer->deleteToOrderInfoAboutBliskapaczkaOrder() == false ||
+            $installer->deleteAdminPanel($id_tab) == false ||
+            $installer->deleteCourier($id_courier_carrier) == false
         ) {
             return false;
         }
@@ -193,7 +198,7 @@ class Bliskapaczka extends CarrierModule
         $response = $apiClient->create($data);
 
         if ($response) {
-            $this->_saveResponse($order, $response);
+            $this->saveResponse($order, $response);
         }
     }
 
@@ -202,13 +207,12 @@ class Bliskapaczka extends CarrierModule
      * @param json $response
      * @return bool
      */
-    protected function _saveResponse($order, $response)
+    protected function saveResponse($order, $response)
     {
         $decodedResponse = json_decode($response);
 
         //checking reposponce
         if ($response && $decodedResponse instanceof stdClass && empty($decodedResponse->errors)) {
-
             $order->number = strip_tags($decodedResponse->number);
             $order->status = strip_tags($decodedResponse->status);
             $order->delivery_type = strip_tags($decodedResponse->deliveryType);

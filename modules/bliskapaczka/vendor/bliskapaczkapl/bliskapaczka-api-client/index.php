@@ -50,6 +50,20 @@ $pricingData = [
 ];
 var_dump($apiClient->get($pricingData));
 
+$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Pricing\Todoor($apiKey, 'test');
+
+$pricingData = [
+    "parcel" => [
+        "dimensions" => [
+            "height" => 20,
+            "length" => 20,
+            "width" => 20,
+            "weight" => 2
+        ]
+    ]
+];
+var_dump($apiClient->get($pricingData));
+
 $apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill($apiKey, 'test');
 $apiClient->setOrderId('000000636P-000000108');
 
