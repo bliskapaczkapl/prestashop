@@ -214,6 +214,7 @@ class Installer
     /**
      * Add new columns to order and cart tables
      *
+     * @param Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function addAdminPanel($helper)
@@ -243,6 +244,7 @@ class Installer
     /**
      * Add new columns to order and cart tables
      *
+     * @param Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function addCourier($helper)
@@ -326,7 +328,7 @@ class Installer
     /**
      * Delete courier carrier from db
      *
-     * @param int $id_carrier
+     * @param int $id_tab
      * @return bool
      */
     public function deleteCourier($id_tab)

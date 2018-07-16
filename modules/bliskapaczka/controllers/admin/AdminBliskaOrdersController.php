@@ -12,6 +12,9 @@ class AdminBliskaOrdersController extends AdminController
 
     protected $statuses_array = array();
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->bootstrap = true;
@@ -103,6 +106,9 @@ class AdminBliskaOrdersController extends AdminController
         AdminController::__construct();
     }
 
+    /**
+     * Init page header yoolbar
+     */
     public function initPageHeaderToolbar()
     {
         AdminController::initPageHeaderToolbar();
@@ -110,6 +116,9 @@ class AdminBliskaOrdersController extends AdminController
         unset($this->toolbar_btn['new']);
     }
 
+    /**
+     * Mass action get report for choosen orders
+     */
     public function processBulkGetReport()
     {
         if (Tools::isSubmit('submitBulkgetReportorder')) {
@@ -151,9 +160,11 @@ class AdminBliskaOrdersController extends AdminController
             }
         }
 
-        die();
     }
 
+    /**
+     * Render orders list
+     */
     public function renderView()
     {
         $order = new Order(Tools::getValue('id_order'));
@@ -377,6 +388,9 @@ class AdminBliskaOrdersController extends AdminController
         return $products;
     }
 
+    /**
+     * Post process
+     */
     public function postProcess()
     {
         // If id_order is sent, we instanciate a new Order object
@@ -1645,6 +1659,11 @@ class AdminBliskaOrdersController extends AdminController
         parent::postProcess();
     }
 
+    /**
+     * Get Mapper instance for shipping method
+     *
+     * @param string $method
+     */ 
     protected function getMapper($method)
     {
         if ($method == 'bliskapaczka') {

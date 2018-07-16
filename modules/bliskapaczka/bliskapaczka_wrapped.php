@@ -203,7 +203,7 @@ class Bliskapaczka extends CarrierModule
     }
 
     /**
-     * @param $order
+     * @param Order $order
      * @param json $response
      * @return bool
      */
@@ -226,7 +226,6 @@ class Bliskapaczka extends CarrierModule
 
         return false;
     }
-
 
     /**
      * Get shipping cost for order. Shipping cost depends on operator. If operator isn't set method returns lowest cost
