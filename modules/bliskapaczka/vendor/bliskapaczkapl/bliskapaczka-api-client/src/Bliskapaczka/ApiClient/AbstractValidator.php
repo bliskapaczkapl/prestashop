@@ -106,8 +106,10 @@ abstract class AbstractValidator
      */
     public static function email($data)
     {
-        if (filter_var($data, FILTER_VALIDATE_EMAIL) == false) {
-            throw new \Bliskapaczka\ApiClient\Exception('Invalid email', 1);
+        if (!empty($data)) {
+            if (filter_var($data, FILTER_VALIDATE_EMAIL) == false) {
+                throw new \Bliskapaczka\ApiClient\Exception('Invalid email', 1);
+            }
         }
 
         return true;
@@ -120,10 +122,12 @@ abstract class AbstractValidator
      */
     public static function phone($data)
     {
-        preg_match(self::PHONE_NUMBER_PATTERN, $data, $phoneNumberMatches);
+        if (!empty($data)) {
+            preg_match(self::PHONE_NUMBER_PATTERN, $data, $phoneNumberMatches);
 
-        if (!is_array($phoneNumberMatches) || count($phoneNumberMatches) == 0) {
-            throw new \Bliskapaczka\ApiClient\Exception('Invalid phone number', 1);
+            if (!is_array($phoneNumberMatches) || count($phoneNumberMatches) == 0) {
+                throw new \Bliskapaczka\ApiClient\Exception('Invalid phone number', 1);
+            }
         }
 
         return true;
@@ -136,10 +140,12 @@ abstract class AbstractValidator
      */
     public static function postCode($data)
     {
-        preg_match('/^\d{2}\-\d{3}$/', $data, $matches);
+        if (!empty($data)) {
+            preg_match('/^\d{2}\-\d{3}$/', $data, $matches);
 
-        if (!is_array($matches) || count($matches) == 0) {
-            throw new \Bliskapaczka\ApiClient\Exception('Invalid post code', 1);
+            if (!is_array($matches) || count($matches) == 0) {
+                throw new \Bliskapaczka\ApiClient\Exception('Invalid post code', 1);
+            }
         }
 
         return true;

@@ -11,7 +11,6 @@ use Bliskapaczka\ApiClient\Exception;
  * Todoor Validator class
  *
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @version 0.1.0
  */
 class Advice extends Todoor implements ValidatorInterface
 {

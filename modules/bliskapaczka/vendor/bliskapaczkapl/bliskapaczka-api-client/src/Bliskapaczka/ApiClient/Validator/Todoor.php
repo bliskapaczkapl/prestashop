@@ -10,7 +10,6 @@ use Bliskapaczka\ApiClient\Exception;
  * Todoor Mapper class
  *
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @version 0.1.0
  */
 class Todoor extends AbstractValidator implements ValidatorInterface
 {

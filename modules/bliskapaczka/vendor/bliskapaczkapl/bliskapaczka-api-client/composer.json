@@ -10,7 +10,8 @@
         "phpmd/phpmd": "^2.4",
         "sebastian/phpcpd":"^2.0",
         "block8/php-docblock-checker":"^1.1",
-        "phploc/phploc":"^3.0"
+        "phploc/phploc":"^3.0",
+        "sensiolabs/security-checker": "4.*"
     },
     "type": "api client",
     "autoload": {

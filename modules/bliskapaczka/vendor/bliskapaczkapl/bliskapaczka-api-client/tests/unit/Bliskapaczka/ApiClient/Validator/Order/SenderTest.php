@@ -47,6 +47,67 @@ class SenderTest extends TestCase
         $order->validate();
     }
 
+    public function testSenderPostCodeIfEmptyOrNotSet()
+    {
+        $this->orderData['senderPostCode'] = '';
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+
+        unset($this->orderData['senderPostCode']);
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    public function testSenderPhoneNumberIfEmptyOrNotSet()
+    {
+        $this->orderData['senderPhoneNumber'] = '';
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+
+        unset($this->orderData['senderPhoneNumber']);
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    public function testSenderEmailIfEmptyOrNotSet()
+    {
+        $this->orderData['senderEmail'] = '';
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+
+        unset($this->orderData['senderEmail']);
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    public function testSenderCityIfEmptyOrNotSet()
+    {
+        $this->orderData['senderCity'] = '';
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+
+        unset($this->orderData['senderCity']);
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+
     public function testReceiverPhoneNumberShouldntbeValidated()
     {
         $this->orderData['receiverPhoneNumber'] = 'string';

@@ -12,6 +12,22 @@ class ReportTest extends TestCase
         $this->assertTrue(class_exists('Bliskapaczka\ApiClient\Bliskapaczka\Report'));
     }
 
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessage Please set valid operator name or valid order numbers
+     */
+    public function testGetForEmptyOperatorAndNumbers()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiUrl = 'http://localhost:1234';
+        $id = '';
+
+        $apiClientReport = new Report($apiKey);
+        $apiClientReport->setApiUrl($apiUrl);
+
+        $apiClientReport->get();
+    }
+
     public function testGetUrl()
     {
         $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
@@ -60,6 +76,35 @@ class ReportTest extends TestCase
         $apiClientReport = new Report($apiKey);
         $apiClientReport->setApiUrl($apiUrl);
         $apiClientReport->setOperator($operator);
+
+        $apiClientReport->get();
+    }
+
+    public function testGetUrlWithNumbers()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiUrl = 'http://localhost:1234';
+        $numbers = '000000001P-0000000001,000000001P-0000000002';
+
+        $apiClientReport = new Report($apiKey);
+        $apiClientReport->setApiUrl($apiUrl);
+        $apiClientReport->setNumbers($numbers);
+
+        $this->assertEquals(
+            'report/pickupconfirmation?numbers=' . $numbers,
+            $apiClientReport->getUrl()
+        );
+    }
+
+    public function testGetNumbers()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiUrl = 'http://localhost:1234';
+        $numbers = '000000001P-0000000001,000000001P-0000000002';
+
+        $apiClientReport = new Report($apiKey);
+        $apiClientReport->setApiUrl($apiUrl);
+        $apiClientReport->setNumbers($numbers);
 
         $apiClientReport->get();
     }

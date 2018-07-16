@@ -1,8 +1,7 @@
 <?php
 
-namespace  Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill;
+namespace Bliskapaczka\ApiClient\Bliskapaczka\Pos;
 
-use Bliskapaczka\ApiClient\Mappers\Pricing;
 use PHPUnit\Framework\TestCase;
 
 class GetTest extends TestCase
@@ -15,21 +14,29 @@ class GetTest extends TestCase
             $this->host = 'localhost:1234';
         }
 
-        $this->orderId = '000000001P-000000002';
+        $this->operator = 'inpost';
+        $this->pointCode = 'GRU340';
 
         $this->deleteInteractions();
         $this->setInteraction();
     }
 
-    public function testGetWaybill()
+    public function testGetPos()
     {
-        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill('test-test-test-test');
-        $apiClient->setApiUrl($this->host);
-        $apiClient->setOrderId($this->orderId);
 
-        $response = json_decode($apiClient->get());
+        $apiClientPos = new \Bliskapaczka\ApiClient\Bliskapaczka\Pos('test-test-test-test');
+        $apiClientPos->setApiUrl($this->host . '/api');
+        $apiClientPos->setOperator($this->operator);
+        $apiClientPos->setPointCode($this->pointCode);
 
-        $this->assertEquals('https://storage.googleapis.com/000000001P-000000002.pdf', $response->url);
+        $response = json_decode($apiClientPos->get());
+
+        $this->assertEquals('INPOST', $response->operator);
+        $this->assertEquals('GRU340', $response->code);
+        $this->assertEquals('Przy markecie KAUFLAND', $response->description);
+        $this->assertEquals("Piłsudskiego 10", $response->street);
+        $this->assertEquals('86-300', $response->postalCode);
+        $this->assertEquals("Grudziądz", $response->city);
     }
 
     /**
@@ -70,11 +77,11 @@ class GetTest extends TestCase
 
         $options[CURLOPT_POST] = true;
         $options[CURLOPT_POSTFIELDS] = '{
-  "description": "Get waybill URL for order",
-  "provider_state": "API should return URL",
+  "description": "Get pos info",
+  "provider_state": "Return all information about existing point",
   "request": {
     "method": "get",
-    "path": "/v1/order/' . $this->orderId . '/waybill"
+    "path": "/api/v1/pos/' . $this->operator . '/' . $this->pointCode . '"
   },
   "response": {
     "status": 200,
@@ -82,7 +89,55 @@ class GetTest extends TestCase
       "Content-Type": "application/json"
     },
     "body": {
-      "url" : "https://storage.googleapis.com/000000001P-000000002.pdf"
+      "operator": "INPOST",
+      "operatorPretty": "InPost",
+      "brand": "INPOST",
+      "brandPretty": "Punkt sieci InPost",
+      "postingPoint": true,
+      "deliveryPoint": true,
+      "cod": true,
+      "code": "GRU340",
+      "street": "Pi\u0142sudskiego 10",
+      "city": "Grudzi\u0105dz",
+      "postalCode": "86-300",
+      "district": null,
+      "province": "Pomorskie",
+      "longitude": 18.75643,
+      "latitude": 53.48867,
+      "openingHoursMap": {
+        "WEDNESDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        },
+        "MONDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        },
+        "THURSDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        },
+        "SUNDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        },
+        "FRIDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        },
+        "TUESDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        },
+        "SATURDAY": {
+          "from": "00:00",
+          "to": "23:59"
+        }
+      },
+      "description": "Przy markecie KAUFLAND",
+      "available": true,
+      "paymentPointDesc": "P\u0142atno\u015b\u0107 kart\u0105 wy\u0142\u0105cznie w paczkomacie.' .
+        'Dost\u0119pno\u015b\u0107: 24\/7"
     }
   }
 }';

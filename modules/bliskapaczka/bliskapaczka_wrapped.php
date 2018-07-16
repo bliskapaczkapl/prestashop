@@ -221,7 +221,6 @@ class Bliskapaczka extends CarrierModule
             $order->tracking_number = strip_tags($decodedResponse->trackingNumber);
 
             $order->save();
-
             return true;
         }
 

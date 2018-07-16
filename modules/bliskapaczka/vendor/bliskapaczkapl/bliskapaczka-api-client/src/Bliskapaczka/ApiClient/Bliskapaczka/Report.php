@@ -10,20 +10,29 @@ use Bliskapaczka\ApiClient\Exception;
  * Bliskapaczka class
  *
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @version 0.1.0
  */
 class Report extends AbstractBliskapaczka implements BliskapaczkaInterface
 {
     const REQUEST_URL = 'report/pickupconfirmation/[[operator]]';
 
     /**
-     * Set order id
+     * Set operator name
      *
      * @param string $operator
      */
     public function setOperator($operator)
     {
         $this->operator = $operator;
+    }
+
+    /**
+     * Set order ids
+     *
+     * @param string $numbers
+     */
+    public function setNumbers($numbers)
+    {
+        $this->numbers = $numbers;
     }
 
     /**
@@ -59,17 +68,27 @@ class Report extends AbstractBliskapaczka implements BliskapaczkaInterface
      */
     public function getUrl()
     {
-        if (!isset($this->operator) || empty($this->operator)) {
-            throw new  Exception('Please set valid operator name', 1);
+        if ((!isset($this->operator) || empty($this->operator)) &&
+            (!isset($this->numbers) || empty($this->numbers))
+        ) {
+            throw new  Exception('Please set valid operator name or valid order numbers', 1);
         }
 
-        $url = str_replace('[[operator]]', $this->operator, self::REQUEST_URL);
+        if (isset($this->numbers)) {
+            $url = str_replace('/[[operator]]', '', self::REQUEST_URL);
 
-        if (isset($this->startPeriod)) {
-            $url .= '?startPeriod=' . $this->startPeriod;
+            $url .= '?numbers=' . $this->numbers;
+        }
 
-            if (isset($this->endPeriod)) {
-                $url .= '&endPeriod=' . $this->endPeriod;
+        if (isset($this->operator)) {
+            $url = str_replace('[[operator]]', $this->operator, self::REQUEST_URL);
+
+            if (isset($this->startPeriod)) {
+                $url .= '?startPeriod=' . $this->startPeriod;
+
+                if (isset($this->endPeriod)) {
+                    $url .= '&endPeriod=' . $this->endPeriod;
+                }
             }
         }
 

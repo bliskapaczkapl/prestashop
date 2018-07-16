@@ -61,6 +61,15 @@ class AdviceTest extends TestCase
         $order->validate();
     }
 
+    public function testValidForSavedOrder()
+    {
+        $this->orderData['number'] = '000000001P-000000002';
+
+        $order = new Advice();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
     /**
      * @expectedException Bliskapaczka\ApiClient\Exception
      * @expectedExceptionMessageRegExp /Invalid \w+/

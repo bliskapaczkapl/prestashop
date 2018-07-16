@@ -4,6 +4,7 @@ docker run --rm -v $(pwd):/app -v ~/.composer:/tmp/composer -e COMPOSER_HOME=/tm
 
 sudo chown -R $(id -u):$(id -g) .
 
+$VENDOR_DIR/bin/security-checker security:check ./composer.lock
 $VENDOR_DIR/bin/phpcs -s --colors --standard=rules.xml --ignore=modules/bliskapaczka/vendor/* modules/
 $VENDOR_DIR/bin/phpmd modules/ text codesize --exclude modules/bliskapaczka/vendor
 $VENDOR_DIR/bin/phpcpd --exclude vendor modules/

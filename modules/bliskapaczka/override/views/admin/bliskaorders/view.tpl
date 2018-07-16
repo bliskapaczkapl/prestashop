@@ -149,6 +149,12 @@
                         </div>
                     </div>
                     <div class="row">
+                        <label class="control-label col-lg-3">Status</label>
+                        <div class="col-lg-9">
+                            <p class="form-control-static">{$order->status}</p>
+                        </div>
+                    </div>
+                    <div class="row">
                         <label class="control-label col-lg-3">Delivery type</label>
                         <div class="col-lg-9">
                             <p class="form-control-static">{$order->delivery_type}</p>

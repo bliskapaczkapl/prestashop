@@ -98,14 +98,13 @@ class Order extends OrderCore
             'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
             'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
             'pos_code' => array('type' => self::TYPE_STRING),
-            'pos_operator' => array('type' => self::TYPE_STRING,
+            'pos_operator' => array('type' => self::TYPE_STRING),
             'number' => array('type' => self::TYPE_STRING),
             'status' => array('type' => self::TYPE_STRING),
             'delivery_type' => array('type' => self::TYPE_STRING),
             'creation_date' => array('type' => self::TYPE_STRING),
             'advice_date' => array('type' => self::TYPE_STRING),
             'tracking_number' => array('type' => self::TYPE_STRING),
-            ),
         ),
     );
 

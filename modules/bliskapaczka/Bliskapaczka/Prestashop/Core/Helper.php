@@ -161,7 +161,7 @@ class Helper
      */
     public function getOperatorsForWidget($priceList = array(), $freeShipping = false)
     {
-        if (!$priceList) {
+        if (!$priceList || empty($priceList)) {
             $priceList = $this->getPriceList();
         }
         $operators = array();
@@ -343,6 +343,21 @@ class Helper
     public function getApiClientWaybill()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientReport()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Report(
             \Configuration::get(self::API_KEY),
             $this->getApiMode(\Configuration::get(self::TEST_MODE))
         );

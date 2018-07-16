@@ -25,7 +25,6 @@ class AdminBliskaOrdersController extends AdminController
         $this->context = Context::getContext();
 
         $this->_select = '
-        
 		a.id_currency,
 		a.id_order AS id_pdf,
 		CONCAT(LEFT(c.`firstname`, 1), \'. \', c.`lastname`) AS `customer`,
@@ -87,8 +86,6 @@ class AdminBliskaOrdersController extends AdminController
             ),
         );
 
-
-
         $this->shopLinkType = 'shop';
         $this->shopShareDatas = Shop::SHARE_ORDER;
 
@@ -99,6 +96,10 @@ class AdminBliskaOrdersController extends AdminController
             $this->context->customer = new Customer($order->id_customer);
         }
 
+        $this->bulk_actions = array(
+            'getReport' => array('text' => $this->l('Get Report'), 'icon' => 'icon-download-alt')
+        );
+
         AdminController::__construct();
     }
 
@@ -107,6 +108,50 @@ class AdminBliskaOrdersController extends AdminController
         AdminController::initPageHeaderToolbar();
 
         unset($this->toolbar_btn['new']);
+    }
+
+    public function processBulkGetReport()
+    {
+        if (Tools::isSubmit('submitBulkgetReportorder')) {
+            /* We need call autoloader */
+            Module::getInstanceByName('bliskapaczka');
+
+            $numbers = '';
+
+            foreach (Tools::getValue('orderBox') as $id_order) {
+                $order = new Order($id_order);
+
+                if ($numbers && $order->number) {
+                    $numbers .= ',' . $order->number;
+                } else {
+                    $numbers = $order->number;
+                }
+            }
+
+            /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+            $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+
+            /* @var $apiClient \Bliskapaczka\ApiClient\Bliskapaczka\Order */
+            $apiClient = $bliskapaczkaHelper->getApiClientReport();
+            $apiClient->setNumbers($numbers);
+
+            try {
+                $content = $apiClient->get();
+            } catch (Exception $e) {
+                $this->errors[] = Tools::displayError('The report file has not been downloaded. ' . $e->getMessage());
+            }
+
+            if ($content) {
+                header("Content-Type: application/pdf");
+                header("Content-Disposition: inline; filename=filename.pdf");
+                header('Content-Transfer-Encoding: binary');
+                header('Accept-Ranges: bytes');
+                echo $content;
+                exit();
+            }
+        }
+
+        die();
     }
 
     public function renderView()
@@ -1510,26 +1555,26 @@ class AdminBliskaOrdersController extends AdminController
             $customer = new \Customer((int)$order->id_customer);
             $configuration = new \Configuration();
 
-            $data      = $mapper->getData($order, $shippingAddress, $customer, $bliskapaczkaHelper, $configuration);
+            $data = $mapper->getData($order, $shippingAddress, $customer, $bliskapaczkaHelper, $configuration);
             $apiClient = $bliskapaczkaHelper->getApiClientForAdvice($method);
 
-            $apiClient->setOrderId($this->getNumber());
+            $apiClient->setOrderId($order->number);
 
-            $response = $apiClient->create($data);
+            try {
+                $response = $apiClient->create($data);
 
-            $decodedResponse = json_decode($response);
+                $decodedResponse = json_decode($response);
 
-            $properResponse = $decodedResponse instanceof stdClass && empty($decodedResponse->errors);
+                $properResponse = $decodedResponse instanceof stdClass && empty($decodedResponse->errors);
 
-            //checking reposponce
-            if ($response && $properResponse) {
-                $order->status = strip_tags($decodedResponse->status);
-                $order->advice_date(strip_tags($decodedResponse->adviceDate));
-                $order->save();
-            } else {
-                $message = ($decodedResponse ? current($decodedResponse->errors)->message : '');
-
-                $this->errors[] = Tools::displayError('Bliskapaczka: Error or empty API response' . ' ' . $message);
+                //checking reposponce
+                if ($response && $properResponse) {
+                    $order->status = strip_tags($decodedResponse->status);
+                    $order->advice_date = strip_tags($decodedResponse->adviceDate);
+                    $order->save();
+                }
+            } catch(Exception $e) {
+                $this->errors[] = Tools::displayError($e->getMessage());
             }
         } elseif (Tools::isSubmit('bliskaUpdate') && isset($order)) {
             Module::getInstanceByName('bliskapaczka');

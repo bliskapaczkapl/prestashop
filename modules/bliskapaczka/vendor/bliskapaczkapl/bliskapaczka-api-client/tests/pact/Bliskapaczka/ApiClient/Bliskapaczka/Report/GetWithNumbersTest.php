@@ -1,10 +1,10 @@
 <?php
 
-namespace Bliskapaczka\ApiClient\Bliskapaczka\Order\Pricing;
+namespace  Bliskapaczka\ApiClient\Bliskapaczka;
 
 use PHPUnit\Framework\TestCase;
 
-class GetTest extends TestCase
+class GetWithNumbersTest extends TestCase
 {
     protected function setUp()
     {
@@ -14,32 +14,31 @@ class GetTest extends TestCase
             $this->host = 'localhost:1234';
         }
 
-        $this->pricingData = [
-            "dimensions" => [
-                "height" => 20,
-                "length" => 20,
-                "width" => 20,
-                "weight" => 2
-            ]
-        ];
+        $this->reportFile = __DIR__ . '/../../../../../data/pact/Bliskapaczka/ApiClient/Bliskapaczka/Report/report.pdf';
+        $this->numbers = '000000001P-0000000001,000000001P-0000000002';
 
         $this->deleteInteractions();
         $this->setInteraction();
     }
 
-    public function testGetPricing()
+    public function testGetReport()
     {
-        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Pricing('test-test-test-test');
+        $testFile = '/tmp/test_3.pdf';
+
+        $apiClient = new Report('test-test-test-test');
         $apiClient->setApiUrl($this->host);
+        $apiClient->setNumbers($this->numbers);
 
-        $response = json_decode($apiClient->get($this->pricingData));
+        $response = $apiClient->get();
 
-        $this->assertEquals('INPOST', $response[0]->operatorName);
-        $this->assertTrue($response[0]->availabilityStatus);
-        $this->assertEquals('RUCH', $response[1]->operatorName);
-        $this->assertTrue($response[1]->availabilityStatus);
-        $this->assertEquals('POCZTA', $response[2]->operatorName);
-        $this->assertTrue($response[2]->availabilityStatus);
+        // HACK FOR MOCKING!!!
+        // base64_decode for file contet
+        // In real response we have file content
+        file_put_contents($testFile, base64_decode($response));
+
+        $this->assertEquals('application/pdf', mime_content_type($testFile));
+
+        unlink($testFile);
     }
 
     /**
@@ -79,50 +78,24 @@ class GetTest extends TestCase
         $options[CURLOPT_HTTPHEADER] = $headers;
 
         $options[CURLOPT_POST] = true;
+
+        // HACK FOR MOCKING!!!
+        // base64_encode for file contet
+        // In real response we have file content
         $options[CURLOPT_POSTFIELDS] = '{
-  "description": "Get pricing list",
-  "provider_state": "Pricing list for all",
+  "description": "Get report file with given param numbers",
+  "provider_state": "API should return valid pdf file",
   "request": {
-    "method": "post",
-    "path": "/v1/pricing"
+    "method": "get",
+    "path": "/v1/report/pickupconfirmation",
+    "query": "numbers=' . $this->numbers . '"
   },
   "response": {
     "status": 200,
     "headers": {
-      "Content-Type": "application/json"
+      "Content-Type": "application/pdf"
     },
-    "body": [
-      {
-        "operatorName" : "INPOST",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 8.35,
-          "vat" : 1.92,
-          "gross" : 10.27
-        },
-        "unavailabilityReason" : null
-      },
-      {
-        "operatorName" : "RUCH",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 4.87,
-          "vat" : 1.12,
-          "gross" : 5.99
-        },
-        "unavailabilityReason" : null
-      },
-      {
-        "operatorName" : "POCZTA",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 7.31,
-          "vat" : 1.68,
-          "gross" : 8.99
-        },
-        "unavailabilityReason" : null
-      }
-    ]
+    "body": "' . base64_encode(file_get_contents($this->reportFile)) . '"
   }
 }';
 

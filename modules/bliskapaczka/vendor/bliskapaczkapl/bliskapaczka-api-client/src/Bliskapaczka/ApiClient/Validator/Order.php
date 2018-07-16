@@ -10,7 +10,6 @@ use Bliskapaczka\ApiClient\Exception;
  * Order Validator class
  *
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @version 0.1.0
  */
 class Order extends AbstractValidator implements ValidatorInterface
 {

@@ -9,7 +9,6 @@ use Bliskapaczka\ApiClient\AbstractBliskapaczka;
  * Bliskapaczka class
  *
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @version 0.1.0
  */
 class Pricing extends AbstractBliskapaczka implements BliskapaczkaInterface
 {

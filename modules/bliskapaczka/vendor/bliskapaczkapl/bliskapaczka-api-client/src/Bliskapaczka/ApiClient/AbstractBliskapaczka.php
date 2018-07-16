@@ -11,7 +11,6 @@ use Bliskapaczka\ApiClient\Exception;
  * Bliskapaczka class
  *
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @version 0.1.0
  */
 abstract class AbstractBliskapaczka
 {

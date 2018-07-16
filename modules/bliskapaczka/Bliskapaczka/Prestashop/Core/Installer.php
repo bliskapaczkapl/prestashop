@@ -226,7 +226,6 @@ class Installer
 
         $tab->class_name = 'AdminBliskaOrders';
         $tab->module = $this->config->name;
-        ;
 
         $idParent = (int)\Tab::getIdFromClassName('AdminParentOrders');
         $tab->id_parent = $idParent;
