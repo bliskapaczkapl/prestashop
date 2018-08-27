@@ -22,16 +22,16 @@ class Installer
     /**
      * Insert data to db
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function install($helper)
     {
-        if ($this->installCarrier($helper) == false ||
-            $this->updateCartAndOrder() == false ||
-            $this->addToOrderInfoAboutBliskapaczkaOrder() == false ||
-            $this->addAdminPanel($helper) == false ||
-            $this->addCourier($helper) == false
+        if ($this->installCarrier($helper) == false
+            || $this->updateCartAndOrder() == false
+            || $this->addToOrderInfoAboutBliskapaczkaOrder() == false
+            || $this->addAdminPanel($helper) == false
+            || $this->addCourier($helper) == false
         ) {
             return false;
         }
@@ -42,7 +42,7 @@ class Installer
     /**
      * Delete module data from db
      *
-     * @param int $id_carrier
+     * @param  int $id_carrier
      * @return bool
      */
     public function uninstall($id_carrier)
@@ -59,7 +59,7 @@ class Installer
     /**
      * Add new carrier
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     private function installCarrier($helper)
@@ -214,7 +214,7 @@ class Installer
     /**
      * Add new columns to order and cart tables
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function addAdminPanel($helper)
@@ -225,7 +225,7 @@ class Installer
             $tab->name[$language['id_lang']] = 'Bliskapaczka Orders';
         }
 
-        $tab->class_name = 'AdminBliskaOrders';
+        $tab->class_name = 'AdminOrders';
         $tab->module = $this->config->name;
 
         $idParent = (int)\Tab::getIdFromClassName('AdminParentOrders');
@@ -244,7 +244,7 @@ class Installer
     /**
      * Add new columns to order and cart tables
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function addCourier($helper)
@@ -328,7 +328,7 @@ class Installer
     /**
      * Delete courier carrier from db
      *
-     * @param int $id_tab
+     * @param  int $id_tab
      * @return bool
      */
     public function deleteCourier($id_tab)

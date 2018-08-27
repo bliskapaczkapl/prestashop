@@ -1,6 +1,8 @@
 <?php
 namespace Bliskapaczka\Prestashop\Core\Mapper;
 
+use Bliskapaczka\Prestashop\Core\Helper;
+
 /**
  * Class to map order data to data acceptable by Sendit Bliskapaczka API
  */
@@ -9,11 +11,11 @@ class Order
     /**
      * Prepare mapped data
      *
-     * @param Order $order
-     * @param Address $shippingAddress
-     * @param Customer $customer
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
-     * @param \Configuration $configuration
+     * @param  \Order         $order
+     * @param  \Address       $shippingAddress
+     * @param  \Customer      $customer
+     * @param  Helper         $helper
+     * @param  \Configuration $configuration
      * @return array
      */
     public function getData($order, $shippingAddress, $customer, $helper, $configuration)
@@ -40,7 +42,7 @@ class Order
     /**
      * Get parcel dimensions in format accptable by Bliskapaczka API
      *
-     * @param \Bliskapaczka\Prestashop\Core\$helper $helper
+     * @param  \Bliskapaczka\Prestashop\Core\ $helper $helper
      * @return array
      */
     private function getParcelDimensions($helper)
@@ -51,10 +53,10 @@ class Order
     /**
      * Prepare sender data in fomrat accptable by Bliskapaczka API
      *
-     * @param array $data
-     * @param \Bliskapaczka\Prestashop\Core\$helper $helper
-     * @param \Configuration $configuration
-     * @return array
+     * @param                                        array          $data
+     * @param                                        Helper         $helper
+     * @param                                        \Configuration $configuration
+     * @return                                       array
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
