@@ -161,7 +161,7 @@ class Helper
      */
     public function getOperatorsForWidget($priceList = array(), $freeShipping = false)
     {
-        if (!$priceList || empty($priceList)) {
+        if (empty($priceList)) {
             $priceList = $this->getPriceList();
         }
         $operators = array();
@@ -197,14 +197,11 @@ class Helper
         // Ligic coppied from override/views/front/order-carrier.tpl
         if ($option['total_price_with_tax']
             && !$option['is_free']
-            && (!isset($freeShipping) || (isset($freeShipping) && !$freeShipping))
+            && empty($freeShipping)
         ) {
-            $bliskapaczkaFreeShipping = false;
-        } else {
-            $bliskapaczkaFreeShipping = true;
+            return false;
         }
-
-        return $bliskapaczkaFreeShipping;
+        return true;
     }
 
     /**
@@ -390,15 +387,11 @@ class Helper
      */
     public function getApiMode($configValue = '')
     {
-        $mode = '';
+        $mode = 'prod';
 
         switch ($configValue) {
             case '1':
                 $mode = 'test';
-                break;
-
-            default:
-                $mode = 'prod';
                 break;
         }
 
@@ -437,48 +430,34 @@ class Helper
      * Get method name to bliskapaczka api client create order action
      *
      * @param  string $method
-     * @param  string $autoAdvice
      * @return string
      */
     public function getApiClientForAdviceMethodName($method)
     {
         $type = 'Order';
         switch ($method) {
-            case 'bliskapaczka':
-                $type = 'Order';
-                break;
-
             case 'bliskapaczka_courier':
                 $type = 'Todoor';
                 break;
         }
 
-        $methodName = 'getApiClient' . $type . 'Advice';
-
-        return $methodName;
+        return 'getApiClient' . $type . 'Advice';
     }
 
     /**
      * Get method name to bliskapaczka api client create order action
      *
      * @param  string $method
-     * @param  string $autoAdvice
      * @return string
      */
     public function getApiClientForOrderMethodName($method)
     {
+        $type = 'Order';
         switch ($method) {
-            case 'bliskapaczka':
-                $type = 'Order';
-                break;
-
             case 'bliskapaczka_courier':
                 $type = 'Todoor';
                 break;
         }
-
-        $methodName = 'getApiClient' . $type;
-
-        return $methodName;
+        return 'getApiClient' . $type;
     }
 }

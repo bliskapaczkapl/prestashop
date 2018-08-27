@@ -210,21 +210,20 @@ class Bliskapaczka extends CarrierModule
     protected function saveResponse($order, $response)
     {
         $decodedResponse = json_decode($response);
-
-        //checking reposponce
-        if ($response && $decodedResponse instanceof stdClass && empty($decodedResponse->errors)) {
-            $order->number = strip_tags($decodedResponse->number);
-            $order->status = strip_tags($decodedResponse->status);
-            $order->delivery_type = strip_tags($decodedResponse->deliveryType);
-            $order->creation_date = strip_tags($decodedResponse->creationDate);
-            $order->advice_date = strip_tags($decodedResponse->adviceDate);
-            $order->tracking_number = strip_tags($decodedResponse->trackingNumber);
-
-            $order->save();
-            return true;
+        if (json_last_error() !== JSON_ERROR_NONE || !empty($decodedResponse->errors)) {
+            return false;
         }
+        //checking reposponce
 
-        return false;
+        $order->number = strip_tags($decodedResponse->number);
+        $order->status = strip_tags($decodedResponse->status);
+        $order->delivery_type = strip_tags($decodedResponse->deliveryType);
+        $order->creation_date = strip_tags($decodedResponse->creationDate);
+        $order->advice_date = strip_tags($decodedResponse->adviceDate);
+        $order->tracking_number = strip_tags($decodedResponse->trackingNumber);
+
+        $order->save();
+        return true;
     }
 
     /**

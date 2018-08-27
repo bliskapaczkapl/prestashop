@@ -66,23 +66,7 @@ class Installer
     {
         $carrier = new \Carrier();
         $carrier->name = $this->config->name;
-        $carrier->id_tax_rules_group = 0;
-        $carrier->active = true;
-        $carrier->deleted = false;
-
-        foreach (\Language::getLanguages(true) as $language) {
-            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
-        }
-        
-        $carrier->is_free = false;
-        $carrier->shipping_method = 1;
-        $carrier->shipping_handling = true;
-        $carrier->shipping_external = true;
-        $carrier->is_module = true;
-        $carrier->external_module_name = $this->config->name;
-        $carrier->need_range = true;
-        $carrier->range_behavior = false;
-        $carrier->grade = 0;
+        $carrier = $this->prepareCarrierObject($carrier);
 
         if (!$carrier->add()) {
             return false;
@@ -251,23 +235,7 @@ class Installer
     {
         $carrier = new \Carrier();
         $carrier->name = $this->config->courier_name;
-        $carrier->id_tax_rules_group = 0;
-        $carrier->active = true;
-        $carrier->deleted = false;
-
-        foreach (\Language::getLanguages(true) as $language) {
-            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
-        }
-
-        $carrier->is_free = false;
-        $carrier->shipping_method = 1;
-        $carrier->shipping_handling = true;
-        $carrier->shipping_external = true;
-        $carrier->is_module = true;
-        $carrier->external_module_name = $this->config->name;
-        $carrier->need_range = true;
-        $carrier->range_behavior = false;
-        $carrier->grade = 0;
+        $carrier = $this->prepareCarrierObject($carrier);
 
         $idCarrier = \Db::getInstance()->getValue(
             'SELECT id_carrier FROM `ps_carrier` WHERE name = \'' . $this->config->courier_name . '\';'
@@ -289,6 +257,31 @@ class Installer
         return true;
     }
 
+    /**
+     * @param \Carrier $carrier
+     * @return \Carrier
+     */
+    protected function prepareCarrierObject(\Carrier $carrier)
+    {
+        $carrier->id_tax_rules_group = 0;
+        $carrier->active = true;
+        $carrier->deleted = false;
+
+        foreach (\Language::getLanguages(true) as $language) {
+            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
+        }
+
+        $carrier->is_free = false;
+        $carrier->shipping_method = 1;
+        $carrier->shipping_handling = true;
+        $carrier->shipping_external = true;
+        $carrier->is_module = true;
+        $carrier->external_module_name = $this->config->name;
+        $carrier->need_range = true;
+        $carrier->range_behavior = false;
+        $carrier->grade = 0;
+        return $carrier;
+    }
     /**
      * Delete columns from order
      *
