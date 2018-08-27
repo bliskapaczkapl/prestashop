@@ -31,6 +31,6 @@ jobs:
         - docker push bliskapaczkapl/prestashop:$COMMIT;
       php: 5.6
       after_success:
-        - if [ "$TRAVIS_BRANCH" == "master" ]; then
+        - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
           docker push bliskapaczkapl/prestashop:latest;
           fi
