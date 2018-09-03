@@ -81,8 +81,8 @@ class Helper
     /**
      * Get lowest price from pricing list
      *
-     * @param array $priceList - price list
-     * @param bool $taxInc - return price with tax
+     * @param  array $priceList - price list
+     * @param  bool  $taxInc    - return price with tax
      * @return float
      */
     public function getLowestPrice($priceList, $taxInc = true)
@@ -115,9 +115,9 @@ class Helper
     /**
      * Get price for specific carrier
      *
-     * @param array $priceList
-     * @param string $carrierName
-     * @param bool $taxInc
+     * @param  array  $priceList
+     * @param  string $carrierName
+     * @param  bool   $taxInc
      * @return float
      */
     public function getPriceForCarrier($priceList, $carrierName, $taxInc = true)
@@ -155,13 +155,13 @@ class Helper
     /**
      * Get widget configuration
      *
-     * @param array $priceList
-     * @param bool $freeShipping
+     * @param  array $priceList
+     * @param  bool  $freeShipping
      * @return array
      */
     public function getOperatorsForWidget($priceList = array(), $freeShipping = false)
     {
-        if (!$priceList || empty($priceList)) {
+        if (empty($priceList)) {
             $priceList = $this->getPriceList();
         }
         $operators = array();
@@ -197,20 +197,17 @@ class Helper
         // Ligic coppied from override/views/front/order-carrier.tpl
         if ($option['total_price_with_tax']
             && !$option['is_free']
-            && (!isset($freeShipping) || (isset($freeShipping) && !$freeShipping))
+            && empty($freeShipping)
         ) {
-            $bliskapaczkaFreeShipping = false;
-        } else {
-            $bliskapaczkaFreeShipping = true;
+            return false;
         }
-
-        return $bliskapaczkaFreeShipping;
+        return true;
     }
 
     /**
      * Return bliskapaczka.pl module settings like in cart
      *
-     * @param Cart $cart
+     * @param  Cart $cart
      * @return array
      */
     private function carrierSettings($cart)
@@ -280,7 +277,7 @@ class Helper
      *
      * @return \Bliskapaczka\ApiClient\Bliskapaczka
      */
-    public function getApiClientTodoorAdvice()
+    public function getApiClientAdvice()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Todoor\Advice(
             \Configuration::get(self::API_KEY),
@@ -368,7 +365,7 @@ class Helper
     /**
      * Remove all non numeric chars from phone number
      *
-     * @param string $phoneNumber
+     * @param  string $phoneNumber
      * @return string
      */
     public function telephoneNumberCleaning($phoneNumber)
@@ -385,20 +382,16 @@ class Helper
     /**
      * Get API mode
      *
-     * @param string $configValue
+     * @param  string $configValue
      * @return string
      */
     public function getApiMode($configValue = '')
     {
-        $mode = '';
+        $mode = 'prod';
 
         switch ($configValue) {
             case '1':
                 $mode = 'test';
-                break;
-
-            default:
-                $mode = 'prod';
                 break;
         }
 
@@ -408,8 +401,8 @@ class Helper
     /**
      * Get method name to bliskapaczka api client create order action
      *
-     * @param string $method
-     * @param string $autoAdvice
+     * @param  string $method
+     * @param  string $autoAdvice
      * @return string
      */
     public function getApiClientForAdvice($method)
@@ -422,8 +415,8 @@ class Helper
     /**
      * Get method name to bliskapaczka api client create order action
      *
-     * @param string $method
-     * @param string $autoAdvice
+     * @param  string $method
+     * @param  string $autoAdvice
      * @return string
      */
     public function getApiClientForOrder($method)
@@ -436,48 +429,35 @@ class Helper
     /**
      * Get method name to bliskapaczka api client create order action
      *
-     * @param string $method
-     * @param string $autoAdvice
+     * @param  string $method
      * @return string
      */
     public function getApiClientForAdviceMethodName($method)
     {
+        $type = 'Order';
         switch ($method) {
-            case 'bliskapaczka':
-                $type = 'Order';
-                break;
-
             case 'bliskapaczka_courier':
                 $type = 'Todoor';
                 break;
         }
 
-        $methodName = 'getApiClient' . $type . 'Advice';
-
-        return $methodName;
+        return 'getApiClient' . $type . 'Advice';
     }
 
     /**
      * Get method name to bliskapaczka api client create order action
      *
-     * @param string $method
-     * @param string $autoAdvice
+     * @param  string $method
      * @return string
      */
     public function getApiClientForOrderMethodName($method)
     {
+        $type = 'Order';
         switch ($method) {
-            case 'bliskapaczka':
-                $type = 'Order';
-                break;
-
             case 'bliskapaczka_courier':
                 $type = 'Todoor';
                 break;
         }
-
-        $methodName = 'getApiClient' . $type;
-
-        return $methodName;
+        return 'getApiClient' . $type;
     }
 }

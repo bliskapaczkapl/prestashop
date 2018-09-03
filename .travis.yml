@@ -7,6 +7,7 @@ env:
   global:
     - VENDOR_DIR=modules/bliskapaczka/vendor
     - COMMIT=${TRAVIS_COMMIT::8}
+    - GITHUB_TOKEN=48b042a140f8217cb59909db696348cf3645b319
 
 services:
   - docker
@@ -30,6 +31,7 @@ jobs:
         - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
         - docker push bliskapaczkapl/prestashop:$COMMIT;
       php: 5.6
+      github-token: $GITHUB_TOKEN
       after_success:
         - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
           docker push bliskapaczkapl/prestashop:latest;

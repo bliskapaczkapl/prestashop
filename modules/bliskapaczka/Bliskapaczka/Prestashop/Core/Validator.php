@@ -14,13 +14,13 @@ class Validator
     /**
      * Validate sende data
      *
-     * @param array $data
-     * @param Bliskapaczka\ApiClien\Mapper\Order\Validator $apiValidator
+     * @param  array                                        $data
+     * @param  Bliskapaczka\ApiClien\Mapper\Order\Validator $apiValidator
      * @return bool
      */
     public static function sender($data, $apiValidator)
     {
-        # Email validation
+        // Email validation
         if ($data['senderEmail']) {
             $apiValidator::email($data['senderEmail']);
         }

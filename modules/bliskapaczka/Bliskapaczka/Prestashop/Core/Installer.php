@@ -22,16 +22,16 @@ class Installer
     /**
      * Insert data to db
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function install($helper)
     {
-        if ($this->installCarrier($helper) == false ||
-            $this->updateCartAndOrder() == false ||
-            $this->addToOrderInfoAboutBliskapaczkaOrder() == false ||
-            $this->addAdminPanel($helper) == false ||
-            $this->addCourier($helper) == false
+        if ($this->installCarrier($helper) == false
+            || $this->updateCartAndOrder() == false
+            || $this->addToOrderInfoAboutBliskapaczkaOrder() == false
+            || $this->addAdminPanel($helper) == false
+            || $this->addCourier($helper) == false
         ) {
             return false;
         }
@@ -42,7 +42,7 @@ class Installer
     /**
      * Delete module data from db
      *
-     * @param int $id_carrier
+     * @param  int $id_carrier
      * @return bool
      */
     public function uninstall($id_carrier)
@@ -59,30 +59,14 @@ class Installer
     /**
      * Add new carrier
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     private function installCarrier($helper)
     {
         $carrier = new \Carrier();
         $carrier->name = $this->config->name;
-        $carrier->id_tax_rules_group = 0;
-        $carrier->active = true;
-        $carrier->deleted = false;
-
-        foreach (\Language::getLanguages(true) as $language) {
-            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
-        }
-        
-        $carrier->is_free = false;
-        $carrier->shipping_method = 1;
-        $carrier->shipping_handling = true;
-        $carrier->shipping_external = true;
-        $carrier->is_module = true;
-        $carrier->external_module_name = $this->config->name;
-        $carrier->need_range = true;
-        $carrier->range_behavior = false;
-        $carrier->grade = 0;
+        $carrier = $this->prepareCarrierObject($carrier);
 
         if (!$carrier->add()) {
             return false;
@@ -214,7 +198,7 @@ class Installer
     /**
      * Add new columns to order and cart tables
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function addAdminPanel($helper)
@@ -225,7 +209,7 @@ class Installer
             $tab->name[$language['id_lang']] = 'Bliskapaczka Orders';
         }
 
-        $tab->class_name = 'AdminBliskaOrders';
+        $tab->class_name = 'AdminOrders';
         $tab->module = $this->config->name;
 
         $idParent = (int)\Tab::getIdFromClassName('AdminParentOrders');
@@ -244,30 +228,14 @@ class Installer
     /**
      * Add new columns to order and cart tables
      *
-     * @param Bliskapaczka\Prestashop\Core\Helper $helper
+     * @param  Bliskapaczka\Prestashop\Core\Helper $helper
      * @return bool
      */
     public function addCourier($helper)
     {
         $carrier = new \Carrier();
         $carrier->name = $this->config->courier_name;
-        $carrier->id_tax_rules_group = 0;
-        $carrier->active = true;
-        $carrier->deleted = false;
-
-        foreach (\Language::getLanguages(true) as $language) {
-            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
-        }
-
-        $carrier->is_free = false;
-        $carrier->shipping_method = 1;
-        $carrier->shipping_handling = true;
-        $carrier->shipping_external = true;
-        $carrier->is_module = true;
-        $carrier->external_module_name = $this->config->name;
-        $carrier->need_range = true;
-        $carrier->range_behavior = false;
-        $carrier->grade = 0;
+        $carrier = $this->prepareCarrierObject($carrier);
 
         $idCarrier = \Db::getInstance()->getValue(
             'SELECT id_carrier FROM `ps_carrier` WHERE name = \'' . $this->config->courier_name . '\';'
@@ -289,6 +257,31 @@ class Installer
         return true;
     }
 
+    /**
+     * @param \Carrier $carrier
+     * @return \Carrier
+     */
+    protected function prepareCarrierObject(\Carrier $carrier)
+    {
+        $carrier->id_tax_rules_group = 0;
+        $carrier->active = true;
+        $carrier->deleted = false;
+
+        foreach (\Language::getLanguages(true) as $language) {
+            $carrier->delay[(int)$language['id_lang']] = $this->config->delay;
+        }
+
+        $carrier->is_free = false;
+        $carrier->shipping_method = 1;
+        $carrier->shipping_handling = true;
+        $carrier->shipping_external = true;
+        $carrier->is_module = true;
+        $carrier->external_module_name = $this->config->name;
+        $carrier->need_range = true;
+        $carrier->range_behavior = false;
+        $carrier->grade = 0;
+        return $carrier;
+    }
     /**
      * Delete columns from order
      *
@@ -328,7 +321,7 @@ class Installer
     /**
      * Delete courier carrier from db
      *
-     * @param int $id_tab
+     * @param  int $id_tab
      * @return bool
      */
     public function deleteCourier($id_tab)
