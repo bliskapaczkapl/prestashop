@@ -34,3 +34,6 @@ jobs:
         - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
           docker push bliskapaczkapl/prestashop:latest;
           fi
+        - if [ "$TRAVIS_BRANCH" == "develop" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
+          docker push bliskapaczkapl/prestashop:develop;
+          fi
