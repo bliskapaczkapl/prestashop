@@ -13,7 +13,6 @@ services:
   - docker
 
 before_script:
-  - composer config github-oauth.github.com $GITHUB_TOKEN
   - composer install
 
 script: 
