@@ -10,7 +10,7 @@ Bliskapaczka.showMap = function (operators, googleMapApiKey, testMode) {
     bpWidget.style.display = 'block';
 
     Bliskapaczka.updateSelectedCarrier();
-
+    document.getElementById('delivery_bliskapaczka').click();
     BPWidget.init(
         bpWidget,
         {
