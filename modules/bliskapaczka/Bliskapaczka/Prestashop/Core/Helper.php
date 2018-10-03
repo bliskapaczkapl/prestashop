@@ -36,6 +36,8 @@ class Helper
     const BLISKAPACZKA_CARRIER_ID = 'BLISKAPACZKA_CARRIER_ID';
 
     const WIDGET_VERSION = 'v5';
+    const TEST_MODE_ON = 'test';
+    const TEST_MODE_OFF = 'prod';
 
     /**
      * Get parcel dimensions in format accptable by Bliskapaczka API
@@ -188,15 +190,13 @@ class Helper
     public function freeShipping($freeShipping, $cart)
     {
         $option = $this->carrierSettings($cart);
-
+        $bliskapaczkaFreeShipping = true;
         // Ligic coppied from override/views/front/order-carrier.tpl
         if ($option['total_price_with_tax']
             && !$option['is_free']
             && (!isset($freeShipping) || (isset($freeShipping) && !$freeShipping))
         ) {
             $bliskapaczkaFreeShipping = false;
-        } else {
-            $bliskapaczkaFreeShipping = true;
         }
 
         return $bliskapaczkaFreeShipping;
@@ -325,18 +325,15 @@ class Helper
      */
     public function getApiMode($configValue = '')
     {
-        $mode = '';
-
-        switch ($configValue) {
+         switch ($configValue) {
             case '1':
-                $mode = 'test';
+                return self::TEST_MODE_ON;
                 break;
 
             default:
-                $mode = 'prod';
+                return self::TEST_MODE_OFF;
                 break;
         }
 
-        return $mode;
     }
 }
