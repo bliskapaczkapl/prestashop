@@ -66,13 +66,7 @@
                                         <table class="resume table table-bordered{if !$option.unique_carrier} hide{/if}">
                                             <tr>
                                                 <td class="delivery_option_radio">
-                                                    {foreach $option.carrier_list as $carrier}
-                                                        {if $carrier.instance->id_reference == $id_carrier_bliskapaczka}
-                                                            <input id="delivery_bliskapaczka" class="delivery_option_radio" type="radio" name="delivery_option[{$id_address|intval}]" data-key="{$key}" data-id_address="{$id_address|intval}" value="{$key}"{if isset($delivery_option[$id_address]) && $delivery_option[$id_address] == $key} checked="checked"{/if} />
-                                                        {else}
-                                                            <input id="delivery_option_{$id_address|intval}_{$option@index}" class="delivery_option_radio" type="radio" name="delivery_option[{$id_address|intval}]" data-key="{$key}" data-id_address="{$id_address|intval}" value="{$key}"{if isset($delivery_option[$id_address]) && $delivery_option[$id_address] == $key} checked="checked"{/if} />
-                                                        {/if}
-                                                    {/foreach}
+                                                    <input id="delivery_option_{$id_address|intval}_{$option@index}" class="delivery_option_radio" type="radio" name="delivery_option[{$id_address|intval}]" data-key="{$key}" data-id_address="{$id_address|intval}" value="{$key}"{if isset($delivery_option[$id_address]) && $delivery_option[$id_address] == $key} checked="checked"{/if} />
                                                 </td>
                                                 <td class="delivery_option_logo">
                                                     {foreach $option.carrier_list as $carrier}
@@ -116,6 +110,7 @@
                                                                 )'
                                                                 href="#bpWidget_wrapper"
                                                                 class="btn btn-default button button-small"
+                                                                id="show-map-button"
                                                             >
                                                             {l s='Select delivery point' mod='bliskapaczka'}
                                                             </a></strong>
