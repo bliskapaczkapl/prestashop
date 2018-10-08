@@ -334,6 +334,5 @@ class Helper
                 return self::TEST_MODE_OFF;
                 break;
         }
-
     }
 }
