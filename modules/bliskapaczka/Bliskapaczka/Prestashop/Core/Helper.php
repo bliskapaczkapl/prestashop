@@ -8,7 +8,7 @@ use Bliskapaczka\ApiClient;
  * Bliskapaczka helper
  *
  * @author Mateusz Koszutowski (mkoszutowski@divante.pl)
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD)
  */
 class Helper
 {
