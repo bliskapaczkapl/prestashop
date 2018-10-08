@@ -11,7 +11,7 @@ use Bliskapaczka\ApiClient;
  */
 class Helper
 {
-    const DEFAULT_GOOGLE_API_KEY =  'AIzaSyCUyydNCGhxGi5GIt5z5I-X6hofzptsRjE';
+    const DEFAULT_GOOGLE_API_KEY = 'AIzaSyCUyydNCGhxGi5GIt5z5I-X6hofzptsRjE';
 
     const SIZE_TYPE_FIXED_SIZE_X = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_X';
     const SIZE_TYPE_FIXED_SIZE_Y = 'BLISKAPACZKA_PARCEL_SIZE_TYPE_FIXED_SIZE_Y';
@@ -313,7 +313,7 @@ class Helper
         if (strlen($phoneNumber) > 9) {
             $phoneNumber = preg_replace("/^48/", "", $phoneNumber);
         }
-        
+
         return $phoneNumber;
     }
 
@@ -325,7 +325,7 @@ class Helper
      */
     public function getApiMode($configValue = '')
     {
-         switch ($configValue) {
+        switch ($configValue) {
             case '1':
                 return self::TEST_MODE_ON;
                 break;
