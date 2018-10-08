@@ -10,8 +10,6 @@ class Bliskapaczka extends CarrierModule
     public $id_carrier;
     protected $html = '';
     private $config = null;
-    /** @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
-    protected $helper;
 
     /**
      * Constructor, nothing more
@@ -19,7 +17,6 @@ class Bliskapaczka extends CarrierModule
     public function __construct()
     {
         $this->config = new Bliskapaczka\Prestashop\Core\Config();
-        $this->helper = new Bliskapaczka\Prestashop\Core\Helper();
 
         $this->name = $this->config->name;
         $this->tab = $this->config->tab;
@@ -47,12 +44,14 @@ class Bliskapaczka extends CarrierModule
      */
     public function install()
     {
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
         /* @var Bliskapaczka\Prestashop\Core\Installer */
         $installer = new Bliskapaczka\Prestashop\Core\Installer($this->config);
 
         if (parent::install() == false ||
-            $installer->install($this->helper) == false ||
+            $installer->install($bliskapaczkaHelper) == false ||
             $this->registerHook('actionCarrierUpdate') == false ||
             $this->registerHook('header') == false ||
             $this->registerHook('actionCarrierProcess') == false ||
@@ -69,7 +68,8 @@ class Bliskapaczka extends CarrierModule
      */
     public function uninstall()
     {
-        $bliskapaczkaHelper = $this->helper;
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
         /* @var Bliskapaczka\Prestashop\Core\Installer */
         $installer = new Bliskapaczka\Prestashop\Core\Installer($this->config);
@@ -90,7 +90,8 @@ class Bliskapaczka extends CarrierModule
      */
     public function hookHeader($params)
     {
-        $bliskapaczkaHelper = $this->helper;
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
         if (get_class($this->context->controller) == 'OrderController') {
             $this->context->controller->addJs(
@@ -135,7 +136,7 @@ class Bliskapaczka extends CarrierModule
             $cart->pos_operator = $posOperator;
             $saveCart = true;
         }
-        
+
         if ($saveCart == true) {
             $cart->save();
         }
@@ -161,7 +162,7 @@ class Bliskapaczka extends CarrierModule
             $order->pos_operator = $cart->pos_operator;
             $saveOrder = true;
         }
-        
+
         if ($saveOrder == true) {
             $order->save();
         }
@@ -170,12 +171,15 @@ class Bliskapaczka extends CarrierModule
         $customer = new \Customer((int)$order->id_customer);
         $configuration = new \Configuration();
 
+        /* @var Bliskapaczka\Prestashop\Core\Helper $bliskapaczkaHelper */
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+
         /* @var Bliskapaczka\Prestashop\Core\Mapper\Order $mapper */
         $mapper = new Bliskapaczka\Prestashop\Core\Mapper\Order();
-        $data = $mapper->getData($order, $shippingAddress, $customer, $this->helper, $configuration);
+        $data = $mapper->getData($order, $shippingAddress, $customer, $bliskapaczkaHelper, $configuration);
 
         /* @var \Bliskapaczka\ApiClient\Bliskapaczka $apiClient */
-        $apiClient = $this->helper->getApiClientOrderAdvice();
+        $apiClient = $bliskapaczkaHelper->getApiClientOrderAdvice();
         $apiClient->create($data);
     }
 
@@ -188,11 +192,12 @@ class Bliskapaczka extends CarrierModule
      */
     public function getOrderShippingCost($cart, $shipping_cost)
     {
+        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
         /* @var $apiClient \Bliskapaczka\ApiClient\Bliskapaczka */
-        $apiClient = $this->helper->getApiClientPricing();
+        $apiClient = $bliskapaczkaHelper->getApiClientPricing();
         $priceList = $apiClient->get(
-            array("parcel" => array('dimensions' => $this->helper->getParcelDimensions()))
+            array("parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()))
         );
 
         // Fix for shipping price on step payment on checkout
@@ -209,7 +214,7 @@ class Bliskapaczka extends CarrierModule
 
         if ($cart->pos_operator) {
             $shippingPrice = round(
-                $this->helper->getPriceForCarrier(
+                $bliskapaczkaHelper->getPriceForCarrier(
                     json_decode($priceList),
                     $cart->pos_operator,
                     $taxInc
@@ -217,7 +222,7 @@ class Bliskapaczka extends CarrierModule
                 2
             );
         } else {
-            $shippingPrice = round($this->helper->getLowestPrice(json_decode($priceList), $taxInc), 2);
+            $shippingPrice = round($bliskapaczkaHelper->getLowestPrice(json_decode($priceList), $taxInc), 2);
         }
 
         return $shippingPrice;
