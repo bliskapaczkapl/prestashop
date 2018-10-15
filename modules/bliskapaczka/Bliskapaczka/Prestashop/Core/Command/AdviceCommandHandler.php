@@ -37,8 +37,10 @@ class AdviceCommandHandler
             $bliskapaczkaHelper,
             $configuration
         );
-        $apiClient = $bliskapaczkaHelper->getApiClientForAdvice($command->getCarrier()->name);
+
+        $apiClient = $bliskapaczkaHelper->getApiClientOrderAdvice();
         $apiClient->setOrderId($command->getOrder()->number);
+
         $response = $apiClient->create($data);
 
         $decodedResponse = json_decode($response);

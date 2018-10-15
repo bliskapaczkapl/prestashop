@@ -2,7 +2,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-$apiKey = 'e5814ba2-2dc6-4f31-bfa9-2afd4bc171a9';
+$apiKey = '999eac37-ba4d-4a00-b64c-14749dc835fa';
 $apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Order($apiKey, 'test');
 
 $orderData = [
@@ -79,3 +79,8 @@ $apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Report($apiKey, 'test');
 $apiClient->setOperator('ruch');
 
 file_put_contents('zupa.pdf', $apiClient->get());
+
+$apiClient = new Bliskapaczka\ApiClient\Bliskapaczka\Order\Confirm($apiKey, 'test');
+$apiClient->setOperator('POCZTA');
+
+var_dump($apiClient->confirm());

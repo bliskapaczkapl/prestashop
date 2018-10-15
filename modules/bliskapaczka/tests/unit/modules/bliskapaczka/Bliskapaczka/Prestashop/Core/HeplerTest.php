@@ -336,4 +336,24 @@ class HelperTest extends TestCase
         $mode = $hepler->getApiMode();
         $this->assertEquals('prod', $mode);
     }
+
+    /**
+     * @dataProvider shippingMethodAndAdive
+     */
+    public function testGetApiClientForOrderMethodName($method, $autoAdvice, $result)
+    {
+        $hepler = new \Bliskapaczka\Prestashop\Core\Helper();
+
+        $this->assertEquals($result, $hepler->getApiClientForOrderMethodName($method, $autoAdvice));
+    }
+
+    public function shippingMethodAndAdive()
+    {
+        return [
+            ['bliskapaczka', '0', 'getApiClientOrder'],
+            ['bliskapaczka', '1', 'getApiClientOrderAdvice'],
+            ['bliskapaczka_courier', '0', 'getApiClientTodoor'],
+            ['bliskapaczka_courier', '1', 'getApiClientTodoorAdvice']
+        ];
+    }
 }

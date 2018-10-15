@@ -35,6 +35,11 @@ abstract class AbstractBliskapaczka
     const REQUEST_URL = '';
 
     /**
+     * Timeout for API
+     */
+    const API_TIMEOUT = 2;
+
+    /**
      * @var ApiCaller
     */
     private $apiCaller;
@@ -118,6 +123,14 @@ abstract class AbstractBliskapaczka
     }
 
     /**
+     * Return timeout for APIs request
+     */
+    public function getApiTimeout()
+    {
+        return static::API_TIMEOUT;
+    }
+
+    /**
      * Get validator object for this instance
      *
      * @return ValidatorInterface
@@ -149,10 +162,10 @@ abstract class AbstractBliskapaczka
         // build Authorization header
         $headers[] = 'Authorization: Bearer ' . $this->bearer;
         $headers[] = 'Content-Type: application/json';
-        
+
         // set options
         $options[CURLOPT_URL] = $this->apiUrl . '/v1/' . $url;
-        $options[CURLOPT_TIMEOUT] = 2;
+        $options[CURLOPT_TIMEOUT] = static::API_TIMEOUT;
         $options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
         $options[CURLOPT_HTTPHEADER] = $headers;
         

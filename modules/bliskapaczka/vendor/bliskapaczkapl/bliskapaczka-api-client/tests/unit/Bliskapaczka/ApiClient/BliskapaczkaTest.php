@@ -47,4 +47,12 @@ class BliskapaczkaTest extends TestCase
 
         $apiClient->getValidator();
     }
+
+    public function testTimeout()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order($apiKey);
+
+        $this->assertEquals(2, $apiClient->getApiTimeout());
+    }
 }

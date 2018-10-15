@@ -23,9 +23,9 @@ class RestWaybillQuery implements WaybillQueryInterface
     /**
      * RestWaybillQuery constructor.
      *
-     * @param \Bliskapaczka\ApiClient\Bliskapaczka\Order $apiClient
+     * @param \Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill $apiClient
      */
-    public function __construct(\Bliskapaczka\ApiClient\Bliskapaczka\Order $apiClient)
+    public function __construct(\Bliskapaczka\ApiClient\Bliskapaczka\Order\Waybill $apiClient)
     {
         $this->apiClient = $apiClient;
     }
@@ -38,15 +38,17 @@ class RestWaybillQuery implements WaybillQueryInterface
      */
     public function getByOrderId($orderId)
     {
-
         $this->apiClient->setOrderId($orderId);
         $response = $this->apiClient->get();
+
         $decodedResponse = json_decode($response);
-        $properResponse = $decodedResponse instanceof stdClass && empty($decodedResponse->errors);
-        if (!$properResponse) {
-            $message = ($decodedResponse ? current($decodedResponse->errors)->message : '');
-            throw new \Exception(sprintf("Bliskapaczka: Error or empty API response %s", $message));
-        }
+
+        // $properResponse = $decodedResponse instanceof stdClass && !isset($decodedResponse->errors);
+
+        // if (!$properResponse) {
+        //     $message = ($decodedResponse ? current($decodedResponse->errors)->message : '');
+        //     throw new \Exception(sprintf("Bliskapaczka: Error or empty API response %s", $message));
+        // }
 
         return new WaybillView($decodedResponse->url);
     }

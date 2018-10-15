@@ -43,7 +43,7 @@ class AdminController
     /**
      * AdminController constructor.
      *
-     * @param \Order                $order
+     * @param Order                 $order
      * @param CommandBusInterface   $commandBus
      * @param WaybillQueryInterface $waybillQuery
      * @param Helper                $helper
@@ -82,11 +82,13 @@ class AdminController
      */
     public function bliskaWaybillAction()
     {
-        $waybillView = $this->waybillQuery->getByOrderId($this->order->id);
+        $waybillView = $this->waybillQuery->getByOrderId($this->order->number);
         $content = file_get_contents($waybillView->getUrl());
+
         if ($content === false) {
             throw new \Exception('Content is empty');
         }
+
         header("Content-Type: application/pdf");
         header("Content-Disposition: inline; filename=filename.pdf");
         header('Content-Transfer-Encoding: binary');

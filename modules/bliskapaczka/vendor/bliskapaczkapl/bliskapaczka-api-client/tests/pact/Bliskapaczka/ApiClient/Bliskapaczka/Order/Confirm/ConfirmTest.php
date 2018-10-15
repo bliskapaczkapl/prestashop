@@ -1,10 +1,10 @@
 <?php
 
-namespace Bliskapaczka\ApiClient\Bliskapaczka\Order\Pricing;
+namespace  Bliskapaczka\ApiClient\Bliskapaczka\Order\Confirm;
 
 use PHPUnit\Framework\TestCase;
 
-class GetTest extends TestCase
+class ConfirmTest extends TestCase
 {
     protected function setUp()
     {
@@ -14,32 +14,21 @@ class GetTest extends TestCase
             $this->host = 'localhost:1234';
         }
 
-        $this->pricingData = [
-            "dimensions" => [
-                "height" => 20,
-                "length" => 20,
-                "width" => 20,
-                "weight" => 2
-            ]
-        ];
+        $this->operator = 'POCZTA';
 
         $this->deleteInteractions();
         $this->setInteraction();
     }
 
-    public function testGetPricing()
+    public function testConfirm()
     {
-        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Pricing('test-test-test-test');
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Order\Confirm('test-test-test-test');
         $apiClient->setApiUrl($this->host);
+        $apiClient->setOperator($this->operator);
 
-        $response = json_decode($apiClient->get($this->pricingData));
+        $response = json_decode($apiClient->confirm());
 
-        $this->assertEquals('INPOST', $response[0]->operatorName);
-        $this->assertTrue($response[0]->availabilityStatus);
-        $this->assertEquals('RUCH', $response[1]->operatorName);
-        $this->assertTrue($response[1]->availabilityStatus);
-        $this->assertEquals('POCZTA', $response[2]->operatorName);
-        $this->assertTrue($response[2]->availabilityStatus);
+        $this->assertTrue(empty($response->status));
     }
 
     /**
@@ -80,49 +69,17 @@ class GetTest extends TestCase
 
         $options[CURLOPT_POST] = true;
         $options[CURLOPT_POSTFIELDS] = '{
-  "description": "Get pricing list",
-  "provider_state": "Pricing list for all",
+  "description": "Confirm order",
+  "provider_state": "API should return order data",
   "request": {
     "method": "post",
-    "path": "/v1/pricing"
+    "path": "/v1/order/confirm?operatorName=' . $this->operator . '"
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
-    },
-    "body": [
-      {
-        "operatorName" : "INPOST",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 8.35,
-          "vat" : 1.92,
-          "gross" : 10.27
-        },
-        "unavailabilityReason" : null
-      },
-      {
-        "operatorName" : "RUCH",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 4.87,
-          "vat" : 1.12,
-          "gross" : 5.99
-        },
-        "unavailabilityReason" : null
-      },
-      {
-        "operatorName" : "POCZTA",
-        "availabilityStatus" : true,
-        "price" : {
-          "net" : 7.31,
-          "vat" : 1.68,
-          "gross" : 8.99
-        },
-        "unavailabilityReason" : null
-      }
-    ]
+    }
   }
 }';
 

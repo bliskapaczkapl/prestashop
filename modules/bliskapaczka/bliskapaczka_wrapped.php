@@ -4,6 +4,8 @@ use Bliskapaczka\Prestashop\Core\Config;
 
 /**
  * Bliskapaczka shipping module
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Bliskapaczka extends CarrierModule
 {
@@ -106,6 +108,7 @@ class Bliskapaczka extends CarrierModule
                 'https://widget.bliskapaczka.pl/' . $bliskapaczkaHelper::WIDGET_VERSION . '/main.css'
             );
             $this->context->controller->addJs($this->_path . 'views/js/' . $this->name . '.js');
+            $this->context->controller->addCSS($this->_path . 'views/css/' . $this->name . '.css');
         }
     }
 
@@ -129,17 +132,27 @@ class Bliskapaczka extends CarrierModule
     {
         $saveCart = false;
         $cart = $params['cart'];
+
         $posCode = Tools::getValue('bliskapaczka_posCode');
         $posOperator = Tools::getValue('bliskapaczka_posOperator');
 
-        if ($cart->pos_code != $posCode) {
-            $cart->pos_code = $posCode;
-            $saveCart = true;
-        }
+        if ($posCode && $posOperator) {
+            if ($cart->pos_code != $posCode) {
+                $cart->pos_code = $posCode;
+                $saveCart = true;
+            }
 
-        if ($cart->pos_operator != $posOperator) {
-            $cart->pos_operator = $posOperator;
-            $saveCart = true;
+            if ($cart->pos_operator != $posOperator) {
+                $cart->pos_operator = $posOperator;
+                $saveCart = true;
+            }
+        } else {
+            $posOperator = Tools::getValue('bliskapaczka_courier_posOperator');
+
+            if ($posOperator && $cart->pos_operator != $posOperator) {
+                $cart->pos_operator = $posOperator;
+                $saveCart = true;
+            }
         }
         
         if ($saveCart == true) {
@@ -194,11 +207,15 @@ class Bliskapaczka extends CarrierModule
         $data = $mapper->getData($order, $shippingAddress, $customer, $bliskapaczkaHelper, $configuration);
 
         /* @var \Bliskapaczka\ApiClient\Bliskapaczka $apiClient */
-        $apiClient = $bliskapaczkaHelper->getApiClientForOrder($method);
-        $response = $apiClient->create($data);
+        $apiClient = $bliskapaczkaHelper->getApiClientForOrder($method, $configuration);
+        
+        try {
+            $response = $apiClient->create($data);
 
-        if ($response) {
             $this->saveResponse($order, $response);
+        } catch (Exception $e) {
+            Bliskapaczka\Prestashop\Core\Logger::debug($e->getMessage());
+            return false;
         }
     }
 
@@ -235,40 +252,45 @@ class Bliskapaczka extends CarrierModule
      */
     public function getOrderShippingCost($cart, $shipping_cost)
     {
-        $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+        try {
+            $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
-        /* @var $apiClient \Bliskapaczka\ApiClient\Bliskapaczka */
-        $apiClient = $bliskapaczkaHelper->getApiClientPricing();
-        $priceList = $apiClient->get(
-            array("parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()))
-        );
-
-        // Fix for shipping price on step payment on checkout
-        $posOperator = Tools::getValue('bliskapaczka_posOperator');
-        if ($posOperator) {
-            $cart->pos_operator = $posOperator;
-        }
-
-        $taxInc = false;
-
-        if ((int)\Carrier::getIdTaxRulesGroupByIdCarrier((int)$this->id_carrier) === 0) {
-            $taxInc = true;
-        }
-
-        if ($cart->pos_operator) {
-            $shippingPrice = round(
-                $bliskapaczkaHelper->getPriceForCarrier(
-                    json_decode($priceList),
-                    $cart->pos_operator,
-                    $taxInc
-                ),
-                2
+            /* @var $apiClient \Bliskapaczka\ApiClient\Bliskapaczka */
+            $apiClient = $bliskapaczkaHelper->getApiClientPricing();
+            $priceList = $apiClient->get(
+                array("parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()))
             );
-        } else {
-            $shippingPrice = round($bliskapaczkaHelper->getLowestPrice(json_decode($priceList), $taxInc), 2);
-        }
 
-        return $shippingPrice;
+            // Fix for shipping price on step payment on checkout
+            $posOperator = Tools::getValue('bliskapaczka_posOperator');
+            if ($posOperator) {
+                $cart->pos_operator = $posOperator;
+            }
+
+            $taxInc = false;
+
+            if ((int)\Carrier::getIdTaxRulesGroupByIdCarrier((int)$this->id_carrier) === 0) {
+                $taxInc = true;
+            }
+
+            if ($cart->pos_operator) {
+                $shippingPrice = round(
+                    $bliskapaczkaHelper->getPriceForCarrier(
+                        json_decode($priceList),
+                        $cart->pos_operator,
+                        $taxInc
+                    ),
+                    2
+                );
+            } else {
+                $shippingPrice = round($bliskapaczkaHelper->getLowestPrice(json_decode($priceList), $taxInc), 2);
+            }
+
+            return $shippingPrice;
+        } catch (\Exception $e) {
+            Bliskapaczka\Prestashop\Core\Logger::debug($e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -306,6 +328,10 @@ class Bliskapaczka extends CarrierModule
             Configuration::updateValue(
                 Bliskapaczka\Prestashop\Core\Helper::TEST_MODE,
                 Tools::getValue(Bliskapaczka\Prestashop\Core\Helper::TEST_MODE)
+            );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Helper::AUTO_ADVICE,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Helper::AUTO_ADVICE)
             );
             Configuration::updateValue(
                 Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_X,
@@ -492,6 +518,24 @@ class Bliskapaczka extends CarrierModule
                 ),
             ),
             array(
+                'type' => 'switch',
+                'label' => $this->l('Auto advive'),
+                'name' => Bliskapaczka\Prestashop\Core\Helper::AUTO_ADVICE,
+                'is_bool' => true,
+                'values' => array(
+                    array(
+                        'id' => 'active_on',
+                        'value' => 1,
+                        'label' => $this->l('Enabled')
+                    ),
+                    array(
+                        'id' => 'active_off',
+                        'value' => 0,
+                        'label' => $this->l('Disabled')
+                    )
+                ),
+            ),
+            array(
                 'type' => 'text',
                 'label' => $this->l('Google Map API Key'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY
@@ -577,6 +621,10 @@ class Bliskapaczka extends CarrierModule
             Bliskapaczka\Prestashop\Core\Helper::TEST_MODE => Tools::getValue(
                 Bliskapaczka\Prestashop\Core\Helper::TEST_MODE,
                 Configuration::get(Bliskapaczka\Prestashop\Core\Helper::TEST_MODE)
+            ),
+            Bliskapaczka\Prestashop\Core\Helper::AUTO_ADVICE => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Helper::AUTO_ADVICE,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Helper::AUTO_ADVICE)
             ),
             Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_X => Tools::getValue(
                 Bliskapaczka\Prestashop\Core\Helper::SIZE_TYPE_FIXED_SIZE_X,

@@ -108,4 +108,12 @@ class ReportTest extends TestCase
 
         $apiClientReport->get();
     }
+
+    public function testTimeout()
+    {
+        $apiKey = '6061914b-47d3-42de-96bf-0004a57f1dba';
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Report($apiKey);
+
+        $this->assertEquals(10, $apiClient->getApiTimeout());
+    }
 }

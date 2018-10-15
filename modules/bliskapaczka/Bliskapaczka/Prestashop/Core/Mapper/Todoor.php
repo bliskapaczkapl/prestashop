@@ -34,7 +34,6 @@ class Todoor extends MapperAbstract
         $data['receiverCity'] = $shippingAddress->city;
 
         $data['operatorName'] = $order->pos_operator;
-        $data['destinationCode'] = $order->pos_code;
 
         $data['parcel'] = [
             'dimensions' => $this->getParcelDimensions($helper)

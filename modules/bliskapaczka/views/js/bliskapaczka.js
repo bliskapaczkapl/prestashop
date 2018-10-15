@@ -79,14 +79,20 @@ Bliskapaczka.updateSelectedCarrier = function () {
         });
         item.find('td.delivery_option_radio span').first().addClass('checked');
     }
+
+    radiForCourier = jQuery.find('.bliskapaczka_courier_wrapper input[type="radio"]')
+    jQuery(radiForCourier).prop('checked', false);
+    jQuery('.bliskapaczka_courier_item_wrapper').removeClass('checked')
 }
 
 Bliskapaczka.getTableRow = function () {
     item = null;
-    itemList = jQuery('.order_carrier_content').find('.delivery_option:contains("bliskapaczka")');
-    
+
+    posCodeImput = jQuery.find('#bliskapaczka_posCode')
+    itemList = jQuery(posCodeImput).closest('.delivery_option')
+
     if (itemList.length > 0) {
-        item = jQuery(itemList[0]);
+        item = itemList
     }
 
     return item;
@@ -129,6 +135,33 @@ Bliskapaczka.selectPoint = function () {
     return false;
 }
 
+Bliskapaczka.selectCourier = function (button) {
+    item = jQuery(button).closest('.delivery_option')
+    
+    if (item) {
+        input = item.find('input.delivery_option_radio').first();
+        // Magic because in themes/default-bootstrap/js/order-carrier.js is defined event onchanged input
+        input.click();
+    
+        items = jQuery('td.delivery_option_radio span')
+        items.each(function (index, element) {
+            jQuery(this).removeClass('checked');
+        });
+        item.find('td.delivery_option_radio span').first().addClass('checked');
+    }
+
+    jQuery('.bliskapaczka_courier_item_wrapper').removeClass('checked')
+    jQuery(button).addClass('checked')
+
+    jQuery(button).find('input[name="bliskapaczka_courier_posOperator"]').prop('checked', true)
+
+    posCodeForm = document.getElementById('bliskapaczka_posCode')
+    posOperatorForm = document.getElementById('bliskapaczka_posOperator')
+
+    posCodeForm.value = '';
+    posOperatorForm.value = '';
+}
+
 $(document).ready(function () {
     if (!!$.prototype.fancybox) {
         $("a.iframe").fancybox({
@@ -140,5 +173,9 @@ $(document).ready(function () {
 
     $(document).on('submit', 'form[name=carrier_area]', function () {
         return Bliskapaczka.selectPoint();
+    });
+
+    $(document).on('click', '.bliskapaczka_courier_item_wrapper', function () {
+        return Bliskapaczka.selectCourier(this);
     });
 });

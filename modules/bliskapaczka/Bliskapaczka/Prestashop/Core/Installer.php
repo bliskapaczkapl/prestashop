@@ -209,7 +209,7 @@ class Installer
             $tab->name[$language['id_lang']] = 'Bliskapaczka Orders';
         }
 
-        $tab->class_name = 'AdminOrders';
+        $tab->class_name = 'AdminBliskaOrders';
         $tab->module = $this->config->name;
 
         $idParent = (int)\Tab::getIdFromClassName('AdminParentOrders');

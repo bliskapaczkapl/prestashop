@@ -8,6 +8,7 @@ use Bliskapaczka\ApiClient;
  * Bliskapaczka helper
  *
  * @author Mateusz Koszutowski (mkoszutowski@divante.pl)
+ * @SuppressWarnings(PHPMD)
  */
 class Helper
 {
@@ -30,6 +31,8 @@ class Helper
 
     const API_KEY = 'BLISKAPACZKA_API_KEY';
     const TEST_MODE = 'BLISKAPACZKA_TEST_MODE';
+
+    const AUTO_ADVICE = 'BLISKAPACZKA_AUTO_ADVICE';
 
     const GOOGLE_MAP_API_KEY = 'BLISKAPACZKA_GOOGLE_MAP_API_KEY';
 
@@ -144,12 +147,17 @@ class Helper
      */
     public function getPriceList()
     {
-        $apiClient = $this->getApiClientPricing();
-        $priceList = $apiClient->get(
-            array("parcel" => array('dimensions' => $this->getParcelDimensions()))
-        );
+        try {
+            $apiClient = $this->getApiClientPricing();
+            $priceList = $apiClient->get(
+                array("parcel" => array('dimensions' => $this->getParcelDimensions()))
+            );
 
-        return json_decode($priceList);
+            return json_decode($priceList);
+        } catch (\Exception $e) {
+            Logger::debug($e->getMessage());
+            return array();
+        }
     }
 
     /**
@@ -157,30 +165,35 @@ class Helper
      *
      * @param  array $priceList
      * @param  bool  $freeShipping
-     * @return array
+     * @return string
      */
     public function getOperatorsForWidget($priceList = array(), $freeShipping = false)
     {
-        if (empty($priceList)) {
-            $priceList = $this->getPriceList();
-        }
-        $operators = array();
-
-        foreach ($priceList as $operator) {
-            if ($operator->availabilityStatus != false) {
-                $price = $operator->price->gross;
-                if ($freeShipping == true) {
-                    $price = 0;
-                }
-
-                $operators[] = array(
-                    "operator" => $operator->operatorName,
-                    "price" => $price
-                );
+        try {
+            if (empty($priceList)) {
+                $priceList = $this->getPriceList();
             }
-        }
+            $operators = array();
 
-        return json_encode($operators);
+            foreach ($priceList as $operator) {
+                if ($operator->availabilityStatus != false) {
+                    $price = $operator->price->gross;
+                    if ($freeShipping == true) {
+                        $price = 0;
+                    }
+
+                    $operators[] = array(
+                        "operator" => $operator->operatorName,
+                        "price" => $price
+                    );
+                }
+            }
+
+            return json_encode($operators);
+        } catch (\Exception $e) {
+            Logger::debug($e->getMessage());
+            return '{}';
+        }
     }
 
     /**
@@ -277,7 +290,7 @@ class Helper
      *
      * @return \Bliskapaczka\ApiClient\Bliskapaczka
      */
-    public function getApiClientAdvice()
+    public function getApiClientTodoorAdvice()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Todoor\Advice(
             \Configuration::get(self::API_KEY),
@@ -325,6 +338,21 @@ class Helper
     public function getApiClientTodoor()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Todoor(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    /**
+     * Get Bliskapaczka API Client
+     *
+     * @return \Bliskapaczka\ApiClient\Bliskapaczka
+     */
+    public function getApiClientPricingTodoor()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Pricing\Todoor(
             \Configuration::get(self::API_KEY),
             $this->getApiMode(\Configuration::get(self::TEST_MODE))
         );
@@ -399,15 +427,18 @@ class Helper
     }
 
     /**
-     * Get method name to bliskapaczka api client create order action
+     * Get Bliskapaczka API Client
      *
-     * @param  string $method
-     * @param  string $autoAdvice
-     * @return string
+     * @param string $method
+     * @param Configuration $configuration
+     * @param bool $advice
+     * @return mixed
      */
-    public function getApiClientForAdvice($method)
+    public function getApiClientForOrder($method, $configuration)
     {
-        $methodName = $this->getApiClientForAdviceMethodName($method);
+        $advice = $configuration::get(self::AUTO_ADVICE);
+
+        $methodName = $this->getApiClientForOrderMethodName($method, $advice);
 
         return $this->{$methodName}();
     }
@@ -415,49 +446,63 @@ class Helper
     /**
      * Get method name to bliskapaczka api client create order action
      *
-     * @param  string $method
-     * @param  string $autoAdvice
+     * @param string $method
+     * @param string $autoAdvice
+     * @param Sendit_Bliskapaczka_Helper_Data $senditHelper
      * @return string
      */
-    public function getApiClientForOrder($method)
+    public function getApiClientForOrderMethodName($method, $autoAdvice)
     {
-        $methodName = $this->getApiClientForOrderMethodName($method);
+        $type = 'Todoor';
 
-        return $this->{$methodName}();
+        if ($this->isPoint($method)) {
+            $type = 'Order';
+        }
+
+        $methodName = 'getApiClient' . $type;
+
+        if ($autoAdvice) {
+            $methodName .= 'Advice';
+        }
+
+        return $methodName;
+    }
+
+
+    /**
+     * Check if shipping method is to point
+     *
+     * @param string $method
+     * @return string
+     */
+    public function isPoint($method)
+    {
+        $shortMethodName = $this->getShortMethodName($method);
+
+        if ($shortMethodName == 'point') {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Get method name to bliskapaczka api client create order action
+     * Short name for shipping method
      *
-     * @param  string $method
+     * @param string $method
      * @return string
      */
-    public function getApiClientForAdviceMethodName($method)
+    protected function getShortMethodName($method)
     {
-        $type = 'Order';
         switch ($method) {
-            case 'bliskapaczka_courier':
-                $type = 'Todoor';
+            case 'bliskapaczka':
+                $shortMethod = 'point';
                 break;
+
+            default:
+                $shortMethod = 'courier';
         }
 
-        return 'getApiClient' . $type . 'Advice';
-    }
-
-    /**
-     * Get method name to bliskapaczka api client create order action
-     *
-     * @param  string $method
-     * @return string
-     */
-    public function getApiClientForOrderMethodName($method)
-    {
-        $type = 'Order';
-        switch ($method) {
-            case 'bliskapaczka_courier':
-                $type = 'Todoor';
-                break;
-        }
-        return 'getApiClient' . $type;
+        return $shortMethod;
     }
 }

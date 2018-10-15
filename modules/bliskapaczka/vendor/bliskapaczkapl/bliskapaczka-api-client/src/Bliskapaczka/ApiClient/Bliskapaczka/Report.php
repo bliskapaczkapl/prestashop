@@ -16,6 +16,11 @@ class Report extends AbstractBliskapaczka implements BliskapaczkaInterface
     const REQUEST_URL = 'report/pickupconfirmation/[[operator]]';
 
     /**
+     * Timeout for API
+     */
+    const API_TIMEOUT = 10;
+
+    /**
      * Set operator name
      *
      * @param string $operator

@@ -12,42 +12,45 @@ use Bliskapaczka\ApiClient\Exception;
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
  * @version 0.1.0
  */
-class Waybill extends AbstractBliskapaczka implements BliskapaczkaInterface
+class Confirm extends AbstractBliskapaczka implements BliskapaczkaInterface
 {
-    const REQUEST_URL = 'order/[[id]]/waybill';
+    const REQUEST_URL = 'orders/confirm';
 
     private $orderId = null;
 
     /**
-     * Set order id
+     * Set operator name
      *
-     * @param string $orderId
+     * @param string $operator
      */
-    public function setOrderId($orderId)
+    public function setOperator($operator)
     {
-        $this->orderId = $orderId;
+        $this->operator = $operator;
     }
 
     /**
-     * Return valid URL for API call get waybill for order
+     * Return valid URL for API call for order Confirmation
      *
      * @return string
      */
     public function getUrl()
     {
-        if (!isset($this->orderId) || empty($this->orderId)) {
-            throw new  Exception('Please set valid order ID', 1);
+        if (!isset($this->operator) || empty($this->operator)) {
+            throw new  Exception('Please set valid operator name', 1);
         }
 
-        return str_replace('[[id]]', $this->orderId, self::REQUEST_URL);
+        $url = self::REQUEST_URL . '?operatorName=' . $this->operator;
+
+        return $url;
     }
 
     /**
      * Call API method create order
      *
+     * @param array $data
      * @return json $response
      */
-    public function get()
+    public function confirm()
     {
         $response = $this->doCall($this->getUrl(), json_encode(''), array(), 'GET');
 

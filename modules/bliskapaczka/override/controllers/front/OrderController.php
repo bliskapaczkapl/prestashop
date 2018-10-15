@@ -31,12 +31,26 @@ class OrderController extends OrderControllerCore
                 $widgetGoogleMapApiKey = $bliskapaczkaHelper->getGoogleMapApiKey();
                 $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget(array(), $bliskapaczkaFreeShipping);
                 $testMode = Configuration::get($bliskapaczkaHelper::TEST_MODE) ? 'true' : 'false';
+
+                $apiClient = $bliskapaczkaHelper->getApiClientPricingTodoor();
+                $data = array("parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()));
+                $priceList = $apiClient->get($data);
+                $widgetOperatorsCourier = json_decode($bliskapaczkaHelper->getOperatorsForWidget(
+                    json_decode($priceList),
+                    $bliskapaczkaFreeShipping
+                ));
+
                 $this->context->smarty->assign('widget_operators', $widgetOperators);
+                $this->context->smarty->assign('widget_operators_courier', $widgetOperatorsCourier);
                 $this->context->smarty->assign('widget_google_map_api_key', $widgetGoogleMapApiKey);
                 $this->context->smarty->assign('test_mode', $testMode);
                 $this->context->smarty->assign(
                     'id_carrier_bliskapaczka',
                     \Configuration::get($bliskapaczkaHelper::BLISKAPACZKA_CARRIER_ID)
+                );
+                $this->context->smarty->assign(
+                    'id_carrier_bliskapaczka_courier',
+                    \Configuration::get($bliskapaczkaHelper::BLISKAPACZKA_COURIER_CARRIER_ID)
                 );
                 $this->setTemplate(_PS_MODULE_DIR_ . 'bliskapaczka/override/views/front/order-carrier.tpl');
                 break;

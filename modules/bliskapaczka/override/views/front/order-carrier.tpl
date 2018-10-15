@@ -119,6 +119,23 @@
                                                                 <p>{l s='Selected delivery point' mod='bliskapaczka'}: <span id="bpWidget_aboutPoint_posData"></span></p>
                                                             </div>
                                                         {/if}
+                                                        {if $carrier.instance->id_reference == $id_carrier_bliskapaczka_courier}
+                                                            <br />
+
+                                                            <div class="bliskapaczka_courier_wrapper">
+                                                                {foreach $widget_operators_courier as $courier}
+                                                                    <label class='bliskapaczka_courier_item_wrapper' for="bliskapaczka_courier_posOperator">
+                                                                        <input type="radio" name="bliskapaczka_courier_posOperator" value="{$courier->operator}">
+                                                                        <div class="bliskapaczka_courier_item">
+                                                                            <div class="bliskapaczka_courier_item_logo"><img src="https://bliskapaczka.pl/static/images/{$courier->operator}.png" alt="{$courier->operator}"></div>
+                                                                            <div class="bliskapaczka_courier_item_price">
+                                                                                <span>{$courier->price} zł</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                {/foreach}
+                                                            </div>
+                                                        {/if}
                                                     {/foreach}
                                                 </td>
                                                 <td class="delivery_option_price">

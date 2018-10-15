@@ -6,7 +6,7 @@
  * @property Order $object
  * @SuppressWarnings(PHPMD)
  */
-class AdminOrdersController extends AdminOrdersControllerCore
+class AdminBliskaOrdersController extends AdminOrdersControllerCore
 {
     public $toolbar_title;
 
@@ -164,7 +164,7 @@ class AdminOrdersController extends AdminOrdersControllerCore
         $commandBus = new \Bliskapaczka\Prestashop\Core\Command\CommandBus();
         $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
         $restWaybillQuery = new \Bliskapaczka\Prestashop\Core\Query\RestWaybillQuery(
-            $bliskapaczkaHelper->getApiClientOrder()
+            $bliskapaczkaHelper->getApiClientWaybill()
         );
         $adminController = new \Bliskapaczka\Prestashop\Core\Controller\AdminController(
             $order,
