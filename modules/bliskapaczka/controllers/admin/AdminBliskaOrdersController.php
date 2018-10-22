@@ -38,6 +38,55 @@ class AdminBliskaOrdersController extends AdminOrdersControllerCore
     }
 
     /**
+     * Create a template from the override file, else from the base file.
+     *
+     * @param string $tpl_name filename
+     * @return Smarty_Internal_Template
+     */
+    public function createTemplate($tpl_name)
+    {
+        // Use override tpl if it exists
+        // If view access is denied, we want to use the default template that will be used to display an error
+        if ($this->viewAccess() && $this->override_folder) {
+            if (!Configuration::get('PS_DISABLE_OVERRIDES')
+                && file_exists(
+                    $this->context->smarty->getTemplateDir(1) . DIRECTORY_SEPARATOR . $this->override_folder . $tpl_name
+                )
+            ) {
+                return $this->context->smarty->createTemplate(
+                    $this->override_folder . $tpl_name,
+                    $this->context->smarty
+                );
+            } elseif (file_exists(
+                $this->context->smarty->getTemplateDir(0) . 'controllers' . DIRECTORY_SEPARATOR .
+                    $this->override_folder . $tpl_name
+            )
+            ) {
+                return $this->context->smarty->createTemplate(
+                    'controllers' . DIRECTORY_SEPARATOR . $this->override_folder . $tpl_name,
+                    $this->context->smarty
+                );
+            }
+        }
+
+        if (file_exists(
+            $this->context->smarty->getTemplateDir(0) . 'controllers' . DIRECTORY_SEPARATOR . 'orders' .
+                DIRECTORY_SEPARATOR . $tpl_name
+        )
+        ) {
+            return $this->context->smarty->createTemplate(
+                $this->context->smarty->getTemplateDir(0) . 'controllers' . DIRECTORY_SEPARATOR . 'orders' .
+                DIRECTORY_SEPARATOR . $tpl_name
+            );
+        }
+
+        return $this->context->smarty->createTemplate(
+            $this->context->smarty->getTemplateDir(0) . $tpl_name,
+            $this->context->smarty
+        );
+    }
+
+    /**
      * Mass action get report for choosen orders
      */
     public function processBulkGetReport()
@@ -80,7 +129,6 @@ class AdminBliskaOrdersController extends AdminOrdersControllerCore
                 exit();
             }
         }
-
     }
 
     /**
@@ -120,8 +168,6 @@ class AdminBliskaOrdersController extends AdminOrdersControllerCore
             } catch (Exception $exception) {
                 $this->errors[] = Tools::displayError($exception->getMessage());
             }
-
-
         } elseif (Tools::isSubmit('bliskaAdvice') && isset($order)) {
             try {
                 $adminController->bliskaAdviceAction();
@@ -132,22 +178,18 @@ class AdminBliskaOrdersController extends AdminOrdersControllerCore
                 parent::postProcess();
                 return;
             }
-
         } elseif (Tools::isSubmit('bliskaUpdate') && isset($order)) {
             try {
                 $adminController->bliskaUpdateAction();
             } catch (Exception $exception) {
                 $this->errors[] = Tools::displayError($exception->getMessage());
             }
-
-
         } elseif (Tools::isSubmit('bliskaWaybill') && isset($order)) {
             try {
                 $adminController->bliskaWaybillAction();
             } catch (Exception $exception) {
                 $this->errors[] = Tools::displayError($exception->getMessage());
             }
-
         }
 
         parent::postProcess();
@@ -174,6 +216,4 @@ class AdminBliskaOrdersController extends AdminOrdersControllerCore
         );
         return $adminController;
     }
-
-
 }
