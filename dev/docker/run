@@ -17,7 +17,7 @@ mysql -h $DB_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e \
 mysql -h $DB_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e \
 	"UPDATE ps_shop_url SET domain = \"$DOMAIN\", domain_ssl = \"$DOMAIN\";"
 
-rm -rf $PRESTASHOP_PATH/install
+mv $PRESTASHOP_PATH/install $PRESTASHOP_PATH/install_back
 
 chmod -R 777 $PRESTASHOP_PATH
 
