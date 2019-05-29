@@ -31,6 +31,6 @@
         }
     ],
     "require": {
-        "bliskapaczkapl/bliskapaczka-api-client": "~2.15.0"
+        "bliskapaczkapl/bliskapaczka-api-client": "^3.2"
     }
 }

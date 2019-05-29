@@ -29,7 +29,7 @@ class Order extends MapperAbstract
 
         $data['operatorName'] = $order->pos_operator;
         $data['destinationCode'] = $order->pos_code;
-
+        $data['deliveryType'] = 'P2P';
         $data['parcel'] = [
             'dimensions' => $this->getParcelDimensions($helper)
         ];
