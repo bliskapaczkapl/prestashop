@@ -46,6 +46,5 @@ class RestWaybillQuery implements WaybillQueryInterface
         } catch (\Exception $exception) {
             throw new \Exception("We have a problem with response", 0, $exception);
         }
-
     }
 }
