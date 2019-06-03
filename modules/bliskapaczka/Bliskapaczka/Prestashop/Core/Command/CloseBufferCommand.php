@@ -17,6 +17,12 @@ class CloseBufferCommand extends CommandAbstract
 {
     /** @var string */
     protected $operatorName;
+
+    /**
+     * CloseBufferCommand constructor.
+     * @param \Order $order
+     * @param $operatorName
+     */
     public function __construct(\Order $order, $operatorName)
     {
         $this->operatorName = $operatorName;
@@ -30,5 +36,4 @@ class CloseBufferCommand extends CommandAbstract
     {
         return $this->operatorName;
     }
-
 }
