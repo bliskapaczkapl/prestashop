@@ -24,6 +24,7 @@ class Sender extends Order implements ValidatorInterface
         'senderStreet' => ['maxlength' => 30],
         'senderBuildingNumber' => ['maxlength' => 10],
         'senderFlatNumber' => ['maxlength' => 10],
-        'senderCity' => ['maxlength' => 30]
+        'senderCity' => ['maxlength' => 30],
+        'codPayoutBankAccountNumber' => [],
     ];
 }

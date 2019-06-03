@@ -39,7 +39,7 @@ class Waybill extends AbstractBliskapaczka implements BliskapaczkaInterface
             throw new  Exception('Please set valid order ID', 1);
         }
 
-        return str_replace('[[id]]', $this->orderId, self::REQUEST_URL);
+        return str_replace('[[id]]', $this->orderId, static::REQUEST_URL);
     }
 
     /**

@@ -17,7 +17,7 @@ abstract class AbstractBliskapaczka
     /**
      * @const Bliska paczka api version
      */
-    const API_VERSION = 'v1';
+    const API_VERSION = 'v2';
 
     /**
      * @const URL for the api
@@ -40,6 +40,11 @@ abstract class AbstractBliskapaczka
     const API_TIMEOUT = 2;
 
     /**
+     * Timeout for API
+     */
+    const SANDBOX_API_TIMEOUT = 10;
+
+    /**
      * @var ApiCaller
     */
     private $apiCaller;
@@ -49,12 +54,22 @@ abstract class AbstractBliskapaczka
      *
      * @param string $bearer
      * @param string $mode
+     * @param LoggerInterface $logger
      */
-    public function __construct($bearer, $mode = 'prod')
+    public function __construct($bearer, $mode = 'prod', LoggerInterface $logger = null)
     {
+        if (!$bearer) {
+            throw new Exception("Invalid api key", 1);
+        }
+
         $this->bearer = (string)$bearer;
+        $this->mode = (string)$mode;
         $this->setApiUrl((string)$this->getApiUrlForMode($mode));
+
         $this->logger = new Logger();
+        if ($logger) {
+            $this->logger->setLogger($logger);
+        }
     }
 
     /**
@@ -99,6 +114,16 @@ abstract class AbstractBliskapaczka
      *
      * @return string
      */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * Return API url
+     *
+     * @return string
+     */
     public function getApiUrl()
     {
         return $this->apiUrl;
@@ -127,7 +152,13 @@ abstract class AbstractBliskapaczka
      */
     public function getApiTimeout()
     {
-        return static::API_TIMEOUT;
+        $timeout = static::API_TIMEOUT;
+
+        if ($this->mode == 'test') {
+            $timeout = static::SANDBOX_API_TIMEOUT;
+        }
+
+        return $timeout;
     }
 
     /**
@@ -164,8 +195,8 @@ abstract class AbstractBliskapaczka
         $headers[] = 'Content-Type: application/json';
 
         // set options
-        $options[CURLOPT_URL] = $this->apiUrl . '/v1/' . $url;
-        $options[CURLOPT_TIMEOUT] = static::API_TIMEOUT;
+        $options[CURLOPT_URL] = $this->apiUrl . '/' . static::API_VERSION . '/' . $url;
+        $options[CURLOPT_TIMEOUT] = $this->getApiTimeout();
         $options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
         $options[CURLOPT_HTTPHEADER] = $headers;
         

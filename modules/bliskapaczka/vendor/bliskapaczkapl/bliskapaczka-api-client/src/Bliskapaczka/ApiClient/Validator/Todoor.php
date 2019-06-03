@@ -32,10 +32,11 @@ class Todoor extends AbstractValidator implements ValidatorInterface
         'receiverFlatNumber' => ['maxlength' => 10],
         'receiverPostCode' => ['notblank' => true],
         'receiverCity' => ['maxlength' => 30, 'notblank' => true],
+        'deliveryType' => ['notblank' => true],
         'operatorName' => ['notblank' => true],
         'postingCode' => [],
         'codValue' => [],
-        'insuranceValue' => [],
+        'codPayoutBankAccountNumber' => [],
         'additionalInformation' => [],
         'parcel' => []
     ];
@@ -56,8 +57,8 @@ class Todoor extends AbstractValidator implements ValidatorInterface
         @NotBlank
         @Size(max = 30)
         private String senderLastName;
-        @NotBlank
-        @PhoneNumber
+        @NotEmpty
+        @PolishPhoneNumber
         private String senderPhoneNumber;
         @NotBlank
         @Email
@@ -84,8 +85,8 @@ class Todoor extends AbstractValidator implements ValidatorInterface
         @NotBlank
         @Size(max = 30)
         private String receiverLastName;
-        @NotBlank
-        @PhoneNumber
+        @NotEmpty
+        @PolishPhoneNumber
         private String receiverPhoneNumber;
         @NotBlank
         @Email
@@ -97,5 +98,7 @@ class Todoor extends AbstractValidator implements ValidatorInterface
 
         # Basic validation for all propoerties
         $this->validationByProperty();
+
+        return true;
     }
 }

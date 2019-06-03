@@ -81,7 +81,7 @@ class FiveHundredTest extends TestCase
   "provider_state": "API return 500 error",
   "request": {
     "method": "post",
-    "path": "/v1/pricing"
+    "path": "/v2/pricing"
   },
   "response": {
     "status": 200,

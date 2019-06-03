@@ -18,6 +18,8 @@ class Pos extends AbstractBliskapaczka implements BliskapaczkaInterface
      */
     const API_URL = 'https://pos.bliskapaczka.pl/api/';
 
+    const API_VERSION = 'v1';
+
     /**
      * @const URL for the sandbox api
      */

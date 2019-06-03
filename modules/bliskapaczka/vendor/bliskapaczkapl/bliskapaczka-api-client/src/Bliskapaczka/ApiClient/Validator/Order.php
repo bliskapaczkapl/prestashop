@@ -27,11 +27,12 @@ class Order extends AbstractValidator implements ValidatorInterface
         'senderCity' => ['maxlength' => 30, 'notblank' => true],
         'receiverFirstName' => ['maxlength' => 30, 'notblank' => true],
         'receiverLastName' => ['maxlength' => 30, 'notblank' => true],
+        'deliveryType' => ['notblank' => true],
         'operatorName' => ['notblank' => true],
         'destinationCode' => ['notblank' => true],
         'postingCode' => [],
         'codValue' => [],
-        'insuranceValue' => [],
+        'codPayoutBankAccountNumber' => [],
         'additionalInformation' => [],
         'parcel' => []
     ];
@@ -54,8 +55,8 @@ class Order extends AbstractValidator implements ValidatorInterface
         @NotBlank
         @Size(max = 30)
         private String senderLastName;
-        @NotBlank
-        @PhoneNumber
+        @NotEmpty
+        @PolishPhoneNumber
         private String senderPhoneNumber;
         @NotBlank
         @Email
@@ -82,8 +83,8 @@ class Order extends AbstractValidator implements ValidatorInterface
         @NotBlank
         @Size(max = 30)
         private String receiverLastName;
-        @NotBlank
-        @PhoneNumber
+        @NotEmpty
+        @PolishPhoneNumber
         private String receiverPhoneNumber;
         @NotBlank
         @Email

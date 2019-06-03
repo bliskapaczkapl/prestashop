@@ -13,7 +13,7 @@ class SenderTest extends TestCase
         $this->orderData = [
             "senderFirstName" => "string",
             "senderLastName" => "string",
-            "senderPhoneNumber" => "606555433",
+            "senderPhoneNumber" => "111111111",
             "senderEmail" => "bob@example.com",
             "senderStreet" => "string",
             "senderBuildingNumber" => "string",
@@ -54,6 +54,41 @@ class SenderTest extends TestCase
     public function testSenderPostCodeShouldntbeNotEmpty()
     {
         unset($this->orderData['senderPostCode']);
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessageRegExp /Invalid \w+/
+     */
+    public function testSenderPhoneNumberShouldntBeString()
+    {
+        $this->orderData['senderPhoneNumber'] = 'string';
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    public function testCodPayoutBankAccountNumberShouldntBeValidated()
+    {
+        $this->orderData['codPayoutBankAccountNumber'] = '';
+
+        $order = new Sender();
+        $order->setData($this->orderData);
+        $this->assertTrue($order->validate());
+    }
+
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessage Invalid CoD Payout Bank Account Number
+     */
+    public function testCodPayoutBankAccountNumber()
+    {
+        $this->orderData['codPayoutBankAccountNumber'] = '16102019120000910201486274';
 
         $order = new Sender();
         $order->setData($this->orderData);

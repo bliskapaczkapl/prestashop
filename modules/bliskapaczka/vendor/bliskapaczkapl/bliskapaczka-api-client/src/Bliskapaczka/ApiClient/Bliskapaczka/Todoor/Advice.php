@@ -2,7 +2,7 @@
 
 namespace Bliskapaczka\ApiClient\Bliskapaczka\Todoor;
 
-use Bliskapaczka\ApiClient\Bliskapaczka\Todoor;
+use Bliskapaczka\ApiClient\Bliskapaczka\Order\Advice as OrderAdvice;
 use Bliskapaczka\ApiClient\BliskapaczkaInterface;
 use Bliskapaczka\ApiClient\AbstractBliskapaczka;
 
@@ -12,10 +12,8 @@ use Bliskapaczka\ApiClient\AbstractBliskapaczka;
  * @author  Mateusz Koszutowski (mkoszutowski@divante.pl)
  * @version 0.1.0
  */
-class Advice extends Todoor implements BliskapaczkaInterface
+class Advice extends OrderAdvice implements BliskapaczkaInterface
 {
-    const REQUEST_URL = 'order/advice/todoor';
-
     /**
      * Return end of url for request
      */

@@ -120,7 +120,7 @@ class GetTest extends TestCase
   "provider_state": "Order recived correctly",
   "request": {
     "method": "get",
-    "path": "/v1/order/' . $this->orderId . '"
+    "path": "/v2/order/' . $this->orderId . '"
   },
   "response": {
     "status": 200,

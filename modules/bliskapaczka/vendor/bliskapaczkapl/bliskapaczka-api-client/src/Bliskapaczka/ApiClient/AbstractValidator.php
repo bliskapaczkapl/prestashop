@@ -13,7 +13,18 @@ use Bliskapaczka\ApiClient\Exception;
  */
 abstract class AbstractValidator
 {
-    const PHONE_NUMBER_PATTERN = '/^(5[0137]|6[069]|7[2389]|88)\d{7}$/';
+    const PHONE_NUMBER_PATTERN = '/^\\d{9}$/';
+
+    protected $operator = [
+        'senderEmail' => 'email',
+        'receiverEmail' => 'email',
+        'senderPhoneNumber' => 'phone',
+        'receiverPhoneNumber' => 'phone',
+        'senderPostCode' => 'postCode',
+        'receiverPostCode' => 'postCode',
+        'parcel' => 'parcel',
+        'codPayoutBankAccountNumber' => 'iban'
+    ];
 
     /**
      * Set data to validata
@@ -48,22 +59,11 @@ abstract class AbstractValidator
      */
     protected function specificValidation($property)
     {
-        switch ($property) {
-            case 'senderEmail':
-            case 'receiverEmail':
-                self::email($this->data[$property]);
-                break;
-            case 'senderPhoneNumber':
-            case 'receiverPhoneNumber':
-                self::phone($this->data[$property]);
-                break;
-            case 'senderPostCode':
-            case 'receiverPostCode':
-                self::postCode($this->data[$property]);
-                break;
-            case 'parcel':
-                self::parcel($this->data[$property]);
-                break;
+        if (isset($this->data[$property])
+            && isset($this->operator[$property])
+            && method_exists($this, $this->operator[$property])
+        ) {
+            call_user_func('self::' . $this->operator[$property], $this->data[$property]);
         }
     }
 
@@ -127,6 +127,22 @@ abstract class AbstractValidator
 
             if (!is_array($phoneNumberMatches) || count($phoneNumberMatches) == 0) {
                 throw new \Bliskapaczka\ApiClient\Exception('Invalid phone number', 1);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate bank account
+     *
+     * @param string $data
+     */
+    public static function iban($data)
+    {
+        if (!empty($data)) {
+            if (!verify_iban('PL' . $data, false)) {
+                throw new \Bliskapaczka\ApiClient\Exception('Invalid CoD Payout Bank Account Number', 1);
             }
         }
 

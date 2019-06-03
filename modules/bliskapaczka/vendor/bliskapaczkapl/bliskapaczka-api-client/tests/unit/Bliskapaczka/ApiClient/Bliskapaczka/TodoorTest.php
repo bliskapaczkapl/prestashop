@@ -28,6 +28,7 @@ class TodoorTest extends TestCase
             "receiverFlatNumber" => '11',
             "receiverPostCode" => "12-345",
             "receiverCity" => "Testowe",
+            "deliveryType" => "D2D",
             "operatorName" => "DPD",
             "insuranceValue" => 0,
             "additionalInformation" => "string",
@@ -55,7 +56,7 @@ class TodoorTest extends TestCase
         $apiClientTodoor = new Todoor($apiKey);
         $apiClientTodoor->setApiUrl($apiUrl);
 
-        $this->assertEquals('order/todoor', $apiClientTodoor->getUrl());
+        $this->assertEquals('order', $apiClientTodoor->getUrl());
     }
 
     public function testCreate()

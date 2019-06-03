@@ -87,7 +87,7 @@ class GetWithNumbersTest extends TestCase
   "provider_state": "API should return valid pdf file",
   "request": {
     "method": "get",
-    "path": "/v1/report/pickupconfirmation",
+    "path": "/v2/report/pickupconfirmation",
     "query": "numbers=' . $this->numbers . '"
   },
   "response": {

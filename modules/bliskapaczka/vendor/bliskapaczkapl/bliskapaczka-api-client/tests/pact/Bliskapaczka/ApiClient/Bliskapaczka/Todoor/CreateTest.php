@@ -33,6 +33,7 @@ class CreateTest extends TestCase
             "receiverFlatNumber" => '11',
             "receiverPostCode" => "12-345",
             "receiverCity" => "Testowe",
+            "deliveryType" => "D2D",
             "operatorName" => "DPD",
             "additionalInformation" => "string",
             "codValue" => 111.1,
@@ -71,6 +72,7 @@ class CreateTest extends TestCase
         $this->assertEquals($this->orderData['codValue'], $response->codValue);
 
         $this->assertEquals("PROCESSING", $response->status);
+        $this->assertEquals("D2D", $response->deliveryType);
 
         $this->assertTrue(isset($response->parcel));
         $this->assertTrue(isset($response->parcel->dimensions));
@@ -124,7 +126,7 @@ class CreateTest extends TestCase
   "provider_state": "Todoor order created correctly",
   "request": {
     "method": "post",
-    "path": "/v1/order/todoor"
+    "path": "/v2/order"
   },
   "response": {
     "status": 200,
@@ -178,7 +180,8 @@ class CreateTest extends TestCase
         "net": 0,
         "vat": 0,
         "gross": 0
-      }
+      },
+      "deliveryType": "D2D"
     }
   }
 }';

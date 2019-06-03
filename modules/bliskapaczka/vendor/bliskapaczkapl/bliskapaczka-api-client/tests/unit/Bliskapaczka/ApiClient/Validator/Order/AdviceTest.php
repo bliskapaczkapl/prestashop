@@ -13,7 +13,7 @@ class AdviceTest extends TestCase
         $this->orderData = [
             "senderFirstName" => "string",
             "senderLastName" => "string",
-            "senderPhoneNumber" => "606555433",
+            "senderPhoneNumber" => "111111111",
             "senderEmail" => "bob@example.com",
             "senderStreet" => "string",
             "senderBuildingNumber" => "string",
@@ -22,13 +22,13 @@ class AdviceTest extends TestCase
             "senderCity" => "string",
             "receiverFirstName" => "string",
             "receiverLastName" => "string",
-            "receiverPhoneNumber" => "600555432",
+            "receiverPhoneNumber" => "111111111",
             "receiverEmail" => "eva@example.com",
+            "deliveryType" => "P2P",
             "operatorName" => "INPOST",
             "destinationCode" => "KRA010",
             "postingCode" => "KRA011",
             "codValue" => 0,
-            "insuranceValue" => 0,
             "additionalInformation" => "string",
             "parcel" => [
                 "dimensions" => [
@@ -36,7 +36,8 @@ class AdviceTest extends TestCase
                     "length" => 20,
                     "width" => 20,
                     "weight" => 2
-                ]
+                ],
+                "insuranceValue" => 0
             ]
         ];
     }
@@ -90,6 +91,19 @@ class AdviceTest extends TestCase
     public function testSenderPhoneNumberShouldBeSetted()
     {
         unset($this->orderData['senderPhoneNumber']);
+
+        $order = new Advice();
+        $order->setData($this->orderData);
+        $order->validate();
+    }
+
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessageRegExp /Invalid \w+/
+     */
+    public function testSenderPhoneNumberShouldntBeString()
+    {
+        $this->orderData['senderPhoneNumber'] = 'string';
 
         $order = new Advice();
         $order->setData($this->orderData);

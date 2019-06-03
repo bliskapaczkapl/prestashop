@@ -23,6 +23,7 @@ class OrderTest extends TestCase
             "receiverLastName" => "string",
             "receiverPhoneNumber" => "600555432",
             "receiverEmail" => "eva@example.com",
+            "deliveryType" => "P2P",
             "operatorName" => "INPOST",
             "destinationCode" => "KRA010",
             "postingCode" => "KRA011",

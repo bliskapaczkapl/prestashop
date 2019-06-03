@@ -25,5 +25,6 @@ class Sender extends Advice implements ValidatorInterface
         'senderBuildingNumber' => ['maxlength' => 10, 'notblank' => true],
         'senderFlatNumber' => ['maxlength' => 10],
         'senderCity' => ['maxlength' => 30, 'notblank' => true],
+        'codPayoutBankAccountNumber' => [],
     ];
 }

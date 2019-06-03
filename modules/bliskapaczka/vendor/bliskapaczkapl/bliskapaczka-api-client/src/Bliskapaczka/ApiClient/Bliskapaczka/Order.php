@@ -34,7 +34,7 @@ class Order extends AbstractBliskapaczka implements BliskapaczkaInterface
      */
     public function getUrl()
     {
-        $url = self::REQUEST_URL;
+        $url = static::REQUEST_URL;
 
         if (isset($this->orderId)) {
             $url .= '/' . $this->orderId;

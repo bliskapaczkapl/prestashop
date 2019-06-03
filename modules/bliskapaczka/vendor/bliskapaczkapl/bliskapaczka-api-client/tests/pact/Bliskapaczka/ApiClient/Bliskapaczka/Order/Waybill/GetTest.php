@@ -29,7 +29,7 @@ class GetTest extends TestCase
 
         $response = json_decode($apiClient->get());
 
-        $this->assertEquals('https://storage.googleapis.com/000000001P-000000002.pdf', $response->url);
+        $this->assertEquals('https://storage.googleapis.com/000000001P-000000002.pdf', $response[0]->url);
     }
 
     /**
@@ -74,16 +74,18 @@ class GetTest extends TestCase
   "provider_state": "API should return URL",
   "request": {
     "method": "get",
-    "path": "/v1/order/' . $this->orderId . '/waybill"
+    "path": "/v2/order/' . $this->orderId . '/waybill"
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
     },
-    "body": {
-      "url" : "https://storage.googleapis.com/000000001P-000000002.pdf"
-    }
+    "body": [
+        {
+            "url" : "https://storage.googleapis.com/000000001P-000000002.pdf"
+        }
+    ]
   }
 }';
 

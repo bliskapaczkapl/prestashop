@@ -15,12 +15,15 @@ class GetTest extends TestCase
         }
 
         $this->pricingData = [
-            "dimensions" => [
-                "height" => 20,
-                "length" => 20,
-                "width" => 20,
-                "weight" => 2
-            ]
+            "parcel" => [
+                "dimensions" => [
+                    "height" => 20,
+                    "length" => 20,
+                    "width" => 20,
+                    "weight" => 2
+                ]
+            ],
+            "deliveryType" => "P2P"
         ];
 
         $this->deleteInteractions();
@@ -84,7 +87,7 @@ class GetTest extends TestCase
   "provider_state": "Pricing list for all",
   "request": {
     "method": "post",
-    "path": "/v1/pricing"
+    "path": "/v2/pricing"
   },
   "response": {
     "status": 200,

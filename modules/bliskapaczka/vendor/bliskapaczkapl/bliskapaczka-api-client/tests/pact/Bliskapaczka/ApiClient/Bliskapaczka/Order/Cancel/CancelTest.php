@@ -104,7 +104,7 @@ class CancelTest extends TestCase
   "provider_state": "API should return order data",
   "request": {
     "method": "post",
-    "path": "/v1/order/' . $this->orderId . '/cancel"
+    "path": "/v2/order/' . $this->orderId . '/cancel"
   },
   "response": {
     "status": 200,

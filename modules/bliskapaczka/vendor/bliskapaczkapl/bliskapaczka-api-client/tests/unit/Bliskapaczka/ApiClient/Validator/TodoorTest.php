@@ -12,7 +12,7 @@ class TodoorTest extends TestCase
         $this->todoorData = [
             "senderFirstName" => "string",
             "senderLastName" => "string",
-            "senderPhoneNumber" => "606555433",
+            "senderPhoneNumber" => "111111111",
             "senderEmail" => "bob@example.com",
             "senderStreet" => "string",
             "senderBuildingNumber" => "string",
@@ -21,15 +21,15 @@ class TodoorTest extends TestCase
             "senderCity" => "string",
             "receiverFirstName" => "string",
             "receiverLastName" => "string",
-            "receiverPhoneNumber" => "600555432",
+            "receiverPhoneNumber" => "111111111",
             "receiverEmail" => "eva@example.com",
             "receiverStreet" => "Testowa",
             "receiverBuildingNumber" => "1",
             "receiverFlatNumber" => '11',
             "receiverPostCode" => "12-345",
             "receiverCity" => "Testowe",
+            "deliveryType" => "D2D",
             "operatorName" => "DPD",
-            "insuranceValue" => 0,
             "additionalInformation" => "string",
             "parcel" => [
                 "dimensions" => [
@@ -37,7 +37,8 @@ class TodoorTest extends TestCase
                     "length" => 20,
                     "width" => 20,
                     "weight" => 2
-                ]
+                ],
+                "insuranceValue" => 0
             ]
         ];
     }
@@ -61,9 +62,9 @@ class TodoorTest extends TestCase
     {
         $this->todoorData['receiverPhoneNumber'] = 'string';
 
-        $todoor = new Todoor();
-        $todoor->setData($this->todoorData);
-        $todoor->validate();
+        $order = new Todoor();
+        $order->setData($this->todoorData);
+        $order->validate();
     }
 
     /**
@@ -196,6 +197,19 @@ class TodoorTest extends TestCase
         $todoor->validate();
 
         $this->todoorData['parcel']['dimensions']['height'] = -1;
+
+        $todoor = new Todoor();
+        $todoor->setData($this->todoorData);
+        $todoor->validate();
+    }
+
+    /**
+     * @expectedException Bliskapaczka\ApiClient\Exception
+     * @expectedExceptionMessage Invalid deliveryType
+     */
+    public function testDeliveryTypeValidation()
+    {
+        $this->todoorData['deliveryType'] = '';
 
         $todoor = new Todoor();
         $todoor->setData($this->todoorData);
