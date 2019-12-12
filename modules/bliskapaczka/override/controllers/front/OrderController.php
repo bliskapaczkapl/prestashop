@@ -27,7 +27,6 @@ class OrderController extends OrderControllerCore
                 }
 
                 $bliskapaczkaFreeShipping = $bliskapaczkaHelper->freeShipping($free_shipping, $this->context->cart);
-
                 $widgetGoogleMapApiKey = $bliskapaczkaHelper->getGoogleMapApiKey();
                 $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget(array(), $bliskapaczkaFreeShipping);
                 $testMode = Configuration::get($bliskapaczkaHelper::TEST_MODE) ? 'true' : 'false';
