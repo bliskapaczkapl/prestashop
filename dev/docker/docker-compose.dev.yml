@@ -6,3 +6,4 @@ services:
       dockerfile: dev/docker/Dockerfile
     volumes:
       - "./modules/bliskapaczka:/var/www/html/modules/bliskapaczka"
+      - "./composer.json:/var/www/html/composer.json"
