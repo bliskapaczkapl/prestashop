@@ -390,6 +390,46 @@ class Helper
         return $apiClient;
     }
 
+    public function getApiClientConfig()
+    {
+        $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Config(
+            \Configuration::get(self::API_KEY),
+            $this->getApiMode(\Configuration::get(self::TEST_MODE))
+        );
+
+        return $apiClient;
+    }
+
+    public function getConfig()
+    {
+        $apiClient = $this->getApiClientConfig();
+        $config = $apiClient->get();
+        if (json_decode($config) === null) {
+            return array();
+        }
+        return json_decode($config);
+    }
+
+
+    /**
+     * Return FEDEX config.
+     * @return false|mixed|string|void
+     * @throws \Bliskapaczka\ApiClient\Exception
+     */
+    public function getFedexConfigurationForWidget()
+    {
+        $config = $this->getConfig();
+        $result = array();
+        foreach ($config->configModel as $item) {
+            if ($item->operator === 'FEDEX' && isset($item->prices->D2P)) {
+                $result[0]['operator'] = $item->operator;
+                $result[0]['price'] = $item->prices->D2P[0]->price;
+                $result[0]['cod'] = $item->cod;
+                $result[0]['availabilityStatus'] = true;
+            }
+        }
+        return json_encode($result);
+    }
     /**
      * Remove all non numeric chars from phone number
      *

@@ -1,3 +1,8 @@
+## [3.6.1] - 2019-08-20
+### Changed
+- Added shop name to request
+- Added shop version to request
+
 ## [3.6.0] - 2019-05-27
 ### Changed
 - Added logger and logging all requests and responses
