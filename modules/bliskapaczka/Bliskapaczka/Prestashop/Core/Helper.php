@@ -390,6 +390,10 @@ class Helper
         return $apiClient;
     }
 
+    /**
+     * @return ApiClient\Bliskapaczka\Config
+     * @throws ApiClient\Exception
+     */
     public function getApiClientConfig()
     {
         $apiClient = new \Bliskapaczka\ApiClient\Bliskapaczka\Config(
@@ -400,6 +404,10 @@ class Helper
         return $apiClient;
     }
 
+    /**
+     * @return array|mixed
+     * @throws ApiClient\Exception
+     */
     public function getConfig()
     {
         $apiClient = $this->getApiClientConfig();
