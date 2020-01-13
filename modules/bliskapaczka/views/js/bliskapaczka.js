@@ -12,24 +12,24 @@ Bliskapaczka.showMap = function (operators, googleMapApiKey, testMode) {
     Bliskapaczka.updateSelectedCarrier();
 
     BPWidget.init(
-      bpWidget,
-      {
-          googleMapApiKey: googleMapApiKey,
-          callback: function (data) {
-              console.log('BPWidget callback:', data.code, data.operator)
+        bpWidget,
+        {
+            googleMapApiKey: googleMapApiKey,
+            callback: function (data) {
+                console.log('BPWidget callback:', data.code, data.operator)
 
-              posCodeForm = document.getElementById('bliskapaczka_posCode')
-              posOperatorForm = document.getElementById('bliskapaczka_posOperator')
+                posCodeForm = document.getElementById('bliskapaczka_posCode')
+                posOperatorForm = document.getElementById('bliskapaczka_posOperator')
 
-              posCodeForm.value = data.code;
-              posOperatorForm.value = data.operator;
+                posCodeForm.value = data.code;
+                posOperatorForm.value = data.operator;
 
-              Bliskapaczka.pointSelected(data, operators);
-          },
-          operators: operators,
-          posType: 'DELIVERY',
-          testMode: testMode
-      }
+                Bliskapaczka.pointSelected(data, operators);
+            },
+            operators: operators,
+            posType: 'DELIVERY',
+            testMode: testMode
+        }
     );
 }
 
@@ -115,16 +115,16 @@ Bliskapaczka.selectPoint = function () {
     if (typeof msg_bliskapaczka_select_point != 'undefined' && (!posCode || !posOperator)) {
         if (!!$.prototype.fancybox) {
             $.fancybox.open(
-              [
+                [
                   {
-                      type: 'inline',
-                      autoScale: true,
-                      minHeight: 30,
-                      content: '<p class="fancybox-error">' + msg_bliskapaczka_select_point + '</p>'
+                        type: 'inline',
+                        autoScale: true,
+                        minHeight: 30,
+                        content: '<p class="fancybox-error">' + msg_bliskapaczka_select_point + '</p>'
                   }],
-              {
-                  padding: 0
-              }
+                {
+                    padding: 0
+                }
             );
         } else {
             alert(msg_bliskapaczka_select_point);
