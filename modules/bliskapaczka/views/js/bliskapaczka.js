@@ -16,8 +16,6 @@ Bliskapaczka.showMap = function (operators, googleMapApiKey, testMode) {
         {
             googleMapApiKey: googleMapApiKey,
             callback: function (data) {
-                console.log('BPWidget callback:', data.code, data.operator)
-
                 posCodeForm = document.getElementById('bliskapaczka_posCode')
                 posOperatorForm = document.getElementById('bliskapaczka_posOperator')
 
