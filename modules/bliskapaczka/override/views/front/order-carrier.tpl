@@ -115,6 +115,7 @@
                                                             </a></strong>
                                                             <input name="bliskapaczka_posCode" type="hidden" id="bliskapaczka_posCode" />
                                                             <input name="bliskapaczka_posOperator" type="hidden" id="bliskapaczka_posOperator" />
+                                                            <input name="bliskapaczka_isCod" type="hidden" id="bliskapaczka_isCod" value="0" />
                                                             <div id="bpWidget_aboutPoint" style="width: 100%; display: none;">
                                                                 <p>{l s='Selected delivery point' mod='bliskapaczka'}: <span id="bpWidget_aboutPoint_posData"></span></p>
                                                             </div>
@@ -128,12 +129,15 @@
                                                                         <input type="radio" name="bliskapaczka_courier_posOperator" value="{$courier->operator}">
                                                                         <div class="bliskapaczka_courier_item">
                                                                             <div class="bliskapaczka_courier_item_logo"><img src="https://bliskapaczka.pl/static/images/{$courier->operator}.png" alt="{$courier->operator}"></div>
-                                                                            <div class="bliskapaczka_courier_item_price">
+                                                                            <div class="bliskapaczka_courier_item_price"  data-price="{$courier->price}" data-cod="{$courier->cod}">
                                                                                 <span>{$courier->price} zł</span>
                                                                             </div>
                                                                         </div>
                                                                     </label>
-                                                                {/foreach}
+                                                                {/foreach}                                                                                                                               <div class="cod_wrapper">
+                                                                <input id="cod" type="checkbox" value="cod">
+                                                                <label id="cod_label" for="cod">{l s='Cash on deliver' mod='bliskapaczka'}</label>
+                                                                </div>
                                                             </div>
                                                         {/if}
                                                     {/foreach}
@@ -464,3 +468,6 @@
     {addJsDefL name=msg_bliskapaczka_select_point}{l s='Please select delivery point.' mod='bliskapaczka' js=1}{/addJsDefL}
 {/if}
 {/strip}
+{addJsDef operators=$widget_operators}
+{addJsDef key=$widget_google_map_api_key}
+{addJsDef testMode=$test_mode}
