@@ -31,8 +31,11 @@ class OrderController extends OrderControllerCore
                 $widgetOperators = $bliskapaczkaHelper->getOperatorsForWidget(array(), $bliskapaczkaFreeShipping);
                 $testMode = Configuration::get($bliskapaczkaHelper::TEST_MODE) ? 'true' : 'false';
 
-                $apiClient = $bliskapaczkaHelper->getApiClientPricingTodoor();
-                $data = array("parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()));
+                $apiClient = $bliskapaczkaHelper->getApiClientPricing()();
+                $data = array(
+                    "parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()),
+                    "deliveryType" => 'D2D'
+                );
                 $priceList = $apiClient->get($data);
                 $widgetOperatorsCourier = json_decode($bliskapaczkaHelper->getOperatorsForWidget(
                     json_decode($priceList),
