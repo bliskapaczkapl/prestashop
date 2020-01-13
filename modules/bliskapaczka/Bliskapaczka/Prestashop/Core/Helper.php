@@ -216,7 +216,6 @@ class Helper
             } else {
                 $result[$config->operator] = 0;
             }
-
         }
 
         return $result;
