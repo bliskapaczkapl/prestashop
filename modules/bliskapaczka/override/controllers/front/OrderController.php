@@ -42,6 +42,7 @@ class OrderController extends OrderControllerCore
                     $bliskapaczkaFreeShipping
                 ));
                 $fedex = $bliskapaczkaHelper->getFedexConfigurationForWidget();
+                
                 $operators = json_encode(array_merge(json_decode($widgetOperators), json_decode($fedex)));
                 $this->context->smarty->assign('widget_operators', $operators);
                 $this->context->smarty->assign('widget_operators_courier', $widgetOperatorsCourier);
