@@ -253,15 +253,17 @@ class HelperTest extends TestCase
                     }
                 }
             }]';
+        $cods = array(
+            'POCZTA' => 5,
+            'INPOST' => 0,
+            'RUCH' => 1
+        );
 
         $helper = new \Bliskapaczka\Prestashop\Core\Helper();
+
         $this->assertEquals(
-            '[{"operator":"INPOST","price":10.27},{"operator":"RUCH","price":5.99}]',
-            $helper->getOperatorsForWidget(json_decode($priceList))
-        );
-        $this->assertEquals(
-            '[{"operator":"INPOST","price":10.27},{"operator":"RUCH","price":5.99}]',
-            $helper->getOperatorsForWidget(json_decode($priceList), false)
+            '[{"operator":"INPOST","price":10.27,"cod":0},{"operator":"RUCH","price":5.99,"cod":1}]',
+            $helper->getOperatorsForWidget(json_decode($priceList), false, $cods)
         );
     }
 
@@ -294,10 +296,15 @@ class HelperTest extends TestCase
                 }
             }]';
 
+        $cods = array(
+            'POCZTA' => 5,
+            'INPOST' => 0,
+            'RUCH' => 1
+        );
         $helper = new \Bliskapaczka\Prestashop\Core\Helper();
         $this->assertEquals(
-            '[{"operator":"INPOST","price":0},{"operator":"RUCH","price":0}]',
-            $helper->getOperatorsForWidget(json_decode($priceList), true)
+            '[{"operator":"INPOST","price":0,"cod":0},{"operator":"RUCH","price":0,"cod":1}]',
+            $helper->getOperatorsForWidget(json_decode($priceList), true, $cods)
         );
     }
 
