@@ -36,13 +36,14 @@ class OrderController extends OrderControllerCore
                     "parcel" => array('dimensions' => $bliskapaczkaHelper->getParcelDimensions()),
                     "deliveryType" => 'D2D'
                 );
+                
                 $priceList = $apiClient->get($data);
                 $widgetOperatorsCourier = json_decode($bliskapaczkaHelper->getOperatorsForWidget(
                     json_decode($priceList),
                     $bliskapaczkaFreeShipping
                 ));
                 $fedex = $bliskapaczkaHelper->getFedexConfigurationForWidget();
-                
+
                 $operators = json_encode(array_merge(json_decode($widgetOperators), json_decode($fedex)));
                 $this->context->smarty->assign('widget_operators', $operators);
                 $this->context->smarty->assign('widget_operators_courier', $widgetOperatorsCourier);
