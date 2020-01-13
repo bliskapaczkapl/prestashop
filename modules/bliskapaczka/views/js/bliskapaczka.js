@@ -12,24 +12,24 @@ Bliskapaczka.showMap = function (operators, googleMapApiKey, testMode) {
     Bliskapaczka.updateSelectedCarrier();
 
     BPWidget.init(
-        bpWidget,
-        {
-            googleMapApiKey: googleMapApiKey,
-            callback: function (data) {
-                console.log('BPWidget callback:', data.code, data.operator)
+      bpWidget,
+      {
+          googleMapApiKey: googleMapApiKey,
+          callback: function (data) {
+              console.log('BPWidget callback:', data.code, data.operator)
 
-                posCodeForm = document.getElementById('bliskapaczka_posCode')
-                posOperatorForm = document.getElementById('bliskapaczka_posOperator')
+              posCodeForm = document.getElementById('bliskapaczka_posCode')
+              posOperatorForm = document.getElementById('bliskapaczka_posOperator')
 
-                posCodeForm.value = data.code;
-                posOperatorForm.value = data.operator;
+              posCodeForm.value = data.code;
+              posOperatorForm.value = data.operator;
 
-                Bliskapaczka.pointSelected(data, operators);
-            },
-            operators: operators,
-            posType: 'DELIVERY',
-            testMode: testMode
-        }
+              Bliskapaczka.pointSelected(data, operators);
+          },
+          operators: operators,
+          posType: 'DELIVERY',
+          testMode: testMode
+      }
     );
 }
 
@@ -45,9 +45,9 @@ Bliskapaczka.pointSelected = function (data, operators) {
     posDataBlock = document.getElementById('bpWidget_aboutPoint_posData');
 
     posDataBlock.innerHTML =  data.operator + '</br>'
-        + ((data.description) ? data.description + '</br>': '')
-        + data.street + '</br>'
-        + ((data.postalCode) ? data.postalCode + ' ': '') + data.city
+      + ((data.description) ? data.description + '</br>': '')
+      + data.street + '</br>'
+      + ((data.postalCode) ? data.postalCode + ' ': '') + data.city
 }
 
 Bliskapaczka.updatePrice = function (posOperator, operators) {
@@ -67,12 +67,12 @@ Bliskapaczka.updatePrice = function (posOperator, operators) {
 
 Bliskapaczka.updateSelectedCarrier = function () {
     item = Bliskapaczka.getTableRow();
-    
+
     if (item) {
         input = item.find('input.delivery_option_radio').first();
         // Magic because in themes/default-bootstrap/js/order-carrier.js is defined event onchanged input
         input.click();
-    
+
         items = jQuery('td.delivery_option_radio span')
         items.each(function (index, element) {
             jQuery(this).removeClass('checked');
@@ -115,16 +115,16 @@ Bliskapaczka.selectPoint = function () {
     if (typeof msg_bliskapaczka_select_point != 'undefined' && (!posCode || !posOperator)) {
         if (!!$.prototype.fancybox) {
             $.fancybox.open(
-                [
-                {
-                    type: 'inline',
-                    autoScale: true,
-                    minHeight: 30,
-                    content: '<p class="fancybox-error">' + msg_bliskapaczka_select_point + '</p>'
-                }],
-                {
-                    padding: 0
-                }
+              [
+                  {
+                      type: 'inline',
+                      autoScale: true,
+                      minHeight: 30,
+                      content: '<p class="fancybox-error">' + msg_bliskapaczka_select_point + '</p>'
+                  }],
+              {
+                  padding: 0
+              }
             );
         } else {
             alert(msg_bliskapaczka_select_point);
@@ -137,12 +137,12 @@ Bliskapaczka.selectPoint = function () {
 
 Bliskapaczka.selectCourier = function (button) {
     item = jQuery(button).closest('.delivery_option')
-    
+
     if (item) {
         input = item.find('input.delivery_option_radio').first();
         // Magic because in themes/default-bootstrap/js/order-carrier.js is defined event onchanged input
         input.click();
-    
+
         items = jQuery('td.delivery_option_radio span')
         items.each(function (index, element) {
             jQuery(this).removeClass('checked');
@@ -163,6 +163,8 @@ Bliskapaczka.selectCourier = function (button) {
 }
 
 $(document).ready(function () {
+
+    operators = JSON.parse(operators);
     if (!!$.prototype.fancybox) {
         $("a.iframe").fancybox({
             'type': 'iframe',
@@ -170,7 +172,7 @@ $(document).ready(function () {
             'height': 600
         });
     }
-
+    var isCod = document.getElementById('bliskapaczka_isCod');
     $(document).on('submit', 'form[name=carrier_area]', function () {
         return Bliskapaczka.selectPoint();
     });
@@ -178,4 +180,42 @@ $(document).ready(function () {
     $(document).on('click', '.bliskapaczka_courier_item_wrapper', function () {
         return Bliskapaczka.selectCourier(this);
     });
+
+    $(document).on('click', 'input[id="cod"]', function () {
+        var prices = $('.bliskapaczka_courier_item_price');
+        for (var i = 0; i < prices.length; i++) {
+            var cod = parseFloat($(prices[i]).data('cod'));
+            var price = parseFloat($(prices[i]).data('price'));
+            if ($(this).is(':checked') === true) {
+                $($(prices[i]).children()[0]).text(price + cod +' zł');
+                isCod.value = '1';
+            } else {
+                $($(prices[i]).children()[0]).text(price + ' zł');
+                isCod.value = '0';
+            }
+        }
+    })
+
+    $(document).on('click', '.checkbox-block', function () {
+        var elements = $('.bp-filter-show-price');
+        $.each(elements, function (i, val) {
+            var op = $(val).find('input[type=checkbox]');
+            var opName = $(op).attr('name');
+            for (var j = 0; j < operators.length; j++) {
+                if (operators[j].operator === opName.toUpperCase()) {
+                    var price = operators[j].price;
+                    var cod = operators[j].cod;
+                    var span = $(val).find('span');
+                    if ($('#BPFilterCOD').is(':checked') === true) {
+                        $(span).text(price + cod + ' zł');
+                        isCod.value = '1';
+                    } else {
+                        $(span).text(price + ' zł');
+                        isCod.value = '0';
+                    }
+                }
+            }
+        })
+
+    })
 });

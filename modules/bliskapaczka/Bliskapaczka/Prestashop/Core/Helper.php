@@ -163,18 +163,22 @@ class Helper
     /**
      * Get widget configuration
      *
-     * @param  array $priceList
-     * @param  bool  $freeShipping
+     * @param array $priceList
+     * @param bool $freeShipping
+     * @param null $cods
+     *
      * @return string
      */
-    public function getOperatorsForWidget($priceList = array(), $freeShipping = false)
+    public function getOperatorsForWidget($priceList = array(), $freeShipping = false, $cods = null)
     {
         try {
             if (empty($priceList)) {
                 $priceList = $this->getPriceList();
             }
             $operators = array();
-
+            if ($cods === null) {
+                $cods = $this->makeCODStructure($this->getConfig()->configModel);
+            }
             foreach ($priceList as $operator) {
                 if ($operator->availabilityStatus != false) {
                     $price = $operator->price->gross;
@@ -184,7 +188,8 @@ class Helper
 
                     $operators[] = array(
                         "operator" => $operator->operatorName,
-                        "price" => $price
+                        "price" => $price,
+                        "cod" => $cods[$operator->operatorName]
                     );
                 }
             }
@@ -194,6 +199,27 @@ class Helper
             Logger::debug($e->getMessage());
             return '{}';
         }
+    }
+
+
+    /**
+     * @param array $configs
+     *
+     * @return array
+     */
+    public function makeCODStructure($configs)
+    {
+        $result = array();
+        foreach ($configs as $config) {
+            if (!empty($config->cod)) {
+                $result[$config->operator] = $config->cod;
+            } else {
+                $result[$config->operator] = 0;
+            }
+
+        }
+
+        return $result;
     }
 
     /**
