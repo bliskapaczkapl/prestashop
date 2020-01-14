@@ -42,7 +42,6 @@ class Cart extends CartCore
             'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
             'pos_code' => array('type' => self::TYPE_STRING),
             'pos_operator' => array('type' => self::TYPE_STRING),
-            'is_cod' => array('type' => self::TYPE_INT),
         ),
     );
 }

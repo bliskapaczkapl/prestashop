@@ -32,6 +32,7 @@ class Installer
             || $this->addToOrderInfoAboutBliskapaczkaOrder() == false
             || $this->addAdminPanel($helper) == false
             || $this->addCourier($helper) == false
+            || $this->addIsCODFieldToTable() == false
         ) {
             return false;
         }
@@ -302,16 +303,30 @@ class Installer
         return true;
     }
 
-    public function addIsCODFieldToTables()
+    public function addIsCODFieldToTable()
     {
-        \Db::getInstance()->execute(
-            'ALTER TABLE `' . _DB_PREFIX_ . 'orders`
-            ADD COLUMN `is_cod` INT NULL DEFAULT 0 AFTER `tracking_number`;'
+        $tables = array(
+            'cart'
         );
-        \Db::getInstance()->execute(
-            'ALTER TABLE `' . _DB_PREFIX_ . 'cart`
-            ADD COLUMN `is_cod` INT NULL DEFAULT 0 AFTER `tracking_number`;'
+
+        $columns = array(
+            'is_cod',
         );
+
+        foreach ($tables as $table) {
+            foreach ($columns as $column) {
+                //If column 'orders.$column' does not exist, create it
+                \Db::getInstance(_PS_USE_SQL_SLAVE_)->query(
+                    'SHOW COLUMNS FROM `' . _DB_PREFIX_ . $table . '` LIKE "' . $column . '"'
+                );
+                if (\Db::getInstance()->NumRows() == 0) {
+                    \Db::getInstance()->execute(
+                        'ALTER TABLE `' . _DB_PREFIX_ . $table . '` ADD `' . $column . '` INT DEFAULT 0'
+                    );
+                }
+            }
+        }
+
         return true;
     }
     /**
