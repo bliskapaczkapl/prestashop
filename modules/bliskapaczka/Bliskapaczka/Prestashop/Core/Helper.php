@@ -201,7 +201,21 @@ class Helper
         }
     }
 
-
+    /**
+     * @param $freeShipping
+     *
+     * @return string
+     */
+    public function getCouriersForWidget($freeShipping)
+    {
+        $data = array(
+            "parcel" => array('dimensions' => $this->getParcelDimensions()),
+            "deliveryType" => 'D2D'
+        );
+        $apiClient = $this->getApiClientPricing();
+        $priceList = $apiClient->get($data);
+        return $this->getOperatorsForWidget(json_decode($priceList), $freeShipping);
+    }
     /**
      * @param array $configs
      *
