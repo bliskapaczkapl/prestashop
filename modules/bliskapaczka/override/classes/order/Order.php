@@ -105,6 +105,7 @@ class Order extends OrderCore
             'creation_date' => array('type' => self::TYPE_STRING),
             'advice_date' => array('type' => self::TYPE_STRING),
             'tracking_number' => array('type' => self::TYPE_STRING),
+            'is_cod' => array('type' => self::TYPE_INT),
         ),
     );
 

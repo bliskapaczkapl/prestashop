@@ -302,6 +302,18 @@ class Installer
         return true;
     }
 
+    public function addIsCODFieldToTables()
+    {
+        \Db::getInstance()->execute(
+            'ALTER TABLE `' . _DB_PREFIX_ . 'orders`
+            ADD COLUMN `is_cod` INT NULL DEFAULT 0 AFTER `tracking_number`;'
+        );
+        \Db::getInstance()->execute(
+            'ALTER TABLE `' . _DB_PREFIX_ . 'cart`
+            ADD COLUMN `is_cod` INT NULL DEFAULT 0 AFTER `tracking_number`;'
+        );
+        return true;
+    }
     /**
      * Delete records from tab and tab_lang
      *
