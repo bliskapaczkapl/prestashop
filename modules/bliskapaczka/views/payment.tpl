@@ -1,0 +1,1 @@
+{addJsDef is_cod=$is_cod}

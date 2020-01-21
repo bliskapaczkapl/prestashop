@@ -46,6 +46,11 @@ class Order extends OrderCore
     public $tracking_number;
 
     /**
+     * Cash on delivery
+     */
+    public $is_cod;
+
+    /**
      * @see ObjectModel::$definition
      */
     public static $definition = array(
@@ -105,6 +110,7 @@ class Order extends OrderCore
             'creation_date' => array('type' => self::TYPE_STRING),
             'advice_date' => array('type' => self::TYPE_STRING),
             'tracking_number' => array('type' => self::TYPE_STRING),
+            'is_cod' => array('type' => self::TYPE_INT),
         ),
     );
 

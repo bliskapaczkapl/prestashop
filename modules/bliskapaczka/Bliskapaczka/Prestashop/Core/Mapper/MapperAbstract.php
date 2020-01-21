@@ -37,6 +37,11 @@ abstract class MapperAbstract
      */
     public function prepareSenderData($data, $helper, $configuration)
     {
+
+        if ($configuration::get($helper::BANK_ACCOUNT_NUMBER)) {
+            $data['codPayoutBankAccountNumber'] = $configuration::get($helper::BANK_ACCOUNT_NUMBER);
+        }
+
         if ($configuration::get($helper::SENDER_EMAIL)) {
             $data['senderEmail'] = $configuration::get($helper::SENDER_EMAIL);
         }

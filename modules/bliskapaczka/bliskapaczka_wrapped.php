@@ -57,7 +57,9 @@ class Bliskapaczka extends CarrierModule
             $this->registerHook('actionCarrierUpdate') == false ||
             $this->registerHook('header') == false ||
             $this->registerHook('actionCarrierProcess') == false ||
-            $this->registerHook('actionValidateOrder') == false
+            $this->registerHook('actionValidateOrder') == false ||
+            $this->registerHook('displayPaymentTop') == false
+
         ) {
             return false;
         }
@@ -113,6 +115,20 @@ class Bliskapaczka extends CarrierModule
     }
 
     /**
+     * Add `is_cod` property to site content
+     * @param array $params
+     *
+     *
+     * @return string
+     */
+    public function hookDisplayPaymentTop($params)
+    {
+        $cart = $params['cart'];
+        $this->context->smarty->assign('is_cod', $cart->is_cod);
+        return $this->context->smarty->fetch(_PS_MODULE_DIR_ . 'bliskapaczka/views/payment.tpl');
+    }
+
+    /**
      * Action after carrier change
      *
      * @param array $params
@@ -136,6 +152,8 @@ class Bliskapaczka extends CarrierModule
         $posCode = Tools::getValue('bliskapaczka_posCode');
         $posOperator = Tools::getValue('bliskapaczka_posOperator');
 
+        $isCod = Tools::getValue('bliskapaczka_isCod');
+        $cart->is_cod = $isCod;
         if ($posCode && $posOperator) {
             if ($cart->pos_code != $posCode) {
                 $cart->pos_code = $posCode;
@@ -180,7 +198,11 @@ class Bliskapaczka extends CarrierModule
             $order->pos_operator = $cart->pos_operator;
             $saveOrder = true;
         }
-        
+
+        if ($cart->is_cod != $order->is_cod) {
+            $order->is_cod = $cart->is_cod;
+            $saveOrder = true;
+        }
         if ($saveOrder == true) {
             $order->save();
         }
@@ -208,7 +230,7 @@ class Bliskapaczka extends CarrierModule
 
         /* @var \Bliskapaczka\ApiClient\Bliskapaczka $apiClient */
         $apiClient = $bliskapaczkaHelper->getApiClientForOrder($method, $configuration);
-        
+
         try {
             $response = $apiClient->create($data);
 
@@ -389,6 +411,10 @@ class Bliskapaczka extends CarrierModule
                 Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY,
                 Tools::getValue(Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY)
             );
+            Configuration::updateValue(
+                Bliskapaczka\Prestashop\Core\Helper::BANK_ACCOUNT_NUMBER,
+                Tools::getValue(Bliskapaczka\Prestashop\Core\Helper::BANK_ACCOUNT_NUMBER)
+            );
         }
 
         $this->html .= $this->displayConfirmation($this->l('Settings updated'));
@@ -409,7 +435,7 @@ class Bliskapaczka extends CarrierModule
             'senderStreet' => Bliskapaczka\Prestashop\Core\Helper::SENDER_STREET,
             'senderBuildingNumber' => Bliskapaczka\Prestashop\Core\Helper::SENDER_BUILDING_NUMBER,
             'senderFlatNumber' => Bliskapaczka\Prestashop\Core\Helper::SENDER_FLAT_NUMBER,
-            'senderCity' => Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY
+            'senderCity' => Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY,
         );
 
         foreach ($dataToGet as $key => $value) {
@@ -604,6 +630,11 @@ class Bliskapaczka extends CarrierModule
                 'type' => 'text',
                 'label' => $this->l('Sender city'),
                 'name' => Bliskapaczka\Prestashop\Core\Helper::SENDER_CITY
+            ),
+            array(
+                'type' => 'text',
+                'label' => $this->l('Sender bank account number'),
+                'name' => Bliskapaczka\Prestashop\Core\Helper::BANK_ACCOUNT_NUMBER
             )
         );
     }
@@ -681,6 +712,10 @@ class Bliskapaczka extends CarrierModule
             Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY => Tools::getValue(
                 Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY,
                 Configuration::get(Bliskapaczka\Prestashop\Core\Helper::GOOGLE_MAP_API_KEY)
+            ),
+            Bliskapaczka\Prestashop\Core\Helper::BANK_ACCOUNT_NUMBER => Tools::getValue(
+                Bliskapaczka\Prestashop\Core\Helper::BANK_ACCOUNT_NUMBER,
+                Configuration::get(Bliskapaczka\Prestashop\Core\Helper::BANK_ACCOUNT_NUMBER)
             )
         );
     }

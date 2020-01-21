@@ -23,6 +23,11 @@ class Core
             $filePath = _PS_MODULE_DIR_ . 'bliskapaczka/' . str_replace('\\', '/', $class) . '.php';
         }
 
+        if (preg_match('#^(IBAN)\b#', $class)) {
+            $libDir = _PS_MODULE_DIR_ . 'bliskapaczka/vendor/globalcitizen/php-iban/';
+            $filePath = $libDir . 'oophp-iban.php';
+        }
+
         if (isset($filePath) && is_file($filePath)) {
             require_once($filePath);
         }
