@@ -306,7 +306,8 @@ class Installer
     public function addIsCODFieldToTable()
     {
         $tables = array(
-            'cart'
+            'cart',
+            'orders'
         );
 
         $columns = array(

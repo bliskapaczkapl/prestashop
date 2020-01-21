@@ -38,7 +38,9 @@ class Todoor extends MapperAbstract
         if ($order->pos_operator == 'POCZTA') {
             $data['deliveryType'] = 'P2D';
         }
-
+        if ($order->is_cod == 1) {
+            $data['codValue'] = $order->total_paid;
+        }
         $data['parcel'] = [
             'dimensions' => $this->getParcelDimensions($helper)
         ];
