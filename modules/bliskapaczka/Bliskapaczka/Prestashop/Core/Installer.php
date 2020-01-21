@@ -303,6 +303,10 @@ class Installer
         return true;
     }
 
+    /**
+     * Added field to two table
+     * @return bool
+     */
     public function addIsCODFieldToTable()
     {
         $tables = array(
