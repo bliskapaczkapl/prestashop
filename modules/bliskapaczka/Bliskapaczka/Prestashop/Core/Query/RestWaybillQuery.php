@@ -43,12 +43,6 @@ class RestWaybillQuery implements WaybillQueryInterface
 
         $decodedResponse = json_decode($response);
         $decodedResponse = $decodedResponse[0];
-        // $properResponse = $decodedResponse instanceof stdClass && !isset($decodedResponse->errors);
-
-        // if (!$properResponse) {
-        //     $message = ($decodedResponse ? current($decodedResponse->errors)->message : '');
-        //     throw new \Exception(sprintf("Bliskapaczka: Error or empty API response %s", $message));
-        // }
 
         return new WaybillView($decodedResponse->url);
     }
