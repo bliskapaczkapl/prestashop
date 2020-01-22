@@ -39,6 +39,9 @@ class AdviceCommandHandler
         );
 
         $apiClient = $bliskapaczkaHelper->getApiClientOrderAdvice();
+        if ($command->getOrder()->delivery_type === 'D2D') {
+            $apiClient = $bliskapaczkaHelper->getApiClientTodoorAdvice();
+        }
         $apiClient->setOrderId($command->getOrder()->number);
 
         $response = $apiClient->create($data);
