@@ -42,7 +42,7 @@ class RestWaybillQuery implements WaybillQueryInterface
         $response = $this->apiClient->get();
 
         $decodedResponse = json_decode($response);
-
+        $decodedResponse = $decodedResponse[0];
         // $properResponse = $decodedResponse instanceof stdClass && !isset($decodedResponse->errors);
 
         // if (!$properResponse) {
