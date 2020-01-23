@@ -134,9 +134,10 @@
                                                                             </div>
                                                                         </div>
                                                                     </label>
-                                                                {/foreach}                                                                                                                               <div class="cod_wrapper">
-                                                                <input id="cod" type="checkbox" value="cod">
-                                                                <label id="cod_label" for="cod">{l s='Cash on deliver' mod='bliskapaczka'}</label>
+                                                                {/foreach}
+                                                                <div class="checkbox">
+                                                                    <input id="cod" type="checkbox" value="cod">
+                                                                    <label id="cod_label" for="cod">{l s='Płatność za pobraniem' mod='bliskapaczka'}</label>
                                                                 </div>
                                                             </div>
                                                         {/if}

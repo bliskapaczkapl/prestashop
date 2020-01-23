@@ -19,19 +19,7 @@ class Todoor extends MapperAbstract
     public function getData($order, $shippingAddress, $customer, $helper, $configuration)
     {
         $data = [];
-
-        $data['receiverFirstName'] = $shippingAddress->firstname;
-        $data['receiverLastName'] = $shippingAddress->lastname;
-        $data['receiverPhoneNumber'] = $helper->telephoneNumberCleaning($shippingAddress->phone_mobile);
-        $data['receiverEmail'] = $customer->email;
-
-        $street = preg_split("/\s+(?=\S*+$)/", $shippingAddress->address1);
-
-        $data['receiverStreet'] = $street[0];
-        $data['receiverBuildingNumber'] = isset($street[1]) ? $street[1] : '';
-        $data['receiverFlatNumber'] = isset($shippingAddress->address2) ? $shippingAddress->address2 : '';
-        $data['receiverPostCode'] = $shippingAddress->postcode;
-        $data['receiverCity'] = $shippingAddress->city;
+        $data = $this->prepareDestinationData($data, $shippingAddress, $helper, $customer);
 
         $data['operatorName'] = $order->pos_operator;
         $data['deliveryType'] = 'D2D';
@@ -39,7 +27,7 @@ class Todoor extends MapperAbstract
             $data['deliveryType'] = 'P2D';
         }
         if ($order->is_cod == 1) {
-            $data['codValue'] = $order->total_paid;
+            $data['codValue'] = $order->total_paid + $order->total_shipping;
         }
         $data['parcel'] = [
             'dimensions' => $this->getParcelDimensions($helper)

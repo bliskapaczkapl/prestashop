@@ -37,6 +37,14 @@ class Order extends MapperAbstract
             'dimensions' => $this->getParcelDimensions($helper)
         ];
 
+        if ($order->is_cod == 1) {
+            $data['codValue'] = $order->total_paid + $order->total_shipping;
+        }
+        if ($data['operatorName'] === 'FEDEX') {
+            $data['deliveryType'] = 'D2P';
+            $data = $this->prepareDestinationData($data, $shippingAddress, $helper, $customer);
+        }
+
         $data = $this->prepareSenderData($data, $helper, $configuration);
 
         return $data;
