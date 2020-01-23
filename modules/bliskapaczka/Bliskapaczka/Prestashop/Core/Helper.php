@@ -205,9 +205,8 @@ class Helper
     /**
      * @param string $name
      * @param string $operator
-     * @param boolean $freeShipping
-     *
-     * @param $isCod
+     * @param boolean $freeShipping     *
+     * @param boolean $isCod
      *
      * @return float
      * @throws ApiClient\Exception
@@ -253,7 +252,7 @@ class Helper
         return (float)$price;
     }
     /**
-     * @param $freeShipping
+     * @param boolean $freeShipping
      *
      * @return string
      */
