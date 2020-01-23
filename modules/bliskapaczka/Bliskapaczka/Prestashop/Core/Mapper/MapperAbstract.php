@@ -83,6 +83,15 @@ abstract class MapperAbstract
         return $data;
     }
 
+    /**
+     * Prepare destinations data
+     * @param $data
+     * @param $shippingAddress
+     * @param $helper
+     * @param $customer
+     *
+     * @return mixed
+     */
     public function prepareDestinationData($data, $shippingAddress, $helper, $customer)
     {
         $data['receiverFirstName'] = $shippingAddress->firstname;
