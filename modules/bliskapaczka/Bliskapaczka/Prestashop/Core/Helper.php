@@ -262,6 +262,7 @@ class Helper
             "parcel" => array('dimensions' => $this->getParcelDimensions()),
             "deliveryType" => 'D2D'
         );
+        
         $apiClient = $this->getApiClientPricing();
         $priceList = $apiClient->get($data);
         return $this->getOperatorsForWidget(json_decode($priceList), $freeShipping);
