@@ -162,7 +162,22 @@ Bliskapaczka.selectCourier = function (button) {
 }
 
 $(document).ready(function () {
-
+    if (typeof is_cod !== "undefined") {
+        var hookPayment = $('#HOOK_PAYMENT');
+        var childrens = hookPayment.children();
+        childrens.each(function (i, e) {
+            var methodName = $(e).children().children().children().attr('class');
+            if (is_cod == 1) {
+                if (methodName !== 'cash') {
+                    $(e).hide();
+                }
+            } else {
+                if (methodName == 'cash') {
+                    $(e).hide();
+                }
+            }
+        })
+    }
     operators = JSON.parse(operators);
     if (!!$.prototype.fancybox) {
         $("a.iframe").fancybox({
