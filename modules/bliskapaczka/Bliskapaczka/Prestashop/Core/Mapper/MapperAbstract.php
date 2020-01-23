@@ -82,4 +82,22 @@ abstract class MapperAbstract
 
         return $data;
     }
+
+    public function prepareDestinationData($data, $shippingAddress, $helper, $customer)
+    {
+        $data['receiverFirstName'] = $shippingAddress->firstname;
+        $data['receiverLastName'] = $shippingAddress->lastname;
+        $data['receiverPhoneNumber'] = $helper->telephoneNumberCleaning($shippingAddress->phone_mobile);
+        $data['receiverEmail'] = $customer->email;
+
+        $street = preg_split("/\s+(?=\S*+$)/", $shippingAddress->address1);
+
+        $data['receiverStreet'] = $street[0];
+        $data['receiverBuildingNumber'] = isset($street[1]) ? $street[1] : '';
+        $data['receiverFlatNumber'] = isset($shippingAddress->address2) ? $shippingAddress->address2 : '';
+        $data['receiverPostCode'] = $shippingAddress->postcode;
+        $data['receiverCity'] = $shippingAddress->city;
+
+        return $data;
+    }
 }

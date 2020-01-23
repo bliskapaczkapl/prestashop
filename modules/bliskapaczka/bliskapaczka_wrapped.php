@@ -203,9 +203,7 @@ class Bliskapaczka extends CarrierModule
             $order->is_cod = $cart->is_cod;
             $saveOrder = true;
         }
-        if ($saveOrder == true) {
-            $order->save();
-        }
+
 
         $shippingAddress = new \Address((int)$order->id_address_delivery);
         $customer = new \Customer((int)$order->id_customer);
@@ -216,7 +214,16 @@ class Bliskapaczka extends CarrierModule
 
         $carrier = new Carrier($order->id_carrier, $order->id_lang);
         $method = $carrier->name;
-
+        $totalShipping = $bliskapaczkaHelper->getTotalShippingCostByCarrierNameAndOperatorAndIsCod(
+            $method,
+            $cart->pos_operator,
+            false,
+            $cart->is_cod
+        );
+        if ($saveOrder == true) {
+            $order->total_shipping = $totalShipping;
+            $order->save();
+        }
         if ($method == 'bliskapaczka') {
             /* @var Bliskapaczka\Prestashop\Core\Mapper\Order $mapper */
             $mapper = new Bliskapaczka\Prestashop\Core\Mapper\Order();

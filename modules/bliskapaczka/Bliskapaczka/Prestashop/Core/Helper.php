@@ -203,6 +203,56 @@ class Helper
     }
 
     /**
+     * @param string $name
+     * @param string $operator
+     * @param boolean $freeShipping
+     *
+     * @param $isCod
+     *
+     * @return float
+     * @throws ApiClient\Exception
+     */
+    public function getTotalShippingCostByCarrierNameAndOperatorAndIsCod($name, $operator, $freeShipping, $isCod)
+    {
+        $price = 0;
+        if ($freeShipping === true) {
+            return (float)0;
+        }
+        $deliveryType = 'P2P';
+        if ($name === 'bliskapaczka_courier') {
+            $deliveryType = 'D2D';
+        }
+        if ($name === 'bliskapaczka' && $operator === 'FEDEX') {
+            $deliveryType = 'P2D';
+        }
+        if ($deliveryType !== 'P2D') {
+            $data = array(
+                "parcel" => array('dimensions' => $this->getParcelDimensions()),
+                "deliveryType" => $deliveryType
+            );
+            $apiClient = $this->getApiClientPricing();
+            $result = json_decode($apiClient->get($data));
+            foreach ($result as $item) {
+                if ($item->operatorName === $operator) {
+                    $price = $item->price->gross;
+                }
+            }
+        } else {
+            $config = $this->getConfig();
+            foreach ($config->configModel as $item) {
+                if ($item->operator === 'FEDEX' && isset($item->prices->D2P)) {
+                    $price = $item->prices->D2P[0]->price;
+                }
+            }
+        }
+
+        if ($isCod ==  1) {
+            $cods = $this->makeCODStructure($this->getConfig()->configModel);
+            $price = $price + $cods[$operator];
+        }
+        return (float)$price;
+    }
+    /**
      * @param $freeShipping
      *
      * @return string
