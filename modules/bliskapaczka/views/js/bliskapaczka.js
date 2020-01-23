@@ -162,6 +162,7 @@ Bliskapaczka.selectCourier = function (button) {
 }
 
 $(document).ready(function () {
+    
     if (typeof is_cod !== "undefined") {
         var hookPayment = $('#HOOK_PAYMENT');
         var childrens = hookPayment.children();
