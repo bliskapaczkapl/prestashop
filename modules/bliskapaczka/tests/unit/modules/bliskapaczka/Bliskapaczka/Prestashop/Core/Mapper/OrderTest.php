@@ -26,6 +26,7 @@ class OrderTest extends TestCase
         $this->senderFlatNumber = '11';
         $this->senderPostCode = '55-100';
         $this->senderCity = 'Miastowe';
+        $this->is_cod = false;
 
         $this->addressMock = $this->getMockBuilder(\Address::class)
                                     ->disableOriginalConstructor()
@@ -49,6 +50,7 @@ class OrderTest extends TestCase
 
         $this->orderMock->pos_operator = $this->operatorName;
         $this->orderMock->pos_code = $this->destinationCode;
+        $this->orderMock->is_cod = $this->is_cod;
 
         $this->customerMock = $this->getMockBuilder(\Customer::class)
                                      ->disableOriginalConstructor()
