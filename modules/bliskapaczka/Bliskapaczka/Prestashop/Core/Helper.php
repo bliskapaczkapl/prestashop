@@ -265,6 +265,7 @@ class Helper
 
         $apiClient = $this->getApiClientPricing();
         $priceList = $apiClient->get($data);
+        
         return $this->getOperatorsForWidget(json_decode($priceList), $freeShipping);
     }
     /**
