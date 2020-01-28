@@ -258,7 +258,6 @@ class Helper
      */
     public function getCouriersForWidget($freeShipping)
     {
-        
         $data = array(
             "parcel" => array('dimensions' => $this->getParcelDimensions()),
             "deliveryType" => 'D2D'
