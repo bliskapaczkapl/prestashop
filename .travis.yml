@@ -7,7 +7,7 @@ env:
   global:
     - VENDOR_DIR=modules/bliskapaczka/vendor
     - COMMIT=${TRAVIS_COMMIT::8}
-    - GITHUB_TOKEN=48b042a140f8217cb59909db696348cf3645b319
+    - GITHUB_TOKEN=6e153c0d63ec7f70e631ddc6fea7848b72909e45
 
 services:
   - docker
