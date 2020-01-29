@@ -31,6 +31,7 @@ class CancelCommandHandler extends CommandHandlerAbstract
         $properResponse = $decodedResponse instanceof stdClass && empty($decodedResponse->errors);
         if (!$response && !$properResponse) {
             $message = ($decodedResponse ? current($decodedResponse->errors)->message : '');
+            PrestaShopLogger::addLog($message);
             throw new \Exception(sprintf("Bliskapaczka: Error or empty API response %s", $message));
         }
         $command->getOrder()->status = strip_tags($decodedResponse->status);
