@@ -63,6 +63,5 @@ class CommandBus implements CommandBusInterface
         } catch (\Exception $exception) {
             PrestaShopLogger::addLog($exception);
         }
-
     }
 }
