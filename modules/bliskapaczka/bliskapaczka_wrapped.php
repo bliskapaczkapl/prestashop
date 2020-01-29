@@ -243,7 +243,8 @@ class Bliskapaczka extends CarrierModule
 
             $this->saveResponse($order, $response);
         } catch (Exception $e) {
-            Bliskapaczka\Prestashop\Core\Logger::debug($e->getMessage());
+            Bliskapaczka\Prestashop\Core\Logger::debug();
+            PrestaShopLogger::addLog($e->getMessage());
             return false;
         }
     }
@@ -317,6 +318,7 @@ class Bliskapaczka extends CarrierModule
 
             return $shippingPrice;
         } catch (\Exception $e) {
+            PrestaShopLogger::addLog($e->getMessage());
             Bliskapaczka\Prestashop\Core\Logger::debug($e->getMessage());
             return false;
         }
@@ -346,6 +348,7 @@ class Bliskapaczka extends CarrierModule
                 $apiValidator->setData($data);
                 $apiValidator->validate();
             } catch (Exception $e) {
+                PrestaShopLogger::addLog($e->getMessage());
                 $this->html .= $this->displayError($e->getMessage());
                 return;
             }

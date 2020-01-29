@@ -58,6 +58,11 @@ class CommandBus implements CommandBusInterface
             throw new CommandIsNotExistInHandlersException();
         }
 
-        $this->handlers[get_class($command)]->handle($command);
+        try {
+            $this->handlers[get_class($command)]->handle($command);
+        } catch (\Exception $exception) {
+            PrestaShopLogger::addLog($exception);
+        }
+
     }
 }
