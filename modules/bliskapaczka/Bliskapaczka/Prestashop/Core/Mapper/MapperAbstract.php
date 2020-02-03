@@ -13,6 +13,7 @@ namespace Bliskapaczka\Prestashop\Core\Mapper;
  */
 abstract class MapperAbstract
 {
+    const OPERATORS_WITH_INSURANCE = ['FEDEX', 'DPD'];
 
     /**
      * Get parcel dimensions in format accptable by Bliskapaczka API
@@ -107,6 +108,21 @@ abstract class MapperAbstract
         $data['receiverPostCode'] = $shippingAddress->postcode;
         $data['receiverCity'] = $shippingAddress->city;
 
+        return $data;
+    }
+
+    /**
+     * Add incurance if needed
+     * @param $order
+     * @param $data
+     *
+     * @return array
+     */
+    public function prepareInsuranceDataIfNeeded($order, $data)
+    {
+        if (in_array($order->pos_operator, self::OPERATORS_WITH_INSURANCE)) {
+            $data['parcel']['insuranceValue'] = $order->total_paid;
+        }
         return $data;
     }
 }
