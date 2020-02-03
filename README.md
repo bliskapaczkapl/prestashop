@@ -31,6 +31,12 @@ Dostępni przewoźnicy oraz koszty przesyłki dla poszczególnych punktów dosta
 
 Moduł bliskapaczka.pl korzysta ze standardowych ustawień VAT dla metod dostawy w PrestaShop. Standardowo moduł nie ustawia stawki VAT dla dostawy bliskapaczka.pl, cena wyświetlana klientowi sklepu jest ceną zawierającą VAT, która została ustawiona w konfiguracji serwisu blikskapaczka.pl. Ustawienie stawki VAT  dla dostawy bliskapaczka.pl  powoduje przeniesienie wyliczania kosztu dostawy na PrestaShop, w takim przypadku moduł bliskapaczka.pl bierze cenę netto z ustawień w konfiguracji serwisu blikskapaczka.pl i dodaje do tej ceny VAT ustawiony w konfiguracji modułu.
 
+
+#### Dodatkowe opłaty
+
+Wybór przewoźnika DPD lub FedEx dla zleceń D2D z usługą pobrania może wiązać się z dodatkową opłatą podczas wyceny w serwisie bliskapaczka.pl ze względu na obowiązkowe ubezpieczenie, którego wymaga przewoźnika.
+Kwota pobrania wolna od dodatkowych opłat uwzględniona jest w cenniku na naszej stronie internetowej bliskapaczka.pl/cennik
+
 ## Docker demo
 
 `docker-compose up`

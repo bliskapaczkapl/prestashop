@@ -32,9 +32,8 @@ class Todoor extends MapperAbstract
 
         if ($order->is_cod == 1) {
             $data['codValue'] = $order->total_paid + $order->total_shipping;
-            if (($order->pos_operator == 'FEDEX') || ($order->pos_operator == 'DPD')) {
-                $data['parcel']['insuranceValue'] = $order->total_paid;
-            }
+            $data = $this->prepareInsuranceDataIfNeeded($order, $data);
+
         }
 
         $data = $this->prepareSenderData($data, $helper, $configuration);
