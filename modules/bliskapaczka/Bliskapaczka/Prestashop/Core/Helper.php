@@ -222,7 +222,7 @@ class Helper
             $deliveryType = 'D2D';
         }
         if ($name === 'bliskapaczka' && $operator === 'FEDEX') {
-            $deliveryType = 'P2D';
+            $deliveryType = 'D2P';
         }
         if ($deliveryType !== 'P2D') {
             $data = array(
