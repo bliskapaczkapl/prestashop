@@ -40,8 +40,8 @@ class Order extends MapperAbstract
         if ($order->is_cod == 1) {
             $data['codValue'] = $order->total_paid + $order->total_shipping;
             $data = $this->prepareInsuranceDataIfNeeded($order, $data);
-
         }
+        
         if ($data['operatorName'] === 'FEDEX') {
             $data['deliveryType'] = 'D2P';
             $data = $this->prepareDestinationData($data, $shippingAddress, $helper, $customer);
