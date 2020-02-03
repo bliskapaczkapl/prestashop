@@ -123,6 +123,7 @@ abstract class MapperAbstract
         if (in_array($order->pos_operator, self::OPERATORS_WITH_INSURANCE)) {
             $data['parcel']['insuranceValue'] = $order->total_paid + $order->total_shipping;
         }
+        
         return $data;
     }
 }
