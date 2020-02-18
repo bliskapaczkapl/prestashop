@@ -85,7 +85,7 @@ class Bliskapaczka extends CarrierModule
         if (parent::uninstall() == false ||
             $installer->uninstall($id_carrier) == false ||
             $installer->deleteToOrderInfoAboutBliskapaczkaOrder() == false ||
-            $installer->deleteAdminPanel($id_tab) == false ||
+//            $installer->deleteAdminPanel($id_tab) == false ||
             $installer->deleteCourier($id_courier_carrier) == false
         ) {
             return false;
