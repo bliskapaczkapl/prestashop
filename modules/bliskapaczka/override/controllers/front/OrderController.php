@@ -15,6 +15,11 @@ class OrderController extends OrderControllerCore
         switch ((int)$this->step) {
             case OrderController::STEP_DELIVERY:
                 $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
+                $apiKey = Configuration::get($bliskapaczkaHelper::API_KEY);
+                if (!is_string($apiKey) && empty($apiKey)) {
+                    die(Tools::displayError('API key is empty.'));
+                }
+                $bliskapaczkaHelper = new Bliskapaczka\Prestashop\Core\Helper();
 
                 // Manage Free Shipping
                 // Ligic coppied from class ParentOrderControllerCore method _assignWrappingAndTOS
