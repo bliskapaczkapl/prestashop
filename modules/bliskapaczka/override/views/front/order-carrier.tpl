@@ -61,12 +61,13 @@
                         </p>
                         <div class="delivery_options">
                             {foreach $option_list as $key => $option}
+
                                 <div class="delivery_option {if ($option@index % 2)}alternate_{/if}item">
                                     <div>
                                         <table class="resume table table-bordered{if !$option.unique_carrier} hide{/if}">
                                             <tr>
                                                 <td class="delivery_option_radio">
-                                                    <input id="delivery_option_{$id_address|intval}_{$option@index}" class="delivery_option_radio" type="radio" name="delivery_option[{$id_address|intval}]" data-key="{$key}" data-id_address="{$id_address|intval}" value="{$key}"{if isset($delivery_option[$id_address]) && $delivery_option[$id_address] == $key} checked="checked"{/if} />
+                                                    <input id="delivery_option_{$id_address|intval}_{$option@index}" class="delivery_option_radio" type="radio" name="delivery_option[{$id_address|intval}]" data-key="{$key}" data-id_address="{$id_address|intval}" value="{$key}"{if isset($delivery_option[$id_address]) && $delivery_option[$id_address] == $key} checked="checked"{/if} data-name="{$option.carrier_list[key($option.carrier_list)].instance->id_reference|escape:'htmlall':'UTF-8'}" />
                                                 </td>
                                                 <td class="delivery_option_logo">
                                                     {foreach $option.carrier_list as $carrier}
@@ -125,7 +126,7 @@
 
                                                             <div class="bliskapaczka_courier_wrapper">
                                                                 {foreach $widget_operators_courier as $courier}
-                                                                    <label class='bliskapaczka_courier_item_wrapper' for="bliskapaczka_courier_posOperator">
+                                                                    <label class='bliskapaczka_courier_item_wrapper' for="bliskapaczka_courier_posOperator" data-operator="{$courier->operator}">
                                                                         <input type="radio" name="bliskapaczka_courier_posOperator" value="{$courier->operator}">
                                                                         <div class="bliskapaczka_courier_item">
                                                                             <div class="bliskapaczka_courier_item_logo"><img src="https://bliskapaczka.pl/static/images/{$courier->operator}.png" alt="{$courier->operator}"></div>
@@ -472,3 +473,5 @@
 {addJsDef operators=$widget_operators}
 {addJsDef key=$widget_google_map_api_key}
 {addJsDef testMode=$test_mode}
+{addJsDef id_carrier_bliskapaczka = $id_carrier_bliskapaczka}
+{addJsDef id_carrier_bliskapaczka_courier = $id_carrier_bliskapaczka_courier}
