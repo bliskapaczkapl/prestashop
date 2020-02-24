@@ -162,7 +162,7 @@ Bliskapaczka.selectCourier = function (button) {
 }
 
 
-Bliskapaczka.checkFirstCourier = function() {
+Bliskapaczka.checkFirstCourier = function () {
     if ($('.bliskapaczka_courier_item_wrapper.checked').length === 0) {
         if ($('.bliskapaczka_courier_item_wrapper').length !== 0) {
             $($('.bliskapaczka_courier_item_wrapper')[0]).addClass('checked');
