@@ -161,6 +161,16 @@ Bliskapaczka.selectCourier = function (button) {
     posOperatorForm.value = '';
 }
 
+Bliskapaczka.checkFirstCourier = function () {
+    if ($('.bliskapaczka_courier_item_wrapper.checked').length === 0) {
+        if ($('.bliskapaczka_courier_item_wrapper').length !== 0) {
+            $($('.bliskapaczka_courier_item_wrapper')[0]).addClass('checked');
+            $('#bliskapaczka_posOperator').val($($('.bliskapaczka_courier_item_wrapper')[0])
+              .attr('data-operator'));
+        }
+    }
+}
+
 $(document).ready(function () {
     if (typeof is_cod !== "undefined") {
         var hookPayment = $('#HOOK_PAYMENT');
@@ -231,4 +241,13 @@ $(document).ready(function () {
             }
         })
     })
+    $('.delivery_option_radio').on('click', function () {
+        if ($(this).attr('data-name') === id_carrier_bliskapaczka_courier) {
+            Bliskapaczka.checkFirstCourier();
+        } else {
+            $('#bliskapaczka_posOperator').val();
+        }
+    })
+
+    Bliskapaczka.checkFirstCourier();
 });
