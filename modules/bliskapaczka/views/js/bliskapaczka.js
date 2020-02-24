@@ -161,7 +161,6 @@ Bliskapaczka.selectCourier = function (button) {
     posOperatorForm.value = '';
 }
 
-
 Bliskapaczka.checkFirstCourier = function () {
     if ($('.bliskapaczka_courier_item_wrapper.checked').length === 0) {
         if ($('.bliskapaczka_courier_item_wrapper').length !== 0) {
