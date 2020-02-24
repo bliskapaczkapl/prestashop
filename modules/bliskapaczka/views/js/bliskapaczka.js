@@ -247,7 +247,6 @@ $(document).ready(function () {
         } else {
             $('#bliskapaczka_posOperator').val();
         }
-
     })
 
     Bliskapaczka.checkFirstCourier();
