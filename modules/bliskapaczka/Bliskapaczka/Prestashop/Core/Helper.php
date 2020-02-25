@@ -244,7 +244,7 @@ class Helper
                 return array(
                     'net' => $item->price->net,
                     'vat' => $item->price->vat,
-                    'gross' => $item->price->gross
+                    'gross' => $item->price->gross,
                 );
             }
         }
