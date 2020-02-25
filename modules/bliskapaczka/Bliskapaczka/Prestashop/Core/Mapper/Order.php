@@ -38,7 +38,7 @@ class Order extends MapperAbstract
         ];
 
         if ($order->is_cod == 1) {
-            $data['codValue'] = $order->total_paid + $order->total_shipping;
+            $data['codValue'] = $order->total_paid;
             $data = $this->prepareInsuranceDataIfNeeded($order, $data);
         }
 

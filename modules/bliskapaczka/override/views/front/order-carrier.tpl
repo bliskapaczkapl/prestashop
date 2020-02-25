@@ -62,7 +62,7 @@
                         <div class="delivery_options">
                             {foreach $option_list as $key => $option}
 
-                                <div class="delivery_option {if ($option@index % 2)}alternate_{/if}item">
+                                <div class="delivery_option {if ($option@index % 2)}alternate_{/if}item" data-name="{$option.carrier_list[key($option.carrier_list)].instance->id_reference|escape:'htmlall':'UTF-8'}">
                                     <div>
                                         <table class="resume table table-bordered{if !$option.unique_carrier} hide{/if}">
                                             <tr>
