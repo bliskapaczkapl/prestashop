@@ -241,7 +241,11 @@ class Helper
         $result = json_decode($apiClient->get($data));
         foreach ($result as $item) {
             if ($item->operatorName === $operator && $item->availabilityStatus === true) {
-                return array('net' => $item->price->net, 'vat' => $item->price->vat, 'gross' => $item->price->gross);
+                return array(
+                    'net' => $item->price->net,
+                    'vat' => $item->price->vat,
+                    'gross' => $item->price->gross
+                );
             }
         }
     }
