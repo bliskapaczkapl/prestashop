@@ -215,14 +215,28 @@ class Bliskapaczka extends CarrierModule
         $carrier = new Carrier($order->id_carrier, $order->id_lang);
         $method = $carrier->name;
         $totalShipping = $bliskapaczkaHelper->getTotalShippingCostByCarrierNameAndOperatorAndIsCod(
+            $cart->getOrderTotal(true),
             $method,
             $cart->pos_operator,
             false,
             $cart->is_cod
         );
         if ($saveOrder == true) {
-            $order->total_shipping = $totalShipping;
+            $order->total_shipping = $totalShipping['gross'];
+            $order->total_shipping_tax_incl = $totalShipping['gross'];
+            $order->total_shipping_tax_excl = $totalShipping['net'];
+            $order->carrier_tax_rate = $totalShipping['vat'];
+            $order->total_paid_tax_incl = $cart->getOrderTotal(true) + $order->total_shipping;
+            $order->total_paid = $order->total_paid_tax_incl;
+            $order->total_paid_tax_excl = $cart->getOrderTotal(false) + $order->total_shipping_tax_excl;
+            $order->total_paid_real = $order->total_paid;
+
             $order->save();
+
+            $order_carrier = new OrderCarrier((int)$order->getIdOrderCarrier());
+            $order_carrier->shipping_cost_tax_excl = $order->total_shipping_tax_excl;
+            $order_carrier->shipping_cost_tax_incl = $order->total_shipping_tax_incl;
+            $order_carrier->update();
         }
         if ($method == 'bliskapaczka') {
             /* @var Bliskapaczka\Prestashop\Core\Mapper\Order $mapper */

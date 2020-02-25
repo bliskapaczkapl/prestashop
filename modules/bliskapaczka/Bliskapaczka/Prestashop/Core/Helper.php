@@ -203,19 +203,25 @@ class Helper
     }
 
     /**
+     * @param int $cartPrice
      * @param string $name
      * @param string $operator
-     * @param boolean $freeShipping     *
+     * @param boolean $freeShipping *
      * @param boolean $isCod
      *
-     * @return float
-     * @throws ApiClient\Exception
+     * @return array
      */
-    public function getTotalShippingCostByCarrierNameAndOperatorAndIsCod($name, $operator, $freeShipping, $isCod)
-    {
+    public function getTotalShippingCostByCarrierNameAndOperatorAndIsCod(
+        $cartPrice,
+        $name,
+        $operator,
+        $freeShipping,
+        $isCod
+    ) {
+    
         $price = 0;
         if ($freeShipping === true) {
-            return (float)0;
+            return array('net' => 0, 'vat' => 0, 'gross' => 0);
         }
         $deliveryType = 'P2P';
         if ($name === 'bliskapaczka_courier') {
@@ -224,32 +230,21 @@ class Helper
         if ($name === 'bliskapaczka' && $operator === 'FEDEX') {
             $deliveryType = 'D2P';
         }
-        if ($deliveryType !== 'P2D') {
-            $data = array(
-                "parcel" => array('dimensions' => $this->getParcelDimensions()),
-                "deliveryType" => $deliveryType
-            );
-            $apiClient = $this->getApiClientPricing();
-            $result = json_decode($apiClient->get($data));
-            foreach ($result as $item) {
-                if ($item->operatorName === $operator) {
-                    $price = $item->price->gross;
-                }
-            }
-        } else {
-            $config = $this->getConfig();
-            foreach ($config->configModel as $item) {
-                if ($item->operator === 'FEDEX' && isset($item->prices->D2P)) {
-                    $price = $item->prices->D2P[0]->price;
-                }
-            }
-        }
 
+        $data = array(
+            "parcel" => array('dimensions' => $this->getParcelDimensions()),
+            "deliveryType" => $deliveryType
+        );
         if ($isCod ==  1) {
-            $cods = $this->makeCODStructure($this->getConfig()->configModel);
-            $price = $price + $cods[$operator];
+            $data['codValue'] = $cartPrice;
         }
-        return (float)$price;
+        $apiClient = $this->getApiClientPricing();
+        $result = json_decode($apiClient->get($data));
+        foreach ($result as $item) {
+            if ($item->operatorName === $operator && $item->availabilityStatus === true) {
+                return array('net' => $item->price->net, 'vat' => $item->price->vat, 'gross' => $item->price->gross);
+            }
+        }
     }
     /**
      * @param boolean $freeShipping

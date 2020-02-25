@@ -24,6 +24,7 @@ Bliskapaczka.showMap = function (operators, googleMapApiKey, testMode) {
                 posOperatorForm.value = data.operator;
 
                 Bliskapaczka.pointSelected(data, operators);
+                Bliskapaczka.updatePriceForMap();
             },
             operators: operators,
             posType: 'DELIVERY',
@@ -171,6 +172,32 @@ Bliskapaczka.checkFirstCourier = function () {
     }
 }
 
+Bliskapaczka.updatePriceForCourier = function () {
+    var courierPrice = $('.bliskapaczka_courier_item_wrapper.checked >' +
+      ' .bliskapaczka_courier_item > ' +
+      '.bliskapaczka_courier_item_price ' +
+      'span').text().split(' ')[0];
+    var localPrice = $('.delivery_option[data-name="'+ id_carrier_bliskapaczka_courier +'"] div.delivery_option_price')
+      .text().trim();
+    $('.delivery_option[data-name="'+ id_carrier_bliskapaczka_courier +'"] div.delivery_option_price')
+      .text(courierPrice + ' ' + localPrice.split(/ (.*)/)[1]);
+}
+
+Bliskapaczka.updatePriceForMap = function () {
+    var isCod = $('#bliskapaczka_isCod');
+    var operatorName = $('#bliskapaczka_posOperator');
+    var price = 0;
+    isCod = !!JSON.parse(String(isCod.val()).toLowerCase());
+    for (var i = 0; i < operators.length; i++) {
+        if (operators[i].operator === operatorName.val()) {
+            price = operators[i].price;
+            if (isCod === true) {
+                price = price + operators[i].cod;
+            }
+        }
+    }
+    console.log(price);
+}
 $(document).ready(function () {
     if (typeof is_cod !== "undefined") {
         var hookPayment = $('#HOOK_PAYMENT');
@@ -202,7 +229,8 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.bliskapaczka_courier_item_wrapper', function () {
-        return Bliskapaczka.selectCourier(this);
+        Bliskapaczka.selectCourier(this);
+        return  Bliskapaczka.updatePriceForCourier();
     });
 
     $(document).on('click', 'input[id="cod"]', function () {
@@ -218,6 +246,7 @@ $(document).ready(function () {
                 isCod.value = '0';
             }
         }
+        Bliskapaczka.updatePriceForCourier();
     })
 
     $(document).on('click', '.checkbox-block', function () {
@@ -242,6 +271,7 @@ $(document).ready(function () {
         })
     })
     $('.delivery_option_radio').on('click', function () {
+        Bliskapaczka.updatePriceForCourier();
         if ($(this).attr('data-name') === id_carrier_bliskapaczka_courier) {
             Bliskapaczka.checkFirstCourier();
         } else {
