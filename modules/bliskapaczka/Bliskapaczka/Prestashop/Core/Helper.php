@@ -218,8 +218,7 @@ class Helper
         $freeShipping,
         $isCod
     ) {
-    
-        $price = 0;
+
         if ($freeShipping === true) {
             return array('net' => 0, 'vat' => 0, 'gross' => 0);
         }
