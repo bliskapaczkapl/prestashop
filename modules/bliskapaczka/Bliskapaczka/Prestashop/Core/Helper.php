@@ -239,6 +239,7 @@ class Helper
         }
         $apiClient = $this->getApiClientPricing();
         $result = json_decode($apiClient->get($data));
+        
         foreach ($result as $item) {
             if ($item->operatorName === $operator && $item->availabilityStatus === true) {
                 return array(
